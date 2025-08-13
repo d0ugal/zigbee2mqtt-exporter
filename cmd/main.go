@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -12,9 +14,26 @@ import (
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/logging"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/server"
+	"github.com/d0ugal/zigbee2mqtt-exporter/internal/version"
 )
 
 func main() {
+	// Parse command line flags
+	var showVersion bool
+	flag.BoolVar(&showVersion, "version", false, "Show version information")
+	flag.BoolVar(&showVersion, "v", false, "Show version information")
+	flag.Parse()
+
+	// Show version if requested
+	if showVersion {
+		versionInfo := version.Get()
+		fmt.Printf("zigbee2mqtt-exporter %s\n", versionInfo.Version)
+		fmt.Printf("Commit: %s\n", versionInfo.Commit)
+		fmt.Printf("Build Date: %s\n", versionInfo.BuildDate)
+		fmt.Printf("Go Version: %s\n", versionInfo.GoVersion)
+		os.Exit(0)
+	}
+
 	// Load configuration from environment variables
 	cfg := config.LoadFromEnvironment()
 

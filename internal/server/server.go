@@ -9,6 +9,7 @@ import (
 
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
+	"github.com/d0ugal/zigbee2mqtt-exporter/internal/version"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -21,6 +22,11 @@ type Server struct {
 
 // New creates a new server instance
 func New(cfg *config.Config, metrics *metrics.Registry) *Server {
+	s := &Server{
+		cfg:     cfg,
+		metrics: metrics,
+	}
+
 	mux := http.NewServeMux()
 
 	// Prometheus metrics endpoint
@@ -36,10 +42,10 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 	})
 
 	// Web UI
-	mux.HandleFunc("/", handleWebUI)
+	mux.HandleFunc("/", s.handleWebUI)
 
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	server := &http.Server{
+	s.server = &http.Server{
 		Addr:         addr,
 		Handler:      mux,
 		ReadTimeout:  30 * time.Second,
@@ -47,11 +53,7 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	return &Server{
-		cfg:     cfg,
-		metrics: metrics,
-		server:  server,
-	}
+	return s
 }
 
 // Start starts the HTTP server
@@ -71,7 +73,8 @@ func (s *Server) Shutdown() error {
 }
 
 // handleWebUI serves the web UI interface
-func handleWebUI(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
+	versionInfo := version.Get()
 	html := `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -203,6 +206,9 @@ func handleWebUI(w http.ResponseWriter, r *http.Request) {
     <div class="metrics-info">
         <h3>Configuration</h3>
         <ul>
+            <li><strong>Version:</strong> ` + versionInfo.Version + `</li>
+            <li><strong>Commit:</strong> ` + versionInfo.Commit + `</li>
+            <li><strong>Build Date:</strong> ` + versionInfo.BuildDate + `</li>
             <li><strong>WebSocket URL:</strong> ws://localhost:8081/api</li>
             <li><strong>Server Port:</strong> 8087</li>
             <li><strong>Log Level:</strong> info</li>

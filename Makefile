@@ -12,7 +12,15 @@ help:
 
 # Build the application
 build:
-	go build -v -ldflags="-s -w" -o zigbee2mqtt-exporter ./cmd
+	@echo "Building zigbee2mqtt-exporter..."
+	@VERSION=$$(git describe --tags --always --dirty 2>/dev/null || echo "dev") && \
+	COMMIT=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown") && \
+	BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") && \
+	go build -v -ldflags="-s -w \
+		-X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.Version=$$VERSION \
+		-X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.Commit=$$COMMIT \
+		-X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.BuildDate=$$BUILD_DATE" \
+		-o zigbee2mqtt-exporter ./cmd
 
 # Run tests
 test:
