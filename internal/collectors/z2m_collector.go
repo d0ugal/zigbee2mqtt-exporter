@@ -477,6 +477,25 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 
 		c.metrics.DeviceState.WithLabelValues(deviceName).Set(stateValue)
 	}
+
+	// Update battery level - check multiple possible field names
+	if battery, ok := data["battery"].(float64); ok {
+		c.metrics.DeviceBattery.WithLabelValues(deviceName).Set(battery)
+	} else if battery, ok := data["battery_level"].(float64); ok {
+		c.metrics.DeviceBattery.WithLabelValues(deviceName).Set(battery)
+	} else if battery, ok := data["battery_percentage"].(float64); ok {
+		c.metrics.DeviceBattery.WithLabelValues(deviceName).Set(battery)
+	} else if battery, ok := data["battery_voltage"].(float64); ok {
+		// Convert voltage to percentage (typical range: 2.5V-3.3V for Li-ion)
+		// This is a rough approximation - actual conversion depends on battery chemistry
+		batteryPercent := ((battery - 2.5) / 0.8) * 100
+		if batteryPercent > 100 {
+			batteryPercent = 100
+		} else if batteryPercent < 0 {
+			batteryPercent = 0
+		}
+		c.metrics.DeviceBattery.WithLabelValues(deviceName).Set(batteryPercent)
+	}
 }
 
 // parseISOTimestamp parses an ISO timestamp to Unix timestamp

@@ -12,6 +12,7 @@ type Registry struct {
 	DeviceSeenCount   *prometheus.CounterVec
 	DeviceLinkQuality *prometheus.GaugeVec
 	DeviceState       *prometheus.GaugeVec
+	DeviceBattery     *prometheus.GaugeVec
 
 	// Device info metric (for joining with other metrics)
 	DeviceInfo *prometheus.GaugeVec
@@ -58,6 +59,13 @@ func NewRegistry() *Registry {
 			prometheus.GaugeOpts{
 				Name: "zigbee2mqtt_device_power_state",
 				Help: "Device power state (1=ON, 0=OFF)",
+			},
+			[]string{"device"},
+		),
+		DeviceBattery: promauto.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "zigbee2mqtt_device_battery_level",
+				Help: "Device battery level (0-100)",
 			},
 			[]string{"device"},
 		),
