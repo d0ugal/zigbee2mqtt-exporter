@@ -1,0 +1,234 @@
+# Cursor Rules for Zigbee2MQTT Exporter
+
+## Commit Message Guidelines
+
+This project uses [release-please](https://github.com/googleapis/release-please) for automated releases. Follow these commit message conventions to ensure proper versioning and changelog generation.
+
+### Commit Message Format
+
+Use conventional commit format with the following structure:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+- **feat**: A new feature (triggers minor version bump)
+- **fix**: A bug fix (triggers patch version bump)
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, etc)
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+- **build**: Changes that affect the build system or external dependencies
+- **ci**: Changes to CI configuration files and scripts
+- **chore**: Other changes that don't modify src or test files
+- **revert**: Reverts a previous commit
+
+### Scopes (Optional)
+
+Use scopes to indicate which part of the codebase is affected:
+
+- **config**: Configuration changes
+- **metrics**: Metrics collection or export changes
+- **websocket**: WebSocket connection or message handling changes
+- **collectors**: Data collection changes
+- **server**: HTTP server changes
+- **logging**: Logging system changes
+- **docker**: Docker-related changes
+- **docs**: Documentation changes
+- **ci**: CI/CD changes
+- **zigbee**: Zigbee device handling changes
+- **mqtt**: MQTT integration changes
+
+### Examples
+
+✅ **Good commit messages:**
+
+```
+feat(metrics): add device type classification metrics
+
+feat: add support for custom device type labels
+
+fix(websocket): handle connection timeouts gracefully
+
+fix: resolve memory leak in device collection
+
+docs: update configuration examples in README
+
+refactor(server): improve HTTP handler error handling
+
+perf: optimize device data processing algorithm
+
+test: add unit tests for WebSocket connection handling
+
+build: update Go version to 1.24
+
+ci: add automated security scanning
+
+chore: update dependencies to latest versions
+```
+
+❌ **Bad commit messages:**
+
+```
+update code
+fix stuff
+add feature
+bug fix
+```
+
+❌ **Bad commit practices:**
+
+- Committing multiple unrelated changes together
+- Large commits that are hard to review
+- Not reviewing changes before committing
+- Committing without understanding what changed
+
+### Breaking Changes
+
+For breaking changes, add `!` after the type/scope and include `BREAKING CHANGE:` in the footer:
+
+```
+feat!: remove deprecated config option
+
+BREAKING CHANGE: The `old_config_option` has been removed. Use `new_config_option` instead.
+```
+
+### Commit Message Best Practices
+
+1. **Use imperative mood**: "add" not "added" or "adds"
+2. **Don't capitalize the first letter**: "add feature" not "Add feature"
+3. **No period at the end**: "add feature" not "add feature."
+4. **Keep it under 72 characters** for the first line
+5. **Be specific and descriptive**
+6. **Reference issues when relevant**: "fix: resolve memory leak (#123)"
+7. **Inspect before committing**: Always review `git diff --staged` before committing
+8. **Keep commits focused**: One logical change per commit
+9. **Prefer smaller commits**: Easier to review, revert, and understand
+
+### Release-Please Integration
+
+- **feat** commits trigger minor version bumps
+- **fix** commits trigger patch version bumps
+- **BREAKING CHANGE** commits trigger major version bumps
+- **docs**, **style**, **refactor**, **perf**, **test**, **build**, **ci**, **chore** don't trigger version bumps
+
+### Development Workflow
+
+**Always follow this workflow when making changes:**
+
+1. ✅ **Make your changes**
+2. ✅ **Run tests**: `make test` - Ensure all tests pass
+3. ✅ **Run linting**: `make lint` - Fix any linting issues
+4. ✅ **Format code**: `make fmt` - Ensure consistent formatting
+5. ✅ **Verify changes work** - Test your changes manually if needed
+6. ✅ **Inspect your changes**: Review what you're about to commit
+7. ✅ **Choose appropriate commit message**: Use conventional commit format
+8. ✅ **Commit when it works**: Only commit working, tested code
+9. ✅ **Push immediately**: `git push` - Don't let changes sit locally
+
+### Pre-commit Checklist
+
+Before committing, ensure:
+
+1. ✅ Tests pass: `make test`
+2. ✅ Code is formatted: `make fmt`
+3. ✅ **Linting passes: `make lint`** - **CRITICAL: Never commit with linting errors**
+4. ✅ **Inspect changes**: Review what you're committing with `git diff --staged`
+5. ✅ **Choose appropriate message**: Use conventional commit format
+6. ✅ **Keep commits focused**: Avoid multiple unrelated changes in one commit
+7. ✅ **Prefer smaller commits**: Break large changes into logical, focused commits
+8. ✅ Documentation is updated if needed
+9. ✅ Changes are verified and working
+
+### Linting Requirements
+
+**ALWAYS fix linting issues before committing:**
+- Run `make lint` and address ALL issues
+- If linting fails, fix the issues before committing
+- Never commit code that fails linting checks
+- Use `make fmt` to fix formatting issues automatically
+- For complex linting issues, consider disabling specific linters in `.golangci.yml` if they're too strict
+- The goal is to maintain clean, consistent code quality
+
+### Post-commit Workflow
+
+After committing, always:
+
+1. ✅ Push changes to remote: `git push`
+2. ✅ Verify CI checks pass
+3. ✅ Create/update PR if working on a feature branch
+
+### Branch Naming
+
+Use descriptive branch names:
+
+```
+feat/add-device-type-classification
+fix/websocket-reconnection-handling
+docs/update-configuration-examples
+refactor/improve-device-data-processing
+```
+
+### Dependency Management
+
+**Always use pinned versions instead of "latest" for better Renovate integration:**
+
+✅ **Good version specifications:**
+- `go install github.com/golangci/golangci-lint/cmd/golangci-lint@v2.0.0`
+- `FROM golang:1.24-alpine`
+- `RUN go install github.com/example/tool@v1.2.3`
+
+❌ **Avoid "latest" tags:**
+- `go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest`
+- `FROM golang:latest`
+- `RUN go install github.com/example/tool@latest`
+
+**Benefits of pinned versions:**
+- Renovate can detect and update them automatically
+- Reproducible builds
+- Better security (known versions)
+- Easier debugging and rollbacks
+
+### Pull Request Guidelines
+
+- Use conventional commit format for PR titles
+- Include detailed description of changes
+- Reference related issues
+- Ensure CI checks pass
+- Request reviews from maintainers
+
+### Automated Release Process
+
+1. Push commits to `main` branch
+2. Release-please analyzes commit messages
+3. Creates/updates release PR automatically
+4. Merging release PR creates new GitHub release
+5. Changelog is automatically generated
+
+### Zigbee2MQTT-Specific Guidelines
+
+- **Security**: Never commit Zigbee2MQTT credentials or WebSocket URLs
+- **Configuration**: Use environment variables for all configuration
+- **Testing**: Test WebSocket connections with local Zigbee2MQTT instances when possible
+- **Error Handling**: Implement robust error handling for network issues and device disconnections
+- **Metrics**: Ensure all device-related metrics are properly labeled with device information
+- **Device Types**: Maintain proper device type classification (Router, EndDevice, Coordinator, GreenPower)
+- **WebSocket**: Handle connection drops and reconnections gracefully
+- **Performance**: Optimize for real-time device monitoring without excessive resource usage
+
+### Device Monitoring Best Practices
+
+- **Device States**: Track device online/offline status accurately
+- **Link Quality**: Monitor and alert on poor link quality
+- **Battery Devices**: Handle battery-powered devices appropriately (may go offline for extended periods)
+- **Router Devices**: Prioritize monitoring of router devices (critical for network connectivity)
+- **Data Collection**: Collect device data efficiently without overwhelming the WebSocket connection
+
+Remember: Good commit messages make the project history more readable and enable automated tools like release-please to work effectively!
