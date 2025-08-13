@@ -19,7 +19,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o zigbee2mqtt-exporter ./cmd
 
 # Final stage
-FROM alpine:latest
+FROM alpine:3.22.1
 
 RUN apk --no-cache add ca-certificates
 
