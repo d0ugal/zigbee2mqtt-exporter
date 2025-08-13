@@ -14,25 +14,6 @@ import (
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/server"
 )
 
-// hasEnvironmentVariables checks if any Z2M_EXPORTER_* environment variables are set
-func hasEnvironmentVariables() bool {
-	envVars := []string{
-		"Z2M_EXPORTER_SERVER_HOST",
-		"Z2M_EXPORTER_SERVER_PORT",
-		"Z2M_EXPORTER_LOG_LEVEL",
-		"Z2M_EXPORTER_LOG_FORMAT",
-		"Z2M_EXPORTER_WEBSOCKET_URL",
-	}
-
-	for _, envVar := range envVars {
-		if os.Getenv(envVar) != "" {
-			return true
-		}
-	}
-
-	return false
-}
-
 func main() {
 	// Load configuration from environment variables
 	cfg := config.LoadFromEnvironment()

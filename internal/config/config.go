@@ -37,6 +37,7 @@ func LoadFromEnvironment() *Config {
 	if host := os.Getenv("Z2M_EXPORTER_SERVER_HOST"); host != "" {
 		cfg.Server.Host = host
 	}
+
 	if portStr := os.Getenv("Z2M_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := strconv.Atoi(portStr); err == nil {
 			cfg.Server.Port = port
@@ -47,6 +48,7 @@ func LoadFromEnvironment() *Config {
 	if level := os.Getenv("Z2M_EXPORTER_LOG_LEVEL"); level != "" {
 		cfg.Logging.Level = level
 	}
+
 	if format := os.Getenv("Z2M_EXPORTER_LOG_FORMAT"); format != "" {
 		cfg.Logging.Format = format
 	}
@@ -67,15 +69,19 @@ func setDefaults(cfg *Config) {
 	if cfg.Server.Host == "" {
 		cfg.Server.Host = "0.0.0.0"
 	}
+
 	if cfg.Server.Port == 0 {
 		cfg.Server.Port = 8087
 	}
+
 	if cfg.Logging.Level == "" {
 		cfg.Logging.Level = "info"
 	}
+
 	if cfg.Logging.Format == "" {
 		cfg.Logging.Format = "json"
 	}
+
 	if cfg.WebSocket.URL == "" {
 		cfg.WebSocket.URL = "ws://localhost:8081/api"
 	}

@@ -42,7 +42,7 @@ func NewRegistry() *Registry {
 		),
 		DeviceSeenCount: promauto.NewCounterVec(
 			prometheus.CounterOpts{
-				Name: "zigbee2mqtt_device_seen_count",
+				Name: "zigbee2mqtt_device_seen_count_total",
 				Help: "Number of times device has been seen",
 			},
 			[]string{"device"},

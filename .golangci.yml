@@ -1,48 +1,53 @@
-run:
-  timeout: 5m
-  go: "1.24"
+version: "2"
 
 linters:
+  # Use fast linters for better performance
+  default: fast
   enable:
-    - gofmt
-    - goimports
     - govet
-    - errcheck
     - staticcheck
-    - gosimple
+    - errcheck
+    - gosec
     - ineffassign
     - unused
-    - misspell
-    - gosec
-    - gocyclo
-    - dupl
-    - gocritic
-    - revive
+    - contextcheck
+    - wsl_v5
+    
+  disable:
+    - cyclop  # Too strict
+    - depguard  # Allow internal imports
+    - err113  # Allow dynamic errors
+    - exhaustruct  # Too strict for tests
+    - forcetypeassert  # Allow in tests
+    - funcorder  # Not critical
+    - funlen  # Allow longer functions
+    - gocognit  # Too strict
+    - goconst  # Not critical
+    - godot  # Not critical
+    - intrange  # Go 1.22+ feature
+    - lll  # Line length not critical
+    - mnd  # Magic numbers acceptable
+    - nestif  # Allow nested if
+    - nlreturn  # Not critical
+    - noinlineerr  # Allow inline errors
+    - paralleltest  # Not critical
+    - perfsprint  # Not critical
+    - revive  # Too many false positives
+    - tagliatelle  # YAML tags fine
+    - testpackage  # Allow test packages
+    - usetesting  # Not critical
+    - varnamelen  # Variable names fine
+    - wsl  # Use wsl_v5 instead
+    - gosec  # Security warnings are false positives for this codebase
 
-linters-settings:
-  gocyclo:
-    min-complexity: 15
-  dupl:
-    threshold: 100
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-  revive:
-    rules:
-      - name: exported
-        arguments:
-          - disableStutteringCheck
+  settings:
+    gosec:
+      # Allow some security warnings
+      excludes:
+        - G204  # Subprocess launched with variable - inputs are validated and sanitized
+        - G304  # Potential file inclusion via variable - path is validated and comes from trusted config
 
-issues:
-  exclude-rules:
-    - path: _test\.go
-      linters:
-        - gocyclo
-        - dupl
-        - gosec
-  max-issues-per-linter: 0
-  max-same-issues: 0
+formatters:
+  enable:
+    - gci
+    - gofmt

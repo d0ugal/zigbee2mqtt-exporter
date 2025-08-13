@@ -29,7 +29,10 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 	// Health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+
+		if _, err := w.Write([]byte("OK")); err != nil {
+			slog.Error("Failed to write response", "error", err)
+		}
 	})
 
 	// Web UI
@@ -60,8 +63,10 @@ func (s *Server) Start() error {
 // Shutdown gracefully shuts down the server
 func (s *Server) Shutdown() error {
 	slog.Info("Shutting down HTTP server")
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
+
 	return s.server.Shutdown(ctx)
 }
 
@@ -218,5 +223,8 @@ func handleWebUI(w http.ResponseWriter, r *http.Request) {
 </html>`
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write([]byte(html))
+
+	if _, err := w.Write([]byte(html)); err != nil {
+		slog.Error("Failed to write HTML response", "error", err)
+	}
 }

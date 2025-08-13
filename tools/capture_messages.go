@@ -31,7 +31,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to connect:", err)
 	}
-	defer conn.Close()
+
+	defer func() {
+		if err := conn.Close(); err != nil {
+			log.Printf("Error closing connection: %v", err)
+		}
+	}()
 
 	fmt.Println("Connected! Capturing messages (press Ctrl+C to stop)...")
 	fmt.Println(strings.Repeat("=", 60))

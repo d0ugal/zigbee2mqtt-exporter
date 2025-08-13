@@ -98,13 +98,14 @@ func (c *Z2MCollector) run(ctx context.Context) {
 			case <-ctx.Done():
 				return
 			case <-time.After(reconnectDelay):
-				reconnectDelay = min(reconnectDelay*2, maxReconnectDelay)
+				reconnectDelay = minDuration(reconnectDelay*2, maxReconnectDelay)
 				continue
 			}
 		}
 
 		// Reset reconnect delay on successful connection
 		reconnectDelay = time.Second
+
 		c.metrics.WebSocketConnectionStatus.WithLabelValues().Set(1)
 
 		// Start reading messages
@@ -125,7 +126,9 @@ func (c *Z2MCollector) connect() error {
 	}
 
 	c.conn = conn
+
 	slog.Info("Connected to Zigbee2MQTT WebSocket")
+
 	return nil
 }
 
@@ -145,6 +148,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				return fmt.Errorf("unexpected close error: %w", err)
 			}
+
 			return fmt.Errorf("read message error: %w", err)
 		}
 
@@ -217,6 +221,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 
 			// Map interview state to string
 			interviewState := "not_started"
+
 			switch device.InterviewState {
 			case "in_progress":
 				interviewState = "in_progress"
@@ -247,6 +252,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 				interviewState,
 			).Set(1)
 		}
+
 		return
 	}
 
@@ -280,6 +286,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 
 		// Map interview state to string
 		interviewState := "not_started"
+
 		switch device.InterviewState {
 		case "in_progress":
 			interviewState = "in_progress"
@@ -373,10 +380,12 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(message string) {
 
 	// Extract topic
 	topicStart := strings.Index(message, "topic '") + 7
+
 	topicEnd := strings.Index(message[topicStart:], "'")
 	if topicStart < 7 || topicEnd < 0 {
 		return
 	}
+
 	deviceTopic := message[topicStart : topicStart+topicEnd]
 	deviceName := strings.TrimPrefix(deviceTopic, "zigbee2mqtt/")
 
@@ -387,10 +396,12 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(message string) {
 
 	// Extract payload
 	payloadStart := strings.Index(message, "payload '") + 9
+
 	payloadEnd := strings.LastIndex(message, "'")
 	if payloadStart < 9 || payloadEnd < payloadStart {
 		return
 	}
+
 	payloadStr := message[payloadStart:payloadEnd]
 
 	// Parse device data
@@ -411,7 +422,7 @@ func (c *Z2MCollector) processAvailabilityMessage(msg Z2MMessage) {
 
 	// Handle availability payload - try different payload formats
 	availabilityValue := 0.0
-	
+
 	// Try string payload first (e.g., "online" or "offline")
 	if availability, ok := msg.Payload.(string); ok {
 		if availability == "online" {
@@ -463,6 +474,7 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 		if state == "ON" {
 			stateValue = 1.0
 		}
+
 		c.metrics.DeviceState.WithLabelValues(deviceName).Set(stateValue)
 	}
 }
@@ -471,25 +483,31 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 func parseISOTimestamp(isoTime string) (int64, error) {
 	// Remove 'Z' and parse as RFC3339
 	isoTime = strings.Replace(isoTime, "Z", "+00:00", 1)
+
 	t, err := time.Parse(time.RFC3339, isoTime)
 	if err != nil {
 		return 0, err
 	}
+
 	return t.Unix(), nil
 }
 
 // Stop stops the collector
 func (c *Z2MCollector) Stop() {
 	close(c.done)
+
 	if c.conn != nil {
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil {
+			slog.Error("Failed to close WebSocket connection", "error", err)
+		}
 	}
 }
 
 // min returns the minimum of two time.Duration values
-func min(a, b time.Duration) time.Duration {
+func minDuration(a, b time.Duration) time.Duration {
 	if a < b {
 		return a
 	}
+
 	return b
 }
