@@ -494,6 +494,7 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 		} else if batteryPercent < 0 {
 			batteryPercent = 0
 		}
+
 		c.metrics.DeviceBattery.WithLabelValues(deviceName).Set(batteryPercent)
 	}
 }
