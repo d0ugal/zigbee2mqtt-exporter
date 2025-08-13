@@ -16,7 +16,7 @@ build:
 
 # Run tests
 test:
-	go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+	go test -v -race -coverprofile=coverage.txt -covermode=atomic ./internal/...
 
 # Format code using gofmt, goimports, and golangci-lint formatters
 fmt:
