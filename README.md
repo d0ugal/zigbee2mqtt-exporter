@@ -31,9 +31,10 @@ This classification enables different alerting strategies:
 
 ### Device Metrics
 - `zigbee2mqtt_device_last_seen_timestamp{device}` - Timestamp when device was last seen
-- `zigbee2mqtt_device_seen_count{device}` - Number of times device has been seen
+- `zigbee2mqtt_device_seen_total{device}` - Number of times device has been seen
 - `zigbee2mqtt_device_link_quality{device}` - Device link quality (0-255)
-- `zigbee2mqtt_device_state{device}` - Device state (1=ON, 0=OFF)
+- `zigbee2mqtt_device_power_state{device}` - Device power state (1=ON, 0=OFF)
+- `zigbee2mqtt_device_up{device}` - Device availability status (1=online, 0=offline)
 
 ### Device Info Metric
 - `zigbee2mqtt_device_info{device,type,power_source,manufacturer,model_id,supported,disabled,interview_state}` - Device information (always 1, used for joining)

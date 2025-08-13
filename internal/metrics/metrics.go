@@ -42,7 +42,7 @@ func NewRegistry() *Registry {
 		),
 		DeviceSeenCount: promauto.NewCounterVec(
 			prometheus.CounterOpts{
-				Name: "zigbee2mqtt_device_seen_count_total",
+				Name: "zigbee2mqtt_device_seen_total",
 				Help: "Number of times device has been seen",
 			},
 			[]string{"device"},
@@ -56,8 +56,8 @@ func NewRegistry() *Registry {
 		),
 		DeviceState: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "zigbee2mqtt_device_state",
-				Help: "Device state (1=ON, 0=OFF)",
+				Name: "zigbee2mqtt_device_power_state",
+				Help: "Device power state (1=ON, 0=OFF)",
 			},
 			[]string{"device"},
 		),
@@ -74,7 +74,7 @@ func NewRegistry() *Registry {
 		// Device availability metric (like Prometheus "up" metric)
 		DeviceAvailability: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "zigbee2mqtt_device_availability",
+				Name: "zigbee2mqtt_device_up",
 				Help: "Device availability status (1=online, 0=offline)",
 			},
 			[]string{"device"},
