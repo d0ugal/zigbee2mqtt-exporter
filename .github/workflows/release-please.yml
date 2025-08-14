@@ -73,6 +73,10 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=min
+        cache-from: type=gha,scope=release-${{ steps.release_please.outputs.tag_name }}
+        cache-to: type=gha,mode=max,scope=release-${{ steps.release_please.outputs.tag_name }}
         continue-on-error: false
+        build-args: |
+          VERSION=${{ steps.release_please.outputs.tag_name }}
+          COMMIT=${{ github.sha }}
+          BUILD_DATE=${{ github.event.head_commit.timestamp }}
