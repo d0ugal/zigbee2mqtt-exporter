@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -34,10 +35,29 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 
 	// Health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		versionInfo := version.Get()
+		
+		response := map[string]interface{}{
+			"status":     "healthy",
+			"timestamp":  time.Now().Unix(),
+			"service":    "zigbee2mqtt-exporter",
+			"version":    versionInfo.Version,
+			"commit":     versionInfo.Commit,
+			"build_date": versionInfo.BuildDate,
+		}
+		
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-
-		if _, err := w.Write([]byte("OK")); err != nil {
-			slog.Error("Failed to write response", "error", err)
+		
+		jsonData, err := json.Marshal(response)
+		if err != nil {
+			slog.Error("Failed to marshal health response", "error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		
+		if _, err := w.Write(jsonData); err != nil {
+			slog.Error("Failed to write health response", "error", err)
 		}
 	})
 

@@ -15,8 +15,16 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o zigbee2mqtt-exporter ./cmd
+# Build the application with version information
+RUN VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "dev") && \
+    COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown") && \
+    BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") && \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo \
+    -ldflags="-s -w \
+        -X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.Version=$VERSION \
+        -X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.Commit=$COMMIT \
+        -X github.com/d0ugal/zigbee2mqtt-exporter/internal/version.BuildDate=$BUILD_DATE" \
+    -o zigbee2mqtt-exporter ./cmd
 
 # Final stage
 FROM alpine:3.22.1
