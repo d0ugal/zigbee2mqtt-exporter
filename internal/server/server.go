@@ -115,6 +115,12 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             border-bottom: 2px solid #3498db;
             padding-bottom: 0.5rem;
         }
+        h1 .version {
+            font-size: 0.6em;
+            color: #6c757d;
+            font-weight: normal;
+            margin-left: 0.5rem;
+        }
         .endpoint {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -217,7 +223,7 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
     </style>
 </head>
 <body>
-    <h1>Zigbee2MQTT Exporter</h1>
+    <h1>Zigbee2MQTT Exporter<span class="version">` + versionInfo.Version + `</span></h1>
     
     <div class="endpoint">
         <h3><a href="/metrics">📊 Metrics</a></h3>

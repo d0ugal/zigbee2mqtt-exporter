@@ -7,6 +7,9 @@ import (
 
 // Registry holds all the Prometheus metrics
 type Registry struct {
+	// Version info metric
+	VersionInfo *prometheus.GaugeVec
+
 	// Device metrics
 	DeviceLastSeen    *prometheus.GaugeVec
 	DeviceSeenCount   *prometheus.CounterVec
@@ -33,6 +36,14 @@ type Registry struct {
 // NewRegistry creates a new metrics registry
 func NewRegistry() *Registry {
 	return &Registry{
+		// Version info metric
+		VersionInfo: promauto.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "zigbee2mqtt_exporter_info",
+				Help: "Information about the Zigbee2MQTT exporter",
+			},
+			[]string{"version", "commit", "build_date"},
+		),
 		// Device metrics
 		DeviceLastSeen: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{

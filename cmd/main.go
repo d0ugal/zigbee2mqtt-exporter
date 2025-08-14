@@ -43,6 +43,10 @@ func main() {
 	// Initialize metrics
 	metricsRegistry := metrics.NewRegistry()
 
+	// Set version info metric
+	versionInfo := version.Get()
+	metricsRegistry.VersionInfo.WithLabelValues(versionInfo.Version, versionInfo.Commit, versionInfo.BuildDate).Set(1)
+
 	// Create collectors
 	z2mCollector := collectors.NewZ2MCollector(cfg, metricsRegistry)
 
