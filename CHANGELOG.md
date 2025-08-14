@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.1.0...v2.2.0) (2025-08-14)
+
+
+### Features
+
+* add version info metric and subtle version display in h1 header ([6700e8f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/6700e8f9eaa1d3644553ed179c011fc5fcbc4df8))
+* add version to title, separate version info, and add copyright footer with GitHub links ([7df21f4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7df21f40d9fc84b2e6c83c2dc3eb960c3cfd2f78))
+
+
+### Bug Fixes
+
+* update Dockerfile to inject version information and fix health endpoint to return JSON ([99538c0](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/99538c07f5633f076a422114e233243bc539b96a))
+
 ## [2.1.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.0.0...v2.1.0) (2025-08-13)
 
 
