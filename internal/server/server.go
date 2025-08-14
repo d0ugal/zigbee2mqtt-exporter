@@ -100,7 +100,7 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zigbee2MQTT Exporter</title>
+    <title>Zigbee2MQTT Exporter ` + versionInfo.Version + `</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -199,6 +199,21 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             margin: 0.25rem 0;
             color: #6c757d;
         }
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -224,11 +239,17 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
     </div>
 
     <div class="metrics-info">
-        <h3>Configuration</h3>
+        <h3>Version Information</h3>
         <ul>
             <li><strong>Version:</strong> ` + versionInfo.Version + `</li>
             <li><strong>Commit:</strong> ` + versionInfo.Commit + `</li>
             <li><strong>Build Date:</strong> ` + versionInfo.BuildDate + `</li>
+        </ul>
+    </div>
+
+    <div class="metrics-info">
+        <h3>Configuration</h3>
+        <ul>
             <li><strong>WebSocket URL:</strong> ws://localhost:8081/api</li>
             <li><strong>Server Port:</strong> 8087</li>
             <li><strong>Log Level:</strong> info</li>
@@ -249,6 +270,11 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             <li><strong>zigbee2mqtt_websocket_messages_total:</strong> Total messages received per topic</li>
             <li><strong>zigbee2mqtt_websocket_reconnects_total:</strong> Total reconnection attempts</li>
         </ul>
+    </div>
+
+    <div class="footer">
+        <p>Copyright © 2024 zigbee2mqtt-exporter contributors. Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.</p>
+        <p><a href="https://github.com/d0ugal/zigbee2mqtt-exporter" target="_blank">GitHub Repository</a> | <a href="https://github.com/d0ugal/zigbee2mqtt-exporter/issues" target="_blank">Report Issues</a></p>
     </div>
 </body>
 </html>`
