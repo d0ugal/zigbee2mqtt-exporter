@@ -1,4 +1,8 @@
-version: "2"
+version: "3"
+
+run:
+  timeout: 5m
+  go: "1.25"
 
 linters:
   # Use fast linters for better performance
