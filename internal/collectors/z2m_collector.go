@@ -90,8 +90,8 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		}
 
 		if err := c.connect(); err != nil {
-			slog.Error("Failed to connect to Zigbee2MQTT", 
-				"error", err, 
+			slog.Error("Failed to connect to Zigbee2MQTT",
+				"error", err,
 				"url", c.cfg.WebSocket.URL,
 				"reconnect_delay", reconnectDelay,
 			)
@@ -102,7 +102,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 			case <-ctx.Done():
 				return
 			case <-time.After(reconnectDelay):
-				slog.Info("Attempting Zigbee2MQTT reconnection", 
+				slog.Info("Attempting Zigbee2MQTT reconnection",
 					"url", c.cfg.WebSocket.URL,
 					"delay", reconnectDelay,
 				)
