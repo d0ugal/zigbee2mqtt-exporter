@@ -133,6 +133,47 @@ BREAKING CHANGE: The `old_config_option` has been removed. Use `new_config_optio
 8. ✅ **Commit when it works**: Only commit working, tested code
 9. ✅ **Push immediately**: `git push` - Don't let changes sit locally
 
+### Development Workflow
+
+**Always follow this workflow when making changes:**
+
+1. ✅ **Check git status**: `git status` - Ensure you're up to date and on the right branch
+2. ✅ **Make your changes**
+3. ✅ **Run tests**: `make test` - Ensure all tests pass
+4. ✅ **Run linting**: `make lint` - Fix any linting issues
+5. ✅ **Format code**: `make fmt` - Ensure consistent formatting
+6. ✅ **Verify changes work** - Test your changes manually if needed
+7. ✅ **Inspect your changes**: Review what you're about to commit
+8. ✅ **Choose appropriate commit message**: Use conventional commit format
+9. ✅ **Commit when it works**: Only commit working, tested code
+10. ✅ **Push immediately**: `git push` - Don't let changes sit locally
+
+### Git Status Check
+
+**Always check git status before starting work:**
+
+```bash
+git status
+```
+
+**What to look for:**
+- ✅ **Clean working directory**: No uncommitted changes
+- ✅ **Up to date**: Your branch is not behind origin
+- ✅ **Correct branch**: You're on the intended branch (usually `main`)
+- ✅ **No conflicts**: No merge conflicts or rebase in progress
+
+**If you see issues:**
+- **Uncommitted changes**: Commit or stash them first
+- **Behind origin**: `git pull --rebase` to get latest changes
+- **Wrong branch**: `git checkout main` or appropriate branch
+- **Conflicts**: Resolve them before proceeding
+
+**Why this matters:**
+- Prevents working on outdated code
+- Avoids merge conflicts later
+- Ensures clean, focused commits
+- Maintains good git hygiene
+
 ### Pre-commit Checklist
 
 Before committing, ensure:
