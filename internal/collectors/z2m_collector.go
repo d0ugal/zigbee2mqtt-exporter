@@ -107,6 +107,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 					"delay", reconnectDelay,
 				)
 				reconnectDelay = minDuration(reconnectDelay*2, maxReconnectDelay)
+
 				continue
 			}
 		}
