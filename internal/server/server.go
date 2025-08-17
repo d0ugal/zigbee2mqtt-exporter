@@ -271,8 +271,11 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             <li><strong>zigbee2mqtt_device_link_quality:</strong> Device link quality (0-255)</li>
             <li><strong>zigbee2mqtt_device_power_state:</strong> Device power state (1=ON, 0=OFF)</li>
             <li><strong>zigbee2mqtt_device_battery_level:</strong> Device battery level (0-100)</li>
-            <li><strong>zigbee2mqtt_device_info:</strong> Device information and metadata</li>
+            <li><strong>zigbee2mqtt_device_info:</strong> Device information and metadata (includes firmware info)</li>
             <li><strong>zigbee2mqtt_device_up:</strong> Device availability status</li>
+            <li><strong>zigbee2mqtt_device_ota_update_available:</strong> Device OTA update availability (1=available, 0=not_available)</li>
+            <li><strong>zigbee2mqtt_device_current_firmware_version:</strong> Device current firmware version</li>
+            <li><strong>zigbee2mqtt_device_available_firmware_version:</strong> Device available firmware version</li>
             <li><strong>zigbee2mqtt_websocket_connection_status:</strong> WebSocket connection status</li>
             <li><strong>zigbee2mqtt_websocket_messages_total:</strong> Total messages received per topic</li>
             <li><strong>zigbee2mqtt_websocket_reconnects_total:</strong> Total reconnection attempts</li>

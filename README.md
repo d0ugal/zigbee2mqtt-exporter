@@ -37,7 +37,12 @@ This classification enables different alerting strategies:
 - `zigbee2mqtt_device_up{device}` - Device availability status (1=online, 0=offline)
 
 ### Device Info Metric
-- `zigbee2mqtt_device_info{device,type,power_source,manufacturer,model_id,supported,disabled,interview_state}` - Device information (always 1, used for joining)
+- `zigbee2mqtt_device_info{device,type,power_source,manufacturer,model_id,supported,disabled,interview_state,software_build_id,date_code}` - Device information (always 1, used for joining)
+
+### OTA Update Metrics
+- `zigbee2mqtt_device_ota_update_available{device}` - Device OTA update availability (1=available, 0=not_available)
+- `zigbee2mqtt_device_current_firmware_version{device,firmware_version}` - Device current firmware version (always 1, used for joining)
+- `zigbee2mqtt_device_available_firmware_version{device,firmware_version}` - Device available firmware version (always 1, used for joining)
 
 ### Bridge Metrics
 - `zigbee2mqtt_bridge_state` - Bridge state (1=online, 0=offline)
@@ -75,6 +80,21 @@ count by (power_source) (zigbee2mqtt_device_info)
 ### Get unsupported devices
 ```promql
 zigbee2mqtt_device_info{supported="false"}
+```
+
+### Get devices with OTA updates available
+```promql
+zigbee2mqtt_device_ota_update_available == 1
+```
+
+### Get devices by firmware version
+```promql
+zigbee2mqtt_device_current_firmware_version
+```
+
+### Count devices by firmware version
+```promql
+count by (firmware_version) (zigbee2mqtt_device_current_firmware_version)
 ```
 
 ## Configuration
@@ -147,6 +167,18 @@ docker run -p 8087:8087 \
   annotations:
     summary: "Zigbee2MQTT bridge is offline"
     description: "The Zigbee2MQTT bridge has gone offline"
+```
+
+### OTA Update Available Alert
+```yaml
+- alert: ZigbeeOTAUpdateAvailable
+  expr: zigbee2mqtt_device_ota_update_available == 1
+  for: 0m
+  labels:
+    severity: info
+  annotations:
+    summary: "OTA update available for {{ $labels.device }}"
+    description: "Device {{ $labels.device }} has an OTA firmware update available"
 ```
 
 ## Testing

@@ -31,6 +31,11 @@ type Registry struct {
 	WebSocketConnectionStatus *prometheus.GaugeVec
 	WebSocketMessagesTotal    *prometheus.CounterVec
 	WebSocketReconnectsTotal  *prometheus.CounterVec
+
+	// OTA Update metrics
+	DeviceOTAUpdateAvailable *prometheus.GaugeVec
+	DeviceCurrentFirmware    *prometheus.GaugeVec
+	DeviceAvailableFirmware  *prometheus.GaugeVec
 }
 
 // NewRegistry creates a new metrics registry
@@ -87,7 +92,7 @@ func NewRegistry() *Registry {
 				Name: "zigbee2mqtt_device_info",
 				Help: "Device information (always 1, used for joining with other metrics)",
 			},
-			[]string{"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state"},
+			[]string{"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state", "software_build_id", "date_code"},
 		),
 
 		// Device availability metric (like Prometheus "up" metric)
@@ -136,6 +141,29 @@ func NewRegistry() *Registry {
 				Help: "Total number of WebSocket reconnections",
 			},
 			[]string{},
+		),
+
+		// OTA Update metrics
+		DeviceOTAUpdateAvailable: promauto.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "zigbee2mqtt_device_ota_update_available",
+				Help: "Device OTA update availability (1=available, 0=not_available)",
+			},
+			[]string{"device"},
+		),
+		DeviceCurrentFirmware: promauto.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "zigbee2mqtt_device_current_firmware_version",
+				Help: "Device current firmware version (always 1, used for joining with other metrics)",
+			},
+			[]string{"device", "firmware_version"},
+		),
+		DeviceAvailableFirmware: promauto.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "zigbee2mqtt_device_available_firmware_version",
+				Help: "Device available firmware version (always 1, used for joining with other metrics)",
+			},
+			[]string{"device", "firmware_version"},
 		),
 	}
 }

@@ -25,14 +25,16 @@ type Z2MCollector struct {
 
 // DeviceInfo stores device metadata from bridge/devices message
 type DeviceInfo struct {
-	Type           string
-	PowerSource    string
-	Manufacturer   string
-	ModelID        string
-	Supported      bool
-	Disabled       bool
-	InterviewState string
-	NetworkAddress int
+	Type            string
+	PowerSource     string
+	Manufacturer    string
+	ModelID         string
+	Supported       bool
+	Disabled        bool
+	InterviewState  string
+	NetworkAddress  int
+	SoftwareBuildID string
+	DateCode        string
 }
 
 // Z2MMessage represents a message from Zigbee2MQTT
@@ -58,6 +60,10 @@ type BridgeDevice struct {
 	InterviewCompleted bool   `json:"interview_completed"`
 	InterviewState     string `json:"interview_state"`
 	Manufacturer       string `json:"manufacturer"`
+	// OTA-related fields (may be available depending on device)
+	AvailableFirmwareVersion string `json:"available_firmware_version,omitempty"`
+	CurrentFirmwareVersion   string `json:"current_firmware_version,omitempty"`
+	UpdateAvailable          bool   `json:"update_available,omitempty"`
 }
 
 // NewZ2MCollector creates a new Z2M collector
@@ -239,15 +245,28 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 				interviewState = "successful"
 			}
 
+			// Handle firmware information
+			softwareBuildID := device.SoftwareBuildID
+			if softwareBuildID == "" {
+				softwareBuildID = "unknown"
+			}
+
+			dateCode := device.DateCode
+			if dateCode == "" {
+				dateCode = "unknown"
+			}
+
 			c.deviceInfo[device.FriendlyName] = DeviceInfo{
-				Type:           device.Type,
-				PowerSource:    powerSource,
-				Manufacturer:   device.Manufacturer,
-				ModelID:        device.ModelID,
-				Supported:      device.Supported,
-				Disabled:       device.Disabled,
-				InterviewState: device.InterviewState,
-				NetworkAddress: device.NetworkAddress,
+				Type:            device.Type,
+				PowerSource:     powerSource,
+				Manufacturer:    device.Manufacturer,
+				ModelID:         device.ModelID,
+				Supported:       device.Supported,
+				Disabled:        device.Disabled,
+				InterviewState:  device.InterviewState,
+				NetworkAddress:  device.NetworkAddress,
+				SoftwareBuildID: softwareBuildID,
+				DateCode:        dateCode,
 			}
 
 			// Update device info metric (always set to 1)
@@ -260,7 +279,32 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 				supported,
 				disabled,
 				interviewState,
+				softwareBuildID,
+				dateCode,
 			).Set(1)
+
+			// Update OTA metrics
+			if device.CurrentFirmwareVersion != "" {
+				c.metrics.DeviceCurrentFirmware.WithLabelValues(
+					device.FriendlyName,
+					device.CurrentFirmwareVersion,
+				).Set(1)
+			}
+
+			if device.AvailableFirmwareVersion != "" {
+				c.metrics.DeviceAvailableFirmware.WithLabelValues(
+					device.FriendlyName,
+					device.AvailableFirmwareVersion,
+				).Set(1)
+			}
+
+			// Update OTA update availability
+			updateAvailable := 0.0
+			if device.UpdateAvailable {
+				updateAvailable = 1.0
+			}
+
+			c.metrics.DeviceOTAUpdateAvailable.WithLabelValues(device.FriendlyName).Set(updateAvailable)
 		}
 
 		return
