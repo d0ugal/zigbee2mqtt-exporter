@@ -349,14 +349,16 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 		}
 
 		c.deviceInfo[device.FriendlyName] = DeviceInfo{
-			Type:           device.Type,
-			PowerSource:    powerSource,
-			Manufacturer:   device.Manufacturer,
-			ModelID:        device.ModelID,
-			Supported:      device.Supported,
-			Disabled:       device.Disabled,
-			InterviewState: device.InterviewState,
-			NetworkAddress: device.NetworkAddress,
+			Type:            device.Type,
+			PowerSource:     powerSource,
+			Manufacturer:    device.Manufacturer,
+			ModelID:         device.ModelID,
+			Supported:       device.Supported,
+			Disabled:        device.Disabled,
+			InterviewState:  device.InterviewState,
+			NetworkAddress:  device.NetworkAddress,
+			SoftwareBuildID: device.SoftwareBuildID,
+			DateCode:        device.DateCode,
 		}
 
 		// Update device info metric (always set to 1)
@@ -369,6 +371,8 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 			supported,
 			disabled,
 			interviewState,
+			device.SoftwareBuildID,
+			device.DateCode,
 		).Set(1)
 	}
 
