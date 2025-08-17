@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.5.0...v2.5.1) (2025-08-17)
+
+
+### Bug Fixes
+
+* resolve inconsistent label cardinality in DeviceInfo metric ([1193c94](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1193c9439b83d3a42893d900d5ee244b505dc4cf))
+
 ## [2.5.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.4.0...v2.5.0) (2025-08-17)
 
 
