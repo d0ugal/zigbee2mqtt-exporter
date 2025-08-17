@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.3.1...v2.4.0) (2025-08-17)
+
+
+### Features
+
+* improve reconnection logging and metrics ([df758c5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/df758c527c00f81077a689145a7ed4b11ad3ff57))
+* improve reconnection logging formatting ([23ac456](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/23ac456ecba0436f5e9be2e6e74bacb1a8b427ae))
+
 ## [2.3.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.3.0...v2.3.1) (2025-08-16)
 
 
