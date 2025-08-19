@@ -89,7 +89,7 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 }
 
 func (s *Server) getMetricsInfo() []MetricInfo {
-	var metricsInfo []MetricInfo
+	metricsInfo := make([]MetricInfo, 0, 16)
 
 	// Define all metrics manually since reflection approach is complex with Prometheus metrics
 	metrics := []struct {
