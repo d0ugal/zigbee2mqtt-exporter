@@ -134,16 +134,16 @@ func (s *Server) getExampleLabels(metricName string) map[string]string {
 		return map[string]string{"device": "0x00158d0009b8b123"}
 	case "DeviceInfo":
 		return map[string]string{
-			"device":              "0x00158d0009b8b123",
-			"type":                "EndDevice",
-			"power_source":        "Battery",
-			"manufacturer":        "Xiaomi",
-			"model_id":            "SNZB-02",
-			"supported":           "true",
-			"disabled":            "false",
-			"interview_state":     "completed",
-			"software_build_id":   "3000-0001",
-			"date_code":           "20201201",
+			"device":            "0x00158d0009b8b123",
+			"type":              "EndDevice",
+			"power_source":      "Battery",
+			"manufacturer":      "Xiaomi",
+			"model_id":          "SNZB-02",
+			"supported":         "true",
+			"disabled":          "false",
+			"interview_state":   "completed",
+			"software_build_id": "3000-0001",
+			"date_code":         "20201201",
 		}
 	case "BridgeState", "WebSocketConnectionStatus", "WebSocketReconnectsTotal":
 		return map[string]string{}
@@ -240,8 +240,8 @@ func (s *Server) handleMetricsInfo(w http.ResponseWriter, r *http.Request) {
 	metricsInfo := s.getMetricsInfo()
 
 	response := map[string]interface{}{
-		"metrics":     metricsInfo,
-		"total_count": len(metricsInfo),
+		"metrics":      metricsInfo,
+		"total_count":  len(metricsInfo),
 		"generated_at": time.Now().Unix(),
 	}
 
@@ -252,6 +252,7 @@ func (s *Server) handleMetricsInfo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		slog.Error("Failed to marshal metrics info response", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
@@ -283,13 +284,16 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
 
 	// Generate metrics HTML dynamically
 	metricsHTML := ""
+
 	for i, metric := range metricsInfo {
 		labelsStr := ""
+
 		if len(metric.Labels) > 0 {
 			var labelPairs []string
 			for k, v := range metric.Labels {
 				labelPairs = append(labelPairs, fmt.Sprintf(`%s="%s"`, k, v))
 			}
+
 			labelsStr = "{" + strings.Join(labelPairs, ", ") + "}"
 		}
 
