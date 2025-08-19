@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.5.1...v2.6.0) (2025-08-19)
+
+
+### Features
+
+* **server:** add dynamic metrics information with collapsible interface ([2c4a1d4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2c4a1d4946aa9826207ad27e774f5c136ef665d0))
+
+
+### Bug Fixes
+
+* **lint:** pre-allocate slices to resolve golangci-lint prealloc warnings ([cfd64ba](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/cfd64bac7550aee59d04db8688cc7538013d838c))
+
 ## [2.5.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.5.0...v2.5.1) (2025-08-17)
 
 
