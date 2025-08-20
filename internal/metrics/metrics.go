@@ -5,6 +5,14 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
+// MetricInfo contains information about a metric for the UI
+type MetricInfo struct {
+	Name         string
+	Help         string
+	Labels       []string
+	ExampleValue string
+}
+
 // Registry holds all the Prometheus metrics
 type Registry struct {
 	// Version info metric
@@ -36,11 +44,24 @@ type Registry struct {
 	DeviceOTAUpdateAvailable *prometheus.GaugeVec
 	DeviceCurrentFirmware    *prometheus.GaugeVec
 	DeviceAvailableFirmware  *prometheus.GaugeVec
+
+	// Metric information for UI
+	metricInfo []MetricInfo
+}
+
+// addMetricInfo adds metric information to the registry
+func (r *Registry) addMetricInfo(name, help string, labels []string) {
+	r.metricInfo = append(r.metricInfo, MetricInfo{
+		Name:         name,
+		Help:         help,
+		Labels:       labels,
+		ExampleValue: "",
+	})
 }
 
 // NewRegistry creates a new metrics registry
 func NewRegistry() *Registry {
-	return &Registry{
+	r := &Registry{
 		// Version info metric
 		VersionInfo: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -166,4 +187,29 @@ func NewRegistry() *Registry {
 			[]string{"device", "firmware_version"},
 		),
 	}
+
+	// Add metric information for UI
+	r.addMetricInfo("zigbee2mqtt_exporter_info", "Information about the Zigbee2MQTT exporter", []string{"version", "commit", "build_date"})
+	r.addMetricInfo("zigbee2mqtt_device_last_seen_timestamp", "Timestamp when device was last seen", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_seen_total", "Number of times device has been seen", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_link_quality", "Device link quality (0-255)", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_power_state", "Device power state (1=ON, 0=OFF)", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_battery_level", "Device battery level (0-100)", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_info", "Device information (always 1, used for joining with other metrics)", []string{"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state", "software_build_id", "date_code"})
+	r.addMetricInfo("zigbee2mqtt_device_up", "Device availability status (1=online, 0=offline)", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_bridge_state", "Bridge state (1=online, 0=offline)", []string{})
+	r.addMetricInfo("zigbee2mqtt_bridge_events_total", "Total number of bridge events", []string{"event_type"})
+	r.addMetricInfo("zigbee2mqtt_websocket_connection_status", "WebSocket connection status (1=connected, 0=disconnected)", []string{})
+	r.addMetricInfo("zigbee2mqtt_websocket_messages_total", "Total number of WebSocket messages received", []string{"topic"})
+	r.addMetricInfo("zigbee2mqtt_websocket_reconnects_total", "Total number of WebSocket reconnections", []string{})
+	r.addMetricInfo("zigbee2mqtt_device_ota_update_available", "Device OTA update availability (1=available, 0=not_available)", []string{"device"})
+	r.addMetricInfo("zigbee2mqtt_device_current_firmware_version", "Device current firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
+	r.addMetricInfo("zigbee2mqtt_device_available_firmware_version", "Device available firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
+
+	return r
+}
+
+// GetMetricsInfo returns information about all metrics for the UI
+func (r *Registry) GetMetricsInfo() []MetricInfo {
+	return r.metricInfo
 }
