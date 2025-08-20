@@ -70,9 +70,6 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 		}
 	})
 
-	// Metrics info endpoint
-	mux.HandleFunc("/metrics-info", s.handleMetricsInfo)
-
 	// Web UI
 	mux.HandleFunc("/", s.handleWebUI)
 
@@ -236,31 +233,6 @@ func (s *Server) getMetricHelp(metricName string) string {
 	}
 }
 
-func (s *Server) handleMetricsInfo(w http.ResponseWriter, r *http.Request) {
-	metricsInfo := s.getMetricsInfo()
-
-	response := map[string]interface{}{
-		"metrics":      metricsInfo,
-		"total_count":  len(metricsInfo),
-		"generated_at": time.Now().Unix(),
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	jsonData, err := json.Marshal(response)
-	if err != nil {
-		slog.Error("Failed to marshal metrics info response", "error", err)
-		w.WriteHeader(http.StatusInternalServerError)
-
-		return
-	}
-
-	if _, err := w.Write(jsonData); err != nil {
-		slog.Error("Failed to write metrics info response", "error", err)
-	}
-}
-
 // Start starts the HTTP server
 func (s *Server) Start() error {
 	slog.Info("Starting HTTP server", "addr", s.server.Addr)
@@ -345,12 +317,23 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             font-weight: normal;
             margin-left: 0.5rem;
         }
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
         .endpoint {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
             padding: 1rem;
-            margin: 1rem 0;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .endpoint:hover {
+            border-color: #007bff;
+            background-color: #e3f2fd;
         }
         .endpoint h3 {
             margin: 0 0 0.5rem 0;
@@ -367,6 +350,7 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
         .description {
             color: #6c757d;
             font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
         .status {
             display: inline-block;
@@ -517,22 +501,18 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
 <body>
     <h1>Zigbee2MQTT Exporter<span class="version">` + versionInfo.Version + `</span></h1>
     
-    <div class="endpoint">
-        <h3><a href="/metrics">📊 Metrics</a></h3>
-        <p class="description">Prometheus metrics endpoint</p>
-        <span class="status metrics">Available</span>
-    </div>
+    <div class="endpoints-grid">
+        <div class="endpoint">
+            <h3><a href="/metrics">📊 Metrics</a></h3>
+            <p class="description">Prometheus metrics endpoint</p>
+            <span class="status metrics">Available</span>
+        </div>
 
-    <div class="endpoint">
-        <h3><a href="/metrics-info">📋 Metrics Info</a></h3>
-        <p class="description">Detailed metrics information with examples</p>
-        <span class="status metrics">Available</span>
-    </div>
-
-    <div class="endpoint">
-        <h3><a href="/health">❤️ Health Check</a></h3>
-        <p class="description">Service health status</p>
-        <span class="status healthy">Healthy</span>
+        <div class="endpoint">
+            <h3><a href="/health">❤️ Health Check</a></h3>
+            <p class="description">Service health status</p>
+            <span class="status healthy">Healthy</span>
+        </div>
     </div>
 
     <div class="service-status">
@@ -540,6 +520,12 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
         <p><strong>Status:</strong> <span class="status ready">Ready</span></p>
         <p><strong>WebSocket Connection:</strong> <span class="status connected">Connected</span></p>
         <p><strong>Device Monitoring:</strong> <span class="status ready">Active</span></p>
+    </div>
+
+    <div class="metrics-info">
+        <h3>Available Metrics</h3>
+        <div class="metrics-list">` + metricsHTML + `
+        </div>
     </div>
 
     <div class="metrics-info">
@@ -558,12 +544,6 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
             <li><strong>Server Port:</strong> 8087</li>
             <li><strong>Log Level:</strong> info</li>
         </ul>
-    </div>
-
-    <div class="metrics-info">
-        <h3>Available Metrics</h3>
-        <div class="metrics-list">` + metricsHTML + `
-        </div>
     </div>
 
     <div class="footer">
