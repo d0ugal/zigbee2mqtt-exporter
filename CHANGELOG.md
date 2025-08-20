@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.6.0...v2.7.0) (2025-08-20)
+
+
+### Features
+
+* **ui:** remove custom metrics-info endpoint and simplify UI ([9820deb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9820deb1caa57d6d25dd378cd7a3233986a54b65))
+
 ## [2.6.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.5.1...v2.6.0) (2025-08-19)
 
 
