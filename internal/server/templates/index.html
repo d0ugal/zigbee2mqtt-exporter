@@ -229,14 +229,6 @@
         </div>
     </div>
 
-    <div class="service-status">
-        <h3>Service Information</h3>
-        <p><strong>Version:</strong> {{.Version}}</p>
-        <p><strong>Commit:</strong> {{.Commit}}</p>
-        <p><strong>Build Date:</strong> {{.BuildDate}}</p>
-        <p><strong>Zigbee2MQTT Status:</strong> <span class="status {{if eq .Status "Connected"}}connected{{else}}disconnected{{end}}">{{.Status}}</span></p>
-    </div>
-
     <div class="metrics-info">
         <h3>Available Metrics</h3>
         <div class="metrics-list">
