@@ -29,8 +29,11 @@ test:
 # Format code using golangci-lint formatters (faster than separate tools)
 fmt:
 	docker run --rm \
+		-u "$(shell id -u):$(shell id -g)" \
+		-e GOCACHE=/tmp/go-cache \
+		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
-		-v "$(HOME)/.cache:/root/.cache" \
+		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
 		golangci-lint run --fix
@@ -38,8 +41,11 @@ fmt:
 # Run golangci-lint (formats first, then lints)
 lint:
 	docker run --rm \
+		-u "$(shell id -u):$(shell id -g)" \
+		-e GOCACHE=/tmp/go-cache \
+		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
-		-v "$(HOME)/.cache:/root/.cache" \
+		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
 		golangci-lint run --fix
@@ -47,8 +53,11 @@ lint:
 # Run only linting without formatting
 lint-only:
 	docker run --rm \
+		-u "$(shell id -u):$(shell id -g)" \
+		-e GOCACHE=/tmp/go-cache \
+		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
-		-v "$(HOME)/.cache:/root/.cache" \
+		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
 		golangci-lint run

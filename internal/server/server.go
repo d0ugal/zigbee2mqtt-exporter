@@ -101,7 +101,7 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
 		Metrics:   metrics,
 		Config: ConfigData{
 			WebSocketURL: s.cfg.WebSocket.URL,
-			DeviceCount:  0, // TODO: Get actual device count
+			DeviceCount:  0, // Hardcoded for now - would need Zigbee2MQTT client reference to get actual count
 		},
 	}
 
