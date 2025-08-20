@@ -6,7 +6,7 @@ help:
 	@echo "  build    - Build the application"
 	@echo "  test     - Run tests"
 	@echo "  lint     - Format code and run golangci-lint"
-	@echo "  fmt      - Format code using gofmt, goimports, and golangci-lint"
+	@echo "  fmt      - Format code using golangci-lint"
 	@echo "  lint-only - Run golangci-lint without formatting"
 	@echo "  clean    - Clean build artifacts"
 
@@ -26,29 +26,29 @@ build:
 test:
 	go test -v -race -coverprofile=coverage.txt -covermode=atomic ./internal/... || true
 
-# Format code using gofmt, goimports, and golangci-lint formatters
+# Format code using golangci-lint formatters (faster than separate tools)
 fmt:
-	go fmt ./...
-	goimports -w .
 	docker run --rm \
 		-v "$(PWD):/app" \
+		-v "$(HOME)/.cache:/root/.cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
 		golangci-lint run --fix
 
-# Run golangci-lint using official container (formats first, then lints)
+# Run golangci-lint (formats first, then lints)
 lint:
-	make fmt
 	docker run --rm \
 		-v "$(PWD):/app" \
+		-v "$(HOME)/.cache:/root/.cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
-		golangci-lint run
+		golangci-lint run --fix
 
 # Run only linting without formatting
 lint-only:
 	docker run --rm \
 		-v "$(PWD):/app" \
+		-v "$(HOME)/.cache:/root/.cache" \
 		-w /app \
 		golangci/golangci-lint:latest \
 		golangci-lint run
