@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.9.1...v2.10.0) (2025-08-26)
+
+
+### Features
+
+* use an unprivileged user during runtime ([63ec8a9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/63ec8a9383c2a31e52b6d8c74b9f9c612412b3b0))
+* use an unprivileged user during runtime ([818d705](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/818d705f96cc8e50c098a37e5c91552a9582e6e0))
+
 ## [2.9.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.9.0...v2.9.1) (2025-08-20)
 
 
