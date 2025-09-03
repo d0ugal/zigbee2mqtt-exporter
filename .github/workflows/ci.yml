@@ -148,3 +148,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=min
         continue-on-error: false
+        build-args: |
+          VERSION=${{ steps.meta.outputs.dev_tag }}
+          COMMIT=${{ github.sha }}
+          BUILD_DATE=${{ github.event.head_commit.timestamp }}
