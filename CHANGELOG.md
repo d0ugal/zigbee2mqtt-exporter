@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.10.0...v2.10.1) (2025-09-03)
+
+
+### Bug Fixes
+
+* add build-args to pass version information in CI workflow ([fe7c974](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fe7c974ca232f8a6b4f46330f4b40da21ddbd453))
+
 ## [2.10.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.9.1...v2.10.0) (2025-08-26)
 
 
