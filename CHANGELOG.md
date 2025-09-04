@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.11.0...v2.12.0) (2025-09-04)
+
+
+### Features
+
+* update dev build versioning to use semver-compatible pre-release tags ([7f068cf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7f068cf3503e179d3ec8d5d68466d206157c6df8))
+
+
+### Bug Fixes
+
+* **ci:** add v prefix to dev tags for consistent versioning ([8907a30](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8907a30441a4af840b977a8aaaa36661a0655345))
+* use actual release version as base for dev tags instead of hardcoded 0.0.0 ([93e0e01](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/93e0e01aa87c7f32e28a9dc51c9f68bf5ed33593))
+* use fetch-depth: 0 instead of fetch-tags for full git history ([4e18482](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4e1848268093489f7bffb7b43ef693cf75019be6))
+* use fetch-tags instead of fetch-depth for GitHub Actions ([4965744](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/49657442753c673db4d0716deb55e27d5481fc85))
+
 ## [2.11.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.10.1...v2.11.0) (2025-09-04)
 
 
