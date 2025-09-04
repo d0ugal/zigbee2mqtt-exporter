@@ -17,6 +17,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-tags: true
 
     - name: Set up Go 1.25.1
       uses: actions/setup-go@v6
@@ -44,6 +46,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-tags: true
 
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v8
@@ -58,6 +62,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-tags: true
 
     - name: Set up Go 1.25.1
       uses: actions/setup-go@v6
@@ -85,6 +91,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-tags: true
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
@@ -107,6 +115,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        fetch-tags: true
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
