@@ -148,7 +148,7 @@ jobs:
           COMMIT_COUNT=$(git rev-list --count ${LAST_TAG}..HEAD)
         fi
         
-        DEV_TAG="${VERSION}-dev.${COMMIT_COUNT}.${SHORT_SHA}"
+        DEV_TAG="v${VERSION}-dev.${COMMIT_COUNT}.${SHORT_SHA}"
         echo "dev_tag=${DEV_TAG}" >> $GITHUB_OUTPUT
         echo "Last release tag: ${LAST_TAG:-'none'}"
         echo "Base version: ${VERSION}"
