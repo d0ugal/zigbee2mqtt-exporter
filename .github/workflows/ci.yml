@@ -128,16 +128,20 @@ jobs:
         LAST_TAG=$(git describe --tags --abbrev=0 --match="v[0-9]*.[0-9]*.[0-9]*" 2>/dev/null || echo "")
         
         if [ -z "$LAST_TAG" ]; then
-          # No release tags found, count all commits
+          # No release tags found, use 0.0.0 and count all commits
+          VERSION="0.0.0"
           COMMIT_COUNT=$(git rev-list --count HEAD)
         else
+          # Extract version from tag (remove 'v' prefix)
+          VERSION=${LAST_TAG#v}
           # Count commits since last release
           COMMIT_COUNT=$(git rev-list --count ${LAST_TAG}..HEAD)
         fi
         
-        DEV_TAG="0.0.0-dev.${COMMIT_COUNT}.${SHORT_SHA}"
+        DEV_TAG="${VERSION}-dev.${COMMIT_COUNT}.${SHORT_SHA}"
         echo "dev_tag=${DEV_TAG}" >> $GITHUB_OUTPUT
         echo "Last release tag: ${LAST_TAG:-'none'}"
+        echo "Base version: ${VERSION}"
         echo "Commits since last release: ${COMMIT_COUNT}"
         echo "Generated dev tag: ${DEV_TAG}"
 
