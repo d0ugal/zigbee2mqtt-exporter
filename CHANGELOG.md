@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.2](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.12.1...v2.12.2) (2025-09-05)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/prometheus/client_golang to v1.23.2 ([df27ad1](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/df27ad16a8e9a17ebc1d24c562d772e6f4eefd9f))
+* **deps:** update module github.com/prometheus/client_golang to v1.23.2 ([b5fce91](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b5fce91e09e91f0190bce3c4d323a0cf20c481a9))
+
 ## [2.12.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.12.0...v2.12.1) (2025-09-04)
 
 
