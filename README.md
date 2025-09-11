@@ -2,30 +2,7 @@
 
 A Prometheus exporter for Zigbee2MQTT that connects to the WebSocket API and exports device metrics with device type classification.
 
-## Features
-
-- **Real-time metrics**: Connects to Zigbee2MQTT WebSocket API for real-time device data
-- **Device type classification**: Automatically categorizes devices as Router, EndDevice, or Coordinator
-- **Device monitoring**: Tracks device last seen timestamps, seen counts, link quality, and state
-- **Bridge monitoring**: Monitors bridge state, events, and permit join status
-- **Connection monitoring**: Monitors WebSocket connection status and reconnection attempts
-- **Web UI**: Built-in web interface for monitoring exporter status
-- **Prometheus integration**: Exports metrics in Prometheus format
-
-## Device Types
-
-The exporter automatically categorizes devices based on their Zigbee network role:
-
-- **Router**: Powered devices that extend the mesh network (lights, plugs, switches, etc.)
-- **EndDevice**: Battery-powered devices that don't route traffic (sensors, switches, etc.)
-- **Coordinator**: The main Zigbee2MQTT bridge device
-- **GreenPower**: Special Zigbee Green Power devices (energy harvesting devices)
-
-This classification enables different alerting strategies:
-- **Routers going offline**: Critical - affects network connectivity
-- **EndDevices going offline**: Less critical - may be due to battery depletion or sleep mode
-- **GreenPower devices going offline**: Less critical - may be due to energy harvesting limitations
-- **Coordinator offline**: Critical - entire network is down
+**Image**: `ghcr.io/d0ugal/zigbee2mqtt-exporter:latest`
 
 ## Metrics
 
@@ -53,49 +30,30 @@ This classification enables different alerting strategies:
 - `zigbee2mqtt_websocket_messages_total{topic}` - Total number of WebSocket messages received
 - `zigbee2mqtt_websocket_reconnects_total` - Total number of WebSocket reconnections
 
-## Querying Examples
+### Endpoints
+- `GET /`: Web UI interface
+- `GET /metrics`: Prometheus metrics endpoint
+- `GET /health`: Health check endpoint
 
-### Get all battery-powered devices that are offline
-```promql
-zigbee2mqtt_device_last_seen_timestamp * on(device) group_left(type, power_source) zigbee2mqtt_device_info
-  * on(device) group_left() (zigbee2mqtt_device_info{power_source="Battery"})
+## Quick Start
+
+### Docker Compose
+
+```yaml
+version: '3.8'
+services:
+  zigbee2mqtt-exporter:
+    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:latest
+    ports:
+      - "8087:8087"
+    environment:
+      - Z2M_EXPORTER_WEBSOCKET_URL=ws://localhost:8081/api
+    restart: unless-stopped
 ```
 
-### Get link quality for all routers
-```promql
-zigbee2mqtt_device_link_quality * on(device) group_left(type, power_source) zigbee2mqtt_device_info
-  * on(device) group_left() (zigbee2mqtt_device_info{type="Router"})
-```
-
-### Count devices by type
-```promql
-count by (type) (zigbee2mqtt_device_info)
-```
-
-### Count devices by power source
-```promql
-count by (power_source) (zigbee2mqtt_device_info)
-```
-
-### Get unsupported devices
-```promql
-zigbee2mqtt_device_info{supported="false"}
-```
-
-### Get devices with OTA updates available
-```promql
-zigbee2mqtt_device_ota_update_available == 1
-```
-
-### Get devices by firmware version
-```promql
-zigbee2mqtt_device_current_firmware_version
-```
-
-### Count devices by firmware version
-```promql
-count by (firmware_version) (zigbee2mqtt_device_current_firmware_version)
-```
+1. Update the WebSocket URL to point to your Zigbee2MQTT instance
+2. Run: `docker-compose up -d`
+3. Access metrics: `curl http://localhost:8087/metrics`
 
 ## Configuration
 
@@ -107,114 +65,108 @@ count by (firmware_version) (zigbee2mqtt_device_current_firmware_version)
 - `Z2M_EXPORTER_LOG_FORMAT` - Log format (default: json)
 - `Z2M_EXPORTER_WEBSOCKET_URL` - Zigbee2MQTT WebSocket URL (default: ws://localhost:8081/api)
 
-## Usage
+## Deployment
 
-### Docker Compose
+### Docker Compose (Environment Variables)
 
-The exporter is configured in the main docker-compose.yaml and will build automatically.
-
-### Manual Build
-
-```bash
-# Build the image
-docker build -t zigbee2mqtt-exporter .
-
-# Run with environment variables
-docker run -p 8087:8087 \
-  -e Z2M_EXPORTER_WEBSOCKET_URL=ws://localhost:8081/api \
-  zigbee2mqtt-exporter
-```
-
-## Endpoints
-
-- `/metrics` - Prometheus metrics endpoint
-- `/health` - Health check endpoint
-- `/` - Web UI interface
-
-## Alerting Examples
-
-### Critical Router Offline Alert
 ```yaml
-- alert: ZigbeeRouterOffline
-  expr: zigbee2mqtt_device_last_seen_timestamp{type="Router"} < (time() - 300)
-  for: 2m
-  labels:
-    severity: critical
-  annotations:
-    summary: "Zigbee router {{ $labels.device }} is offline"
-    description: "Router {{ $labels.device }} has been offline for more than 5 minutes"
+version: '3.8'
+services:
+  zigbee2mqtt-exporter:
+    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:latest
+    ports:
+      - "8087:8087"
+    environment:
+      - Z2M_EXPORTER_WEBSOCKET_URL=ws://localhost:8081/api
+      - Z2M_EXPORTER_LOG_LEVEL=info
+    restart: unless-stopped
 ```
 
-### EndDevice Offline Warning
+### Kubernetes
+
 ```yaml
-- alert: ZigbeeEndDeviceOffline
-  expr: zigbee2mqtt_device_last_seen_timestamp{type="EndDevice"} < (time() - 3600)
-  for: 5m
-  labels:
-    severity: warning
-  annotations:
-    summary: "Zigbee end device {{ $labels.device }} is offline"
-    description: "End device {{ $labels.device }} has been offline for more than 1 hour (may be battery powered)"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zigbee2mqtt-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zigbee2mqtt-exporter
+  template:
+    metadata:
+      labels:
+        app: zigbee2mqtt-exporter
+    spec:
+      containers:
+      - name: zigbee2mqtt-exporter
+        image: ghcr.io/d0ugal/zigbee2mqtt-exporter:latest
+        ports:
+        - containerPort: 8087
+        env:
+        - name: Z2M_EXPORTER_WEBSOCKET_URL
+          value: "ws://zigbee2mqtt:8081/api"
+        - name: Z2M_EXPORTER_LOG_LEVEL
+          value: "info"
 ```
 
-### Bridge Offline Critical Alert
+## Prometheus Integration
+
+Add to your `prometheus.yml`:
+
 ```yaml
-- alert: ZigbeeBridgeOffline
-  expr: zigbee2mqtt_bridge_state == 0
-  for: 1m
-  labels:
-    severity: critical
-  annotations:
-    summary: "Zigbee2MQTT bridge is offline"
-    description: "The Zigbee2MQTT bridge has gone offline"
+scrape_configs:
+  - job_name: 'zigbee2mqtt-exporter'
+    static_configs:
+      - targets: ['zigbee2mqtt-exporter:8087']
 ```
 
-### OTA Update Available Alert
-```yaml
-- alert: ZigbeeOTAUpdateAvailable
-  expr: zigbee2mqtt_device_ota_update_available == 1
-  for: 0m
-  labels:
-    severity: info
-  annotations:
-    summary: "OTA update available for {{ $labels.device }}"
-    description: "Device {{ $labels.device }} has an OTA firmware update available"
+## Device Types
+
+The exporter automatically categorizes devices based on their Zigbee network role:
+
+- **Router**: Powered devices that extend the mesh network (lights, plugs, switches, etc.)
+- **EndDevice**: Battery-powered devices that don't route traffic (sensors, switches, etc.)
+- **Coordinator**: The main Zigbee2MQTT bridge device
+- **GreenPower**: Special Zigbee Green Power devices (energy harvesting devices)
+
+## Example PromQL Queries
+
+### Count devices by type
+```promql
+count by (type) (zigbee2mqtt_device_info)
 ```
 
-## Testing
+### Get devices with OTA updates available
+```promql
+zigbee2mqtt_device_ota_update_available == 1
+```
 
-Use the included message capture tool to test WebSocket connectivity:
-
-```bash
-cd tools
-go run capture_messages.go ws://localhost:8081/api
+### Get unsupported devices
+```promql
+zigbee2mqtt_device_info{supported="false"}
 ```
 
 ## Development
 
-### Building Locally
+### Building
 
 ```bash
-go mod download
-go build -o zigbee2mqtt-exporter ./cmd
+make build
 ```
 
-### Running Tests
+### Testing
 
 ```bash
-go test ./...
+make test
 ```
 
-## Architecture
+### Linting
 
-The exporter follows a modular design:
-
-- **cmd/main.go** - Application entry point
-- **internal/config** - Configuration management
-- **internal/logging** - Logging setup
-- **internal/metrics** - Prometheus metrics definitions
-- **internal/collectors** - WebSocket data collection with device type caching
-- **internal/server** - HTTP server and web UI
+```bash
+make lint
+```
 
 ## License
 
