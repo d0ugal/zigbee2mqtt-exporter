@@ -22,4 +22,18 @@
       automerge: true,
     },
   ],
+  customManagers: [
+    {
+      customType: 'regex',
+      managerFilePatterns: [
+        '/Makefile/',
+      ],
+      matchStrings: [
+        'GOLANGCI_LINT_VERSION := (?<currentValue>v[\\d\\.]+)',
+      ],
+      depNameTemplate: 'golangci/golangci-lint',
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'semver',
+    },
+  ],
 }

@@ -1,5 +1,8 @@
 .PHONY: help build test lint clean fmt lint-only
 
+# Docker image versions
+GOLANGCI_LINT_VERSION := v2.4.0
+
 # Default target
 help:
 	@echo "Available targets:"
@@ -35,7 +38,7 @@ fmt:
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
-		golangci/golangci-lint:latest \
+		golangci/golangci-lint:$(GOLANGCI_LINT_VERSION) \
 		golangci-lint run --fix
 
 # Run golangci-lint (formats first, then lints)
@@ -47,7 +50,7 @@ lint:
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
-		golangci/golangci-lint:latest \
+		golangci/golangci-lint:$(GOLANGCI_LINT_VERSION) \
 		golangci-lint run --fix
 
 # Run only linting without formatting
@@ -59,7 +62,7 @@ lint-only:
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
 		-w /app \
-		golangci/golangci-lint:latest \
+		golangci/golangci-lint:$(GOLANGCI_LINT_VERSION) \
 		golangci-lint run
 
 # Clean build artifacts
