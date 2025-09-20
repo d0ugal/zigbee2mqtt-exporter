@@ -42,7 +42,6 @@ linters:
     - usetesting  # Not critical
     - varnamelen  # Variable names fine
     - wsl  # Use wsl_v5 instead
-    - gosec  # Security warnings are false positives for this codebase
 
   settings:
     gosec:
