@@ -32,10 +32,6 @@
       enabled: true,
     },
   ],
-  // Configure commit message format for dependency updates
-  commitMessagePrefix: 'chore(deps):',
-  commitMessageAction: 'update',
-  commitMessageTopic: 'dependencies',
   customManagers: [
     {
       customType: 'regex',
