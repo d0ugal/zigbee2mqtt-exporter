@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.13.3...v2.14.0) (2025-10-02)
+
+
+### Features
+
+* **deps:** migrate to YAML v3 ([50b8383](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/50b8383af20235c326b87811c82dbcaa9de2054d))
+* **renovate:** add gomodTidy post-update option for Go modules ([8928bc2](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8928bc28301769a93bfdc8c0bc1332cb26156701))
+
+
+### Reverts
+
+* remove unnecessary renovate config changes ([15b04e6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/15b04e647830b459d4b1038784c3d9c07baf60b2))
+* remove unnecessary renovate config changes ([e281945](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e28194501ce44caa6bbdbcfd84c072c2e0550918))
+
 ## [2.13.3](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.13.2...v2.13.3) (2025-10-02)
 
 
