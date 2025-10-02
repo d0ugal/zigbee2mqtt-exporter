@@ -31,6 +31,15 @@
       ],
       enabled: true,
     },
+    {
+      // Auto-run go mod tidy for Go module updates
+      matchManagers: [
+        'gomod',
+      ],
+      postUpdateOptions: [
+        'gomodTidy',
+      ],
+    },
   ],
   customManagers: [
     {
