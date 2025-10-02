@@ -21,6 +21,16 @@
       ],
       automerge: true,
     },
+    {
+      // Enable indirect dependency updates for Go modules
+      matchManagers: [
+        'gomod',
+      ],
+      matchDepTypes: [
+        'indirect',
+      ],
+      enabled: true,
+    },
   ],
   customManagers: [
     {
