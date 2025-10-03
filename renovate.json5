@@ -45,5 +45,17 @@
       datasourceTemplate: 'docker',
       versioningTemplate: 'semver',
     },
+    {
+      customType: 'regex',
+      managerFilePatterns: [
+        '**/*.md',
+      ],
+      matchStrings: [
+        'ghcr\\.io/d0ugal/zigbee2mqtt-exporter:(?<currentValue>v[\\d\\.]+)',
+      ],
+      depNameTemplate: 'ghcr.io/d0ugal/zigbee2mqtt-exporter',
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'semver',
+    },
   ],
 }
