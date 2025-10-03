@@ -31,6 +31,20 @@
       ],
       enabled: true,
     },
+    {
+      // Use docs commit message format for documentation updates
+      matchManagers: [
+        'regex',
+      ],
+      matchFileNames: [
+        '**/*.md',
+        '**/docker-compose*.yml',
+        '**/docker-compose*.yaml',
+      ],
+      commitMessagePrefix: 'docs:',
+      commitMessageAction: 'update',
+      commitMessageTopic: 'documentation versions',
+    },
   ],
   customManagers: [
     {
