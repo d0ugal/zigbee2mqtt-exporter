@@ -32,6 +32,20 @@
       enabled: true,
     },
     {
+      // Use docs commit message format for documentation updates
+      matchManagers: [
+        'regex',
+      ],
+      matchFileNames: [
+        '**/*.md',
+        '**/docker-compose*.yml',
+        '**/docker-compose*.yaml',
+      ],
+      commitMessagePrefix: 'docs:',
+      commitMessageAction: 'update',
+      commitMessageTopic: 'documentation versions',
+    },
+    {
       // Auto-run go mod tidy for Go module updates
       matchManagers: [
         'gomod',
@@ -51,6 +65,18 @@
         'GOLANGCI_LINT_VERSION := (?<currentValue>v[\\d\\.]+)',
       ],
       depNameTemplate: 'golangci/golangci-lint',
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'semver',
+    },
+    {
+      customType: 'regex',
+      managerFilePatterns: [
+        '**/*.md',
+      ],
+      matchStrings: [
+        'ghcr\\.io/d0ugal/zigbee2mqtt-exporter:(?<currentValue>v[\\d\\.]+)',
+      ],
+      depNameTemplate: 'ghcr.io/d0ugal/zigbee2mqtt-exporter',
       datasourceTemplate: 'docker',
       versioningTemplate: 'semver',
     },
