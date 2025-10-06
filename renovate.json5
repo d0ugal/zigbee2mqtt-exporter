@@ -48,6 +48,14 @@
         'gomodTidy',
       ],
     },
+    {
+      matchManagers: [
+        'gomod',
+      ],
+      commitMessagePrefix: 'feat:',
+      commitMessageAction: 'update',
+      commitMessageTopic: 'dependencies',
+    },
   ],
   customManagers: [
     {
