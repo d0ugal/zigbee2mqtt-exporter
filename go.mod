@@ -2,7 +2,7 @@ module github.com/d0ugal/zigbee2mqtt-exporter
 
 go 1.25
 
-toolchain go1.25.1
+toolchain go1.25.2
 
 require (
 	github.com/gorilla/websocket v1.5.3
