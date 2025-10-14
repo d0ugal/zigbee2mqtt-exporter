@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.19.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.18.1...v2.19.0) (2025-10-14)
+
+
+### Features
+
+* convert to Gin framework and set release mode unless debug logging ([fcd0503](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fcd05031efb35a9194d027c3a7623edbda18fcfa))
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic to v1.14.1 ([ae94887](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ae94887d44eab2657c414c34e8e6469453b97f4b))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.10 ([e683e1d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e683e1d577c79a517e45eb4609b1c3efeaf51163))
+* Update module github.com/go-playground/validator/v10 to v10.28.0 ([889d588](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/889d588381284213f401a3b7a1e07d73038274c4))
+* Update module github.com/goccy/go-json to v0.10.5 ([715ddaf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/715ddafdf898accdf03a10b8c843d2076f1f0bf6))
+* Update module golang.org/x/arch to v0.22.0 ([746549e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/746549ef8dd8095a73fcb479177392b7f8e8c707))
+* update quic-go to v0.55.0 to resolve CVE-2025-59530 ([493ecf7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/493ecf7d44c27a25a9a409d19574d7064f14e55c))
+
 ## [2.18.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.18.0...v2.18.1) (2025-10-14)
 
 
