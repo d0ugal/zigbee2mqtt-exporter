@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -11,6 +10,7 @@ import (
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/version"
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -19,56 +19,31 @@ type Server struct {
 	cfg     *config.Config
 	metrics *metrics.Registry
 	server  *http.Server
+	router  *gin.Engine
 }
 
 // New creates a new server instance
 func New(cfg *config.Config, metrics *metrics.Registry) *Server {
+	// Set Gin to release mode unless debug logging is enabled
+	if cfg.Logging.Level != "debug" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	router := gin.New()
+	router.Use(gin.Recovery())
+
 	s := &Server{
 		cfg:     cfg,
 		metrics: metrics,
+		router:  router,
 	}
 
-	mux := http.NewServeMux()
-
-	// Prometheus metrics endpoint
-	mux.Handle("/metrics", promhttp.Handler())
-
-	// Health check endpoint
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		versionInfo := version.Get()
-
-		response := map[string]interface{}{
-			"status":     "healthy",
-			"timestamp":  time.Now().Unix(),
-			"service":    "zigbee2mqtt-exporter",
-			"version":    versionInfo.Version,
-			"commit":     versionInfo.Commit,
-			"build_date": versionInfo.BuildDate,
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-
-		jsonData, err := json.Marshal(response)
-		if err != nil {
-			slog.Error("Failed to marshal health response", "error", err)
-			w.WriteHeader(http.StatusInternalServerError)
-
-			return
-		}
-
-		if _, err := w.Write(jsonData); err != nil {
-			slog.Error("Failed to write health response", "error", err)
-		}
-	})
-
-	// Web UI
-	mux.HandleFunc("/", s.handleWebUI)
+	s.setupRoutes()
 
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
 	s.server = &http.Server{
 		Addr:         addr,
-		Handler:      mux,
+		Handler:      router,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -77,8 +52,19 @@ func New(cfg *config.Config, metrics *metrics.Registry) *Server {
 	return s
 }
 
-// handleWebUI serves the web UI interface
-func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
+func (s *Server) setupRoutes() {
+	// Root endpoint with HTML dashboard
+	s.router.GET("/", s.handleRoot)
+
+	// Metrics endpoint
+	s.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	// Health endpoint
+	s.router.GET("/health", s.handleHealth)
+}
+
+// handleRoot serves the web UI interface
+func (s *Server) handleRoot(c *gin.Context) {
 	versionInfo := version.Get()
 	metricsInfo := s.metrics.GetMetricsInfo()
 
@@ -105,11 +91,23 @@ func (s *Server) handleWebUI(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	w.Header().Set("Content-Type", "text/html")
+	c.Header("Content-Type", "text/html")
 
-	if err := mainTemplate.Execute(w, data); err != nil {
-		http.Error(w, fmt.Sprintf("Error rendering template: %v", err), http.StatusInternalServerError)
+	if err := mainTemplate.Execute(c.Writer, data); err != nil {
+		c.String(http.StatusInternalServerError, "Error rendering template: %v", err)
 	}
+}
+
+func (s *Server) handleHealth(c *gin.Context) {
+	versionInfo := version.Get()
+	c.JSON(http.StatusOK, gin.H{
+		"status":     "healthy",
+		"timestamp":  time.Now().Unix(),
+		"service":    "zigbee2mqtt-exporter",
+		"version":    versionInfo.Version,
+		"commit":     versionInfo.Commit,
+		"build_date": versionInfo.BuildDate,
+	})
 }
 
 // Start starts the HTTP server
