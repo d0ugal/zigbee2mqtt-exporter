@@ -3,25 +3,14 @@ package config
 import (
 	"os"
 	"strconv"
+
+	"github.com/d0ugal/promexporter/config"
 )
 
 // Config represents the application configuration
 type Config struct {
-	Server    ServerConfig    `yaml:"server"`
-	Logging   LoggingConfig   `yaml:"logging"`
+	config.BaseConfig
 	WebSocket WebSocketConfig `yaml:"websocket"`
-}
-
-// ServerConfig represents the HTTP server configuration
-type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-}
-
-// LoggingConfig represents the logging configuration
-type LoggingConfig struct {
-	Level  string `yaml:"level"`
-	Format string `yaml:"format"`
 }
 
 // WebSocketConfig represents the WebSocket configuration
@@ -33,56 +22,51 @@ type WebSocketConfig struct {
 func LoadFromEnvironment() *Config {
 	cfg := &Config{}
 
+	// Load base configuration from environment
+	baseConfig := &config.BaseConfig{}
+
 	// Server configuration
 	if host := os.Getenv("Z2M_EXPORTER_SERVER_HOST"); host != "" {
-		cfg.Server.Host = host
+		baseConfig.Server.Host = host
+	} else {
+		baseConfig.Server.Host = "0.0.0.0"
 	}
 
 	if portStr := os.Getenv("Z2M_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := strconv.Atoi(portStr); err == nil {
-			cfg.Server.Port = port
+			baseConfig.Server.Port = port
+		} else {
+			baseConfig.Server.Port = 8087
 		}
+	} else {
+		baseConfig.Server.Port = 8087
 	}
 
 	// Logging configuration
 	if level := os.Getenv("Z2M_EXPORTER_LOG_LEVEL"); level != "" {
-		cfg.Logging.Level = level
+		baseConfig.Logging.Level = level
+	} else {
+		baseConfig.Logging.Level = "info"
 	}
 
 	if format := os.Getenv("Z2M_EXPORTER_LOG_FORMAT"); format != "" {
-		cfg.Logging.Format = format
+		baseConfig.Logging.Format = format
+	} else {
+		baseConfig.Logging.Format = "json"
 	}
+
+	// Metrics configuration
+	baseConfig.Metrics.Collection.DefaultInterval = config.Duration{}
+	baseConfig.Metrics.Collection.DefaultIntervalSet = false
+
+	cfg.BaseConfig = *baseConfig
 
 	// WebSocket configuration
 	if url := os.Getenv("Z2M_EXPORTER_WEBSOCKET_URL"); url != "" {
 		cfg.WebSocket.URL = url
-	}
-
-	// Set defaults
-	setDefaults(cfg)
-
-	return cfg
-}
-
-// setDefaults sets default values for configuration
-func setDefaults(cfg *Config) {
-	if cfg.Server.Host == "" {
-		cfg.Server.Host = "0.0.0.0"
-	}
-
-	if cfg.Server.Port == 0 {
-		cfg.Server.Port = 8087
-	}
-
-	if cfg.Logging.Level == "" {
-		cfg.Logging.Level = "info"
-	}
-
-	if cfg.Logging.Format == "" {
-		cfg.Logging.Format = "json"
-	}
-
-	if cfg.WebSocket.URL == "" {
+	} else {
 		cfg.WebSocket.URL = "ws://localhost:8081/api"
 	}
+
+	return cfg
 }

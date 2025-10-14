@@ -16,7 +16,7 @@ import (
 // Z2MCollector handles WebSocket connections to Zigbee2MQTT
 type Z2MCollector struct {
 	cfg     *config.Config
-	metrics *metrics.Registry
+	metrics *metrics.Z2MRegistry
 	conn    *websocket.Conn
 	done    chan struct{}
 	// Device metadata cache - maps device name to device info
@@ -67,7 +67,7 @@ type BridgeDevice struct {
 }
 
 // NewZ2MCollector creates a new Z2M collector
-func NewZ2MCollector(cfg *config.Config, metrics *metrics.Registry) *Z2MCollector {
+func NewZ2MCollector(cfg *config.Config, metrics *metrics.Z2MRegistry) *Z2MCollector {
 	return &Z2MCollector{
 		cfg:        cfg,
 		metrics:    metrics,
