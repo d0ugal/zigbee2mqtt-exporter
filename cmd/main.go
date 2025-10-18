@@ -42,7 +42,7 @@ func main() {
 	})
 
 	// Initialize metrics registry using promexporter
-	metricsRegistry := promexporter_metrics.NewRegistry()
+	metricsRegistry := promexporter_metrics.NewRegistry("zigbee2mqtt_exporter_info")
 
 	// Add custom metrics to the registry
 	z2mRegistry := metrics.NewZ2MRegistry(metricsRegistry)
@@ -51,7 +51,7 @@ func main() {
 	z2mCollector := collectors.NewZ2MCollector(cfg, z2mRegistry)
 
 	// Create and run application using promexporter
-	application := app.New("zigbee2mqtt-exporter").
+	application := app.New("Zigbee2MQTT Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
 		WithCollector(z2mCollector).
