@@ -14,7 +14,7 @@ func TestNewZ2MCollector(t *testing.T) {
 		},
 	}
 
-	registry := metrics.NewRegistry()
+	registry := metrics.NewZ2MRegistry(nil)
 
 	// Test that NewZ2MCollector doesn't panic
 	collector := NewZ2MCollector(cfg, registry)
