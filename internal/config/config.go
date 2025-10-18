@@ -10,6 +10,7 @@ import (
 // Config represents the application configuration
 type Config struct {
 	config.BaseConfig
+
 	WebSocket WebSocketConfig `yaml:"websocket"`
 }
 
