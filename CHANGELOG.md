@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.19.0...v3.0.0) (2025-10-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to promexporter library
+
+### Features
+
+* migrate to promexporter library ([73b7e16](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/73b7e167dab953052fe7b0c0eb088e9511e34d05))
+* update to promexporter v1.0.0 ([3acfac6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3acfac6861fe5372fa9b3cc288eb416536ca7527))
+
+
+### Bug Fixes
+
+* update go.sum for promexporter v1.0.0 ([00e8539](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/00e85399a066f245e677300cef3aeb99000c57f4))
+* Update module github.com/d0ugal/promexporter to v1.0.1 ([a293f90](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a293f9045be086f3053ff1597f7f336a87238077))
+* Update module github.com/prometheus/procfs to v0.18.0 ([410d7a4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/410d7a43fb2125efb7acbdb98f0c31a9d0db5ed0))
+* update test to use new promexporter metrics registry ([2649143](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2649143922783b4253518b94156bbf174e327721))
+* update test to use proper base registry and fix linting issue ([b8949b0](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b8949b0d26b08e658e8b6eeae81366ba546efcc9))
+* update to latest promexporter changes ([bc1a66e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/bc1a66e7c5d84547d840aaf666145ff3edb74ae9))
+
 ## [2.19.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v2.18.1...v2.19.0) (2025-10-14)
 
 
