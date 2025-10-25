@@ -9,10 +9,10 @@ import (
 	"github.com/d0ugal/promexporter/app"
 	"github.com/d0ugal/promexporter/logging"
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
-	"github.com/d0ugal/promexporter/version"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/collectors"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
+	"github.com/d0ugal/zigbee2mqtt-exporter/internal/version"
 )
 
 func main() {
@@ -24,11 +24,9 @@ func main() {
 
 	// Show version if requested
 	if showVersion {
-		versionInfo := version.Get()
-		fmt.Printf("zigbee2mqtt-exporter %s\n", versionInfo.Version)
-		fmt.Printf("Commit: %s\n", versionInfo.Commit)
-		fmt.Printf("Build Date: %s\n", versionInfo.BuildDate)
-		fmt.Printf("Go Version: %s\n", versionInfo.GoVersion)
+		fmt.Printf("zigbee2mqtt-exporter %s\n", version.Version)
+		fmt.Printf("Commit: %s\n", version.Commit)
+		fmt.Printf("Build Date: %s\n", version.BuildDate)
 		os.Exit(0)
 	}
 
@@ -43,6 +41,9 @@ func main() {
 
 	// Initialize metrics registry using promexporter
 	metricsRegistry := promexporter_metrics.NewRegistry("zigbee2mqtt_exporter_info")
+
+	// Set version info metric with zigbee2mqtt-exporter version information
+	metricsRegistry.VersionInfo.WithLabelValues(version.Version, version.Commit, version.BuildDate).Set(1)
 
 	// Add custom metrics to the registry
 	z2mRegistry := metrics.NewZ2MRegistry(metricsRegistry)
