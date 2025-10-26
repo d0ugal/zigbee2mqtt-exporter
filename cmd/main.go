@@ -42,9 +42,6 @@ func main() {
 	// Initialize metrics registry using promexporter
 	metricsRegistry := promexporter_metrics.NewRegistry("zigbee2mqtt_exporter_info")
 
-	// Set version info metric with zigbee2mqtt-exporter version information
-	metricsRegistry.VersionInfo.WithLabelValues(version.Version, version.Commit, version.BuildDate).Set(1)
-
 	// Add custom metrics to the registry
 	z2mRegistry := metrics.NewZ2MRegistry(metricsRegistry)
 
@@ -56,6 +53,7 @@ func main() {
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
 		WithCollector(z2mCollector).
+		WithVersionInfo(version.Version, version.Commit, version.BuildDate).
 		Build()
 
 	if err := application.Run(); err != nil {
