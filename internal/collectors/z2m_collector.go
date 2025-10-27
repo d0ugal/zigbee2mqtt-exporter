@@ -274,7 +274,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 
 			// Update device info metric (always set to 1)
 			c.metrics.DeviceInfo.With(prometheus.Labels{
-				"friendly_name":     device.FriendlyName,
+				"device":            device.FriendlyName,
 				"type":              device.Type,
 				"power_source":      powerSource,
 				"manufacturer":      device.Manufacturer,
@@ -289,15 +289,15 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 			// Update OTA metrics
 			if device.CurrentFirmwareVersion != "" {
 				c.metrics.DeviceCurrentFirmware.With(prometheus.Labels{
-					"friendly_name": device.FriendlyName,
-					"version":       device.CurrentFirmwareVersion,
+					"device":  device.FriendlyName,
+					"version": device.CurrentFirmwareVersion,
 				}).Set(1)
 			}
 
 			if device.AvailableFirmwareVersion != "" {
 				c.metrics.DeviceAvailableFirmware.With(prometheus.Labels{
-					"friendly_name": device.FriendlyName,
-					"version":       device.AvailableFirmwareVersion,
+					"device":  device.FriendlyName,
+					"version": device.AvailableFirmwareVersion,
 				}).Set(1)
 			}
 
@@ -308,7 +308,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 			}
 
 			c.metrics.DeviceOTAUpdateAvailable.With(prometheus.Labels{
-				"friendly_name": device.FriendlyName,
+				"device": device.FriendlyName,
 			}).Set(updateAvailable)
 		}
 
@@ -368,7 +368,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 
 		// Update device info metric (always set to 1)
 		c.metrics.DeviceInfo.With(prometheus.Labels{
-			"friendly_name":     device.FriendlyName,
+			"device":            device.FriendlyName,
 			"type":              device.Type,
 			"power_source":      powerSource,
 			"manufacturer":      device.Manufacturer,
@@ -504,7 +504,7 @@ func (c *Z2MCollector) processAvailabilityMessage(msg Z2MMessage) {
 
 	// Update the metric
 	c.metrics.DeviceAvailability.With(prometheus.Labels{
-		"friendly_name": deviceName,
+		"device": deviceName,
 	}).Set(availabilityValue)
 }
 
@@ -522,14 +522,14 @@ func (c *Z2MCollector) processDeviceMessage(msg Z2MMessage) {
 func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]interface{}) {
 	// Increment seen count
 	c.metrics.DeviceSeenCount.With(prometheus.Labels{
-		"friendly_name": deviceName,
+		"device": deviceName,
 	}).Inc()
 
 	// Update last seen timestamp
 	if lastSeen, ok := data["last_seen"].(string); ok {
 		if timestamp, err := parseISOTimestamp(lastSeen); err == nil {
 			c.metrics.DeviceLastSeen.With(prometheus.Labels{
-				"friendly_name": deviceName,
+				"device": deviceName,
 			}).Set(float64(timestamp))
 		}
 	}
@@ -537,7 +537,7 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 	// Update link quality
 	if linkQuality, ok := data["linkquality"].(float64); ok {
 		c.metrics.DeviceLinkQuality.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(linkQuality)
 	}
 
@@ -549,22 +549,22 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 		}
 
 		c.metrics.DeviceState.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(stateValue)
 	}
 
 	// Update battery level - check multiple possible field names
 	if battery, ok := data["battery"].(float64); ok {
 		c.metrics.DeviceBattery.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(battery)
 	} else if battery, ok := data["battery_level"].(float64); ok {
 		c.metrics.DeviceBattery.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(battery)
 	} else if battery, ok := data["battery_percentage"].(float64); ok {
 		c.metrics.DeviceBattery.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(battery)
 	} else if battery, ok := data["battery_voltage"].(float64); ok {
 		// Convert voltage to percentage (typical range: 2.5V-3.3V for Li-ion)
@@ -577,7 +577,7 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 		}
 
 		c.metrics.DeviceBattery.With(prometheus.Labels{
-			"friendly_name": deviceName,
+			"device": deviceName,
 		}).Set(batteryPercent)
 	}
 }
