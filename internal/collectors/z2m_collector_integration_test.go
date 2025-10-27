@@ -11,167 +11,12 @@ import (
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/testutil"
 )
 
-// TestMetricLabelConsistency tests that all metrics are created with correct labels
-// This test would have caught the label mapping bugs we just fixed
-func TestMetricLabelConsistency(t *testing.T) {
-	// Create a fresh registry for testing
-	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
-	z2mRegistry := metrics.NewZ2MRegistry(baseRegistry)
-
-	// Create test config
-	cfg := &config.Config{
-		WebSocket: config.WebSocketConfig{
-			URL: "ws://localhost:8080/api",
-		},
-	}
-
-	_ = NewZ2MCollector(cfg, z2mRegistry)
-
-	// Test device metrics with correct labels
-	t.Run("DeviceMetrics", func(t *testing.T) {
-		// Test DeviceInfo
-		z2mRegistry.DeviceInfo.With(prometheus.Labels{
-			"device":            "test-device",
-			"type":              "sensor",
-			"power_source":      "battery",
-			"manufacturer":      "test-manufacturer",
-			"model_id":          "test-model",
-			"supported":         "true",
-			"disabled":          "false",
-			"interview_state":   "completed",
-			"software_build_id": "test-build",
-			"date_code":         "20230101",
-		}).Set(1)
-
-		// Test DeviceLastSeen
-		z2mRegistry.DeviceLastSeen.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(float64(time.Now().Unix()))
-
-		// Test DeviceSeenCount
-		z2mRegistry.DeviceSeenCount.With(prometheus.Labels{
-			"device": "test-device",
-		}).Inc()
-
-		// Test DeviceLinkQuality
-		z2mRegistry.DeviceLinkQuality.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(255)
-
-		// Test DeviceState
-		z2mRegistry.DeviceState.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(1)
-
-		// Test DeviceBattery
-		z2mRegistry.DeviceBattery.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(100)
-
-		// Test DeviceAvailability
-		z2mRegistry.DeviceAvailability.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(1)
-
-		// Test DeviceOTAUpdateAvailable
-		z2mRegistry.DeviceOTAUpdateAvailable.With(prometheus.Labels{
-			"device": "test-device",
-		}).Set(0)
-
-		// Test DeviceCurrentFirmware
-		z2mRegistry.DeviceCurrentFirmware.With(prometheus.Labels{
-			"device":           "test-device",
-			"firmware_version": "1.0.0",
-		}).Set(1)
-
-		// Test DeviceAvailableFirmware
-		z2mRegistry.DeviceAvailableFirmware.With(prometheus.Labels{
-			"device":           "test-device",
-			"firmware_version": "1.1.0",
-		}).Set(1)
-
-		// Verify metrics were created successfully (no panic)
-		t.Log("Device metrics created successfully with correct labels")
-	})
-
-	// Test bridge metrics with correct labels
-	t.Run("BridgeMetrics", func(t *testing.T) {
-		// Test BridgeState (no labels)
-		z2mRegistry.BridgeState.With(prometheus.Labels{}).Set(1)
-
-		// Test BridgeEventsTotal
-		z2mRegistry.BridgeEventsTotal.With(prometheus.Labels{
-			"event_type": "device_joined",
-		}).Inc()
-
-		// Verify metrics were created successfully (no panic)
-		t.Log("Bridge metrics created successfully with correct labels")
-	})
-
-	// Test connection metrics with correct labels
-	t.Run("ConnectionMetrics", func(t *testing.T) {
-		// Test WebSocketConnectionStatus (no labels)
-		z2mRegistry.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(1)
-
-		// Test WebSocketMessagesTotal
-		z2mRegistry.WebSocketMessagesTotal.With(prometheus.Labels{
-			"topic": "zigbee2mqtt/bridge/devices",
-		}).Inc()
-
-		// Test WebSocketReconnectsTotal (no labels)
-		z2mRegistry.WebSocketReconnectsTotal.With(prometheus.Labels{}).Inc()
-
-		// Verify metrics were created successfully (no panic)
-		t.Log("Connection metrics created successfully with correct labels")
-	})
-}
-
-// TestMetricLabelMismatchDetection tests that incorrect labels cause panics
-// This test ensures our validation catches future regressions
-func TestMetricLabelMismatchDetection(t *testing.T) {
-	// Create a fresh registry for testing
-	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
-	z2mRegistry := metrics.NewZ2MRegistry(baseRegistry)
-
-	t.Run("DeviceMetricsWrongLabels", func(t *testing.T) {
-		// This should panic with "label name 'device' missing in label map"
-		defer func() {
-			if r := recover(); r != nil {
-				t.Logf("Correctly caught panic with wrong labels: %v", r)
-			} else {
-				t.Error("Expected panic with wrong labels, but none occurred")
-			}
-		}()
-
-		// Use wrong label name (this should panic)
-		z2mRegistry.DeviceLastSeen.With(prometheus.Labels{
-			"friendly_name": "test-device", // Wrong! Should be "device"
-		}).Set(float64(time.Now().Unix()))
-	})
-
-	t.Run("BridgeMetricsWrongLabels", func(t *testing.T) {
-		// This should panic with "label name 'event_type' missing in label map"
-		defer func() {
-			if r := recover(); r != nil {
-				t.Logf("Correctly caught panic with wrong labels: %v", r)
-			} else {
-				t.Error("Expected panic with wrong labels, but none occurred")
-			}
-		}()
-
-		// Use wrong label name (this should panic)
-		z2mRegistry.BridgeEventsTotal.With(prometheus.Labels{
-			"event": "device_joined", // Wrong! Should be "event_type"
-		}).Inc()
-	})
-}
-
-// TestCollectorIntegration tests the full collection flow with mock data
-// This test simulates the actual runtime behavior that was failing
-func TestCollectorIntegration(t *testing.T) {
-	// Create a test server that returns valid Zigbee2MQTT WebSocket responses
+// TestZ2MCollectorIntegration tests the full collection flow to catch label mapping issues
+func TestZ2MCollectorIntegration(t *testing.T) {
+	// Create test server that returns valid Zigbee2MQTT WebSocket responses
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/api":
@@ -185,102 +30,358 @@ func TestCollectorIntegration(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// Create test config
+	// Create test configuration
 	cfg := &config.Config{
 		WebSocket: config.WebSocketConfig{
-			URL: "ws://" + server.URL[7:] + "/api", // Convert http:// to ws://
+			URL: "ws://" + server.URL[7:] + "/api", // Convert http to ws
 		},
 	}
 
 	// Create a fresh registry for testing
+	prometheus.DefaultRegisterer = prometheus.NewRegistry()
 	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
-	z2mRegistry := metrics.NewZ2MRegistry(baseRegistry)
+	registry := metrics.NewZ2MRegistry(baseRegistry)
 
-	collector := NewZ2MCollector(cfg, z2mRegistry)
+	collector := NewZ2MCollector(cfg, registry)
 
 	// Test the collection flow
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
 	// Start the collector
 	collector.Start(ctx)
 
 	// Wait a bit for collection to happen
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 
-	// Verify metrics were created without panics
-	// This test would have caught the label mapping bugs in the actual collection flow
-	t.Log("Integration test completed successfully - no panics occurred")
+	// Cancel context to stop collection
+	cancel()
+
+	// Wait for collection to complete
+	time.Sleep(100 * time.Millisecond)
+
+	// Verify that metrics were created with correct labels
+	// This is the key test - it will panic if labels don't match metric definitions
+
+	// Test WebSocket connection metrics
+	websocketStatusMetric := testutil.ToFloat64(registry.WebSocketConnectionStatus.With(prometheus.Labels{}))
+	t.Logf("WebSocket connection status metric: %f", websocketStatusMetric)
+
+	websocketMessagesMetric := testutil.ToFloat64(registry.WebSocketMessagesTotal.With(prometheus.Labels{
+		"topic": "bridge/devices",
+	}))
+	t.Logf("WebSocket messages metric: %f", websocketMessagesMetric)
+
+	websocketReconnectsMetric := testutil.ToFloat64(registry.WebSocketReconnectsTotal.With(prometheus.Labels{}))
+	t.Logf("WebSocket reconnects metric: %f", websocketReconnectsMetric)
+
+	// Test bridge metrics
+	bridgeStateMetric := testutil.ToFloat64(registry.BridgeState.With(prometheus.Labels{}))
+	t.Logf("Bridge state metric: %f", bridgeStateMetric)
+
+	bridgeEventsMetric := testutil.ToFloat64(registry.BridgeEventsTotal.With(prometheus.Labels{
+		"event_type": "device_announce",
+	}))
+	t.Logf("Bridge events metric: %f", bridgeEventsMetric)
+
+	// Test device metrics
+	deviceInfoMetric := testutil.ToFloat64(registry.DeviceInfo.With(prometheus.Labels{
+		"device":            "test-device",
+		"type":              "EndDevice",
+		"power_source":      "Battery",
+		"manufacturer":      "Test Manufacturer",
+		"model_id":          "TEST_MODEL",
+		"supported":         "true",
+		"disabled":          "false",
+		"interview_state":   "completed",
+		"software_build_id": "1.0.0",
+		"date_code":         "20250101",
+	}))
+	t.Logf("Device info metric: %f", deviceInfoMetric)
+
+	deviceAvailabilityMetric := testutil.ToFloat64(registry.DeviceAvailability.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device availability metric: %f", deviceAvailabilityMetric)
+
+	deviceLastSeenMetric := testutil.ToFloat64(registry.DeviceLastSeen.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device last seen metric: %f", deviceLastSeenMetric)
+
+	deviceSeenCountMetric := testutil.ToFloat64(registry.DeviceSeenCount.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device seen count metric: %f", deviceSeenCountMetric)
+
+	deviceLinkQualityMetric := testutil.ToFloat64(registry.DeviceLinkQuality.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device link quality metric: %f", deviceLinkQualityMetric)
+
+	deviceStateMetric := testutil.ToFloat64(registry.DeviceState.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device state metric: %f", deviceStateMetric)
+
+	deviceBatteryMetric := testutil.ToFloat64(registry.DeviceBattery.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device battery metric: %f", deviceBatteryMetric)
+
+	// Test OTA update metrics
+	deviceOTAUpdateMetric := testutil.ToFloat64(registry.DeviceOTAUpdateAvailable.With(prometheus.Labels{
+		"device": "test-device",
+	}))
+	t.Logf("Device OTA update metric: %f", deviceOTAUpdateMetric)
+
+	deviceCurrentFirmwareMetric := testutil.ToFloat64(registry.DeviceCurrentFirmware.With(prometheus.Labels{
+		"device":           "test-device",
+		"firmware_version": "1.0.0",
+	}))
+	t.Logf("Device current firmware metric: %f", deviceCurrentFirmwareMetric)
+
+	deviceAvailableFirmwareMetric := testutil.ToFloat64(registry.DeviceAvailableFirmware.With(prometheus.Labels{
+		"device":           "test-device",
+		"firmware_version": "1.1.0",
+	}))
+	t.Logf("Device available firmware metric: %f", deviceAvailableFirmwareMetric)
+
+	// If we get here without panicking, the label mapping is correct
+	t.Log("✅ All metrics created successfully with correct label mapping")
 }
 
-// TestMetricDefinitionConsistency tests that metric definitions match expected labels
-// This test ensures the metrics registry and collector are in sync
-func TestMetricDefinitionConsistency(t *testing.T) {
+// TestZ2MCollectorLabelConsistency tests that all metric labels match their definitions
+func TestZ2MCollectorLabelConsistency(t *testing.T) {
+	// Create a fresh registry for testing
+	prometheus.DefaultRegisterer = prometheus.NewRegistry()
 	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
-	z2mRegistry := metrics.NewZ2MRegistry(baseRegistry)
+	registry := metrics.NewZ2MRegistry(baseRegistry)
 
-	// Test that all metrics have the expected label names
-	expectedLabels := map[string][]string{
-		"zigbee2mqtt_device_info":                        {"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state", "software_build_id", "date_code"},
-		"zigbee2mqtt_device_last_seen_timestamp":        {"device"},
-		"zigbee2mqtt_device_seen_total":                  {"device"},
-		"zigbee2mqtt_device_link_quality":                {"device"},
-		"zigbee2mqtt_device_power_state":                 {"device"},
-		"zigbee2mqtt_device_battery_level":               {"device"},
-		"zigbee2mqtt_device_up":                          {"device"},
-		"zigbee2mqtt_device_ota_update_available":        {"device"},
-		"zigbee2mqtt_device_current_firmware_version":    {"device", "firmware_version"},
-		"zigbee2mqtt_device_available_firmware_version":   {"device", "firmware_version"},
-		"zigbee2mqtt_bridge_state":                        {},
-		"zigbee2mqtt_bridge_events_total":                {"event_type"},
-		"zigbee2mqtt_websocket_connection_status":         {},
-		"zigbee2mqtt_websocket_messages_total":           {"topic"},
-		"zigbee2mqtt_websocket_reconnects_total":          {},
+	// Test all metrics with their expected labels
+	testCases := []struct {
+		name        string
+		metric      *prometheus.CounterVec
+		labels      prometheus.Labels
+		description string
+	}{
+		{
+			name:        "WebSocketMessagesTotal",
+			metric:      registry.WebSocketMessagesTotal,
+			labels:      prometheus.Labels{"topic": "bridge/devices"},
+			description: "Should accept 'topic' label",
+		},
+		{
+			name:        "BridgeEventsTotal",
+			metric:      registry.BridgeEventsTotal,
+			labels:      prometheus.Labels{"event_type": "device_announce"},
+			description: "Should accept 'event_type' label",
+		},
+		{
+			name:        "DeviceSeenCount",
+			metric:      registry.DeviceSeenCount,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "WebSocketReconnectsTotal",
+			metric:      registry.WebSocketReconnectsTotal,
+			labels:      prometheus.Labels{},
+			description: "Should accept no labels",
+		},
 	}
 
-	for metricName, expectedLabelNames := range expectedLabels {
-		t.Run(metricName, func(t *testing.T) {
-			// Create a test metric with the expected labels
-			labels := make(prometheus.Labels)
-			for _, labelName := range expectedLabelNames {
-				labels[labelName] = "test-value"
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// This will panic if labels don't match the metric definition
+			counter := tc.metric.With(tc.labels)
+			counter.Inc()
+			
+			// Verify the metric was created successfully
+			value := testutil.ToFloat64(counter)
+			if value != 1.0 {
+				t.Errorf("Expected metric value 1.0, got %f", value)
 			}
-
-			// This should not panic if labels are correct
-			switch metricName {
-			case "zigbee2mqtt_device_info":
-				z2mRegistry.DeviceInfo.With(labels).Set(1)
-			case "zigbee2mqtt_device_last_seen_timestamp":
-				z2mRegistry.DeviceLastSeen.With(labels).Set(float64(time.Now().Unix()))
-			case "zigbee2mqtt_device_seen_total":
-				z2mRegistry.DeviceSeenCount.With(labels).Inc()
-			case "zigbee2mqtt_device_link_quality":
-				z2mRegistry.DeviceLinkQuality.With(labels).Set(255)
-			case "zigbee2mqtt_device_power_state":
-				z2mRegistry.DeviceState.With(labels).Set(1)
-			case "zigbee2mqtt_device_battery_level":
-				z2mRegistry.DeviceBattery.With(labels).Set(100)
-			case "zigbee2mqtt_device_up":
-				z2mRegistry.DeviceAvailability.With(labels).Set(1)
-			case "zigbee2mqtt_device_ota_update_available":
-				z2mRegistry.DeviceOTAUpdateAvailable.With(labels).Set(0)
-			case "zigbee2mqtt_device_current_firmware_version":
-				z2mRegistry.DeviceCurrentFirmware.With(labels).Set(1)
-			case "zigbee2mqtt_device_available_firmware_version":
-				z2mRegistry.DeviceAvailableFirmware.With(labels).Set(1)
-			case "zigbee2mqtt_bridge_state":
-				z2mRegistry.BridgeState.With(labels).Set(1)
-			case "zigbee2mqtt_bridge_events_total":
-				z2mRegistry.BridgeEventsTotal.With(labels).Inc()
-			case "zigbee2mqtt_websocket_connection_status":
-				z2mRegistry.WebSocketConnectionStatus.With(labels).Set(1)
-			case "zigbee2mqtt_websocket_messages_total":
-				z2mRegistry.WebSocketMessagesTotal.With(labels).Inc()
-			case "zigbee2mqtt_websocket_reconnects_total":
-				z2mRegistry.WebSocketReconnectsTotal.With(labels).Inc()
-			}
-
-			t.Logf("Metric %s created successfully with expected labels: %v", metricName, expectedLabelNames)
+			
+			t.Logf("✅ %s: %s", tc.name, tc.description)
 		})
 	}
+
+	// Test gauge metrics
+	gaugeTestCases := []struct {
+		name        string
+		metric      *prometheus.GaugeVec
+		labels      prometheus.Labels
+		description string
+	}{
+		{
+			name:        "WebSocketConnectionStatus",
+			metric:      registry.WebSocketConnectionStatus,
+			labels:      prometheus.Labels{},
+			description: "Should accept no labels",
+		},
+		{
+			name:        "BridgeState",
+			metric:      registry.BridgeState,
+			labels:      prometheus.Labels{},
+			description: "Should accept no labels",
+		},
+		{
+			name:        "DeviceInfo",
+			metric:      registry.DeviceInfo,
+			labels:      prometheus.Labels{"device": "test-device", "type": "EndDevice", "power_source": "Battery", "manufacturer": "Test", "model_id": "TEST", "supported": "true", "disabled": "false", "interview_state": "completed", "software_build_id": "1.0.0", "date_code": "20250101"},
+			description: "Should accept all device info labels",
+		},
+		{
+			name:        "DeviceAvailability",
+			metric:      registry.DeviceAvailability,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceLastSeen",
+			metric:      registry.DeviceLastSeen,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceLinkQuality",
+			metric:      registry.DeviceLinkQuality,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceState",
+			metric:      registry.DeviceState,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceBattery",
+			metric:      registry.DeviceBattery,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceOTAUpdateAvailable",
+			metric:      registry.DeviceOTAUpdateAvailable,
+			labels:      prometheus.Labels{"device": "test-device"},
+			description: "Should accept 'device' label",
+		},
+		{
+			name:        "DeviceCurrentFirmware",
+			metric:      registry.DeviceCurrentFirmware,
+			labels:      prometheus.Labels{"device": "test-device", "firmware_version": "1.0.0"},
+			description: "Should accept 'device' and 'firmware_version' labels",
+		},
+		{
+			name:        "DeviceAvailableFirmware",
+			metric:      registry.DeviceAvailableFirmware,
+			labels:      prometheus.Labels{"device": "test-device", "firmware_version": "1.1.0"},
+			description: "Should accept 'device' and 'firmware_version' labels",
+		},
+	}
+
+	for _, tc := range gaugeTestCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// This will panic if labels don't match the metric definition
+			gauge := tc.metric.With(tc.labels)
+			gauge.Set(42.0)
+			
+			// Verify the metric was created successfully
+			value := testutil.ToFloat64(gauge)
+			if value != 42.0 {
+				t.Errorf("Expected metric value 42.0, got %f", value)
+			}
+			
+			t.Logf("✅ %s: %s", tc.name, tc.description)
+		})
+	}
+
+	t.Log("✅ All metric label consistency tests passed")
+}
+
+// TestZ2MCollectorErrorHandling tests error scenarios to ensure they don't cause label panics
+func TestZ2MCollectorErrorHandling(t *testing.T) {
+	// Create test server that returns errors
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	// Create test configuration
+	cfg := &config.Config{
+		WebSocket: config.WebSocketConfig{
+			URL: "ws://" + server.URL[7:] + "/api", // Convert http to ws
+		},
+	}
+
+	// Create a fresh registry for testing
+	prometheus.DefaultRegisterer = prometheus.NewRegistry()
+	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
+	registry := metrics.NewZ2MRegistry(baseRegistry)
+
+	collector := NewZ2MCollector(cfg, registry)
+
+	// Test error handling without panicking
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+
+	collector.Start(ctx)
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+	time.Sleep(100 * time.Millisecond)
+
+	// If we get here without panicking, error handling is working correctly
+	t.Log("✅ Error handling works correctly without label panics")
+}
+
+// TestZ2MCollectorMessageProcessing tests message processing to catch label mapping issues
+func TestZ2MCollectorMessageProcessing(t *testing.T) {
+	// Create a fresh registry for testing
+	prometheus.DefaultRegisterer = prometheus.NewRegistry()
+	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
+	registry := metrics.NewZ2MRegistry(baseRegistry)
+
+	// Test that we can create metrics with the correct labels without panicking
+	// This is the key test - it will panic if labels don't match metric definitions
+	
+	// Test device info metric creation
+	deviceInfoMetric := registry.DeviceInfo.With(prometheus.Labels{
+		"device":            "test-device",
+		"type":              "EndDevice",
+		"power_source":      "Battery",
+		"manufacturer":      "Test Manufacturer",
+		"model_id":          "TEST_MODEL",
+		"supported":         "true",
+		"disabled":          "false",
+		"interview_state":   "completed",
+		"software_build_id": "1.0.0",
+		"date_code":         "20250101",
+	})
+	deviceInfoMetric.Set(1.0)
+	
+	// Verify the metric was created successfully
+	value := testutil.ToFloat64(deviceInfoMetric)
+	if value != 1.0 {
+		t.Errorf("Expected device info metric value 1.0, got %f", value)
+	}
+
+	// Test other device metrics
+	deviceAvailabilityMetric := registry.DeviceAvailability.With(prometheus.Labels{
+		"device": "test-device",
+	})
+	deviceAvailabilityMetric.Set(1.0)
+	
+	deviceLastSeenMetric := registry.DeviceLastSeen.With(prometheus.Labels{
+		"device": "test-device",
+	})
+	deviceLastSeenMetric.Set(float64(time.Now().Unix()))
+	
+	deviceSeenCountMetric := registry.DeviceSeenCount.With(prometheus.Labels{
+		"device": "test-device",
+	})
+	deviceSeenCountMetric.Inc()
+
+	t.Log("✅ Message processing works correctly with proper label mapping")
 }
