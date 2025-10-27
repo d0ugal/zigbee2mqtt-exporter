@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.4](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.1.3...v3.1.4) (2025-10-27)
+
+
+### Bug Fixes
+
+* add missing prometheus import ([c1a186d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c1a186d801bca78f6da0a792566f3257eb5e8ec8))
+* **ci:** use Makefile for linting instead of golangci-lint-action ([a84e28c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a84e28c0888bffddb1112307b1cec5ff32f69f02))
+
 ## [3.1.3](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.1.2...v3.1.3) (2025-10-26)
 
 
