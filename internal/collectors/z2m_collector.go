@@ -102,8 +102,8 @@ func (c *Z2MCollector) run(ctx context.Context) {
 				"url", c.cfg.WebSocket.URL,
 				"reconnect_delay", reconnectDelay,
 			)
-		c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(0)
-		c.metrics.WebSocketReconnectsTotal.With(prometheus.Labels{}).Inc()
+			c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(0)
+			c.metrics.WebSocketReconnectsTotal.With(prometheus.Labels{}).Inc()
 
 			select {
 			case <-ctx.Done():
@@ -272,19 +272,19 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 				DateCode:        dateCode,
 			}
 
-		// Update device info metric (always set to 1)
-		c.metrics.DeviceInfo.With(prometheus.Labels{
-			"friendly_name":     device.FriendlyName,
-			"type":              device.Type,
-			"power_source":      powerSource,
-			"manufacturer":      device.Manufacturer,
-			"model_id":          device.ModelID,
-			"supported":         supported,
-			"disabled":          disabled,
-			"interview_state":   interviewState,
-			"software_build_id": softwareBuildID,
-			"date_code":         dateCode,
-		}).Set(1)
+			// Update device info metric (always set to 1)
+			c.metrics.DeviceInfo.With(prometheus.Labels{
+				"friendly_name":     device.FriendlyName,
+				"type":              device.Type,
+				"power_source":      powerSource,
+				"manufacturer":      device.Manufacturer,
+				"model_id":          device.ModelID,
+				"supported":         supported,
+				"disabled":          disabled,
+				"interview_state":   interviewState,
+				"software_build_id": softwareBuildID,
+				"date_code":         dateCode,
+			}).Set(1)
 
 			// Update OTA metrics
 			if device.CurrentFirmwareVersion != "" {
@@ -366,19 +366,19 @@ func (c *Z2MCollector) processBridgeDevicesMessage(msg Z2MMessage) {
 			DateCode:        device.DateCode,
 		}
 
-	// Update device info metric (always set to 1)
-	c.metrics.DeviceInfo.With(prometheus.Labels{
-		"friendly_name":     device.FriendlyName,
-		"type":              device.Type,
-		"power_source":      powerSource,
-		"manufacturer":      device.Manufacturer,
-		"model_id":          device.ModelID,
-		"supported":         supported,
-		"disabled":          disabled,
-		"interview_state":   interviewState,
-		"software_build_id": device.SoftwareBuildID,
-		"date_code":         device.DateCode,
-	}).Set(1)
+		// Update device info metric (always set to 1)
+		c.metrics.DeviceInfo.With(prometheus.Labels{
+			"friendly_name":     device.FriendlyName,
+			"type":              device.Type,
+			"power_source":      powerSource,
+			"manufacturer":      device.Manufacturer,
+			"model_id":          device.ModelID,
+			"supported":         supported,
+			"disabled":          disabled,
+			"interview_state":   interviewState,
+			"software_build_id": device.SoftwareBuildID,
+			"date_code":         device.DateCode,
+		}).Set(1)
 	}
 
 	slog.Debug("Updated device info cache", "device_count", len(c.deviceInfo))
