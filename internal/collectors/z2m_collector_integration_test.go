@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
-	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 )
@@ -196,13 +196,13 @@ func TestZ2MCollectorLabelConsistency(t *testing.T) {
 			// This will panic if labels don't match the metric definition
 			counter := tc.metric.With(tc.labels)
 			counter.Inc()
-			
+
 			// Verify the metric was created successfully
 			value := testutil.ToFloat64(counter)
 			if value != 1.0 {
 				t.Errorf("Expected metric value 1.0, got %f", value)
 			}
-			
+
 			t.Logf("✅ %s: %s", tc.name, tc.description)
 		})
 	}
@@ -287,13 +287,13 @@ func TestZ2MCollectorLabelConsistency(t *testing.T) {
 			// This will panic if labels don't match the metric definition
 			gauge := tc.metric.With(tc.labels)
 			gauge.Set(42.0)
-			
+
 			// Verify the metric was created successfully
 			value := testutil.ToFloat64(gauge)
 			if value != 42.0 {
 				t.Errorf("Expected metric value 42.0, got %f", value)
 			}
-			
+
 			t.Logf("✅ %s: %s", tc.name, tc.description)
 		})
 	}
@@ -345,7 +345,7 @@ func TestZ2MCollectorMessageProcessing(t *testing.T) {
 
 	// Test that we can create metrics with the correct labels without panicking
 	// This is the key test - it will panic if labels don't match metric definitions
-	
+
 	// Test device info metric creation
 	deviceInfoMetric := registry.DeviceInfo.With(prometheus.Labels{
 		"device":            "test-device",
@@ -360,7 +360,7 @@ func TestZ2MCollectorMessageProcessing(t *testing.T) {
 		"date_code":         "20250101",
 	})
 	deviceInfoMetric.Set(1.0)
-	
+
 	// Verify the metric was created successfully
 	value := testutil.ToFloat64(deviceInfoMetric)
 	if value != 1.0 {
@@ -372,12 +372,12 @@ func TestZ2MCollectorMessageProcessing(t *testing.T) {
 		"device": "test-device",
 	})
 	deviceAvailabilityMetric.Set(1.0)
-	
+
 	deviceLastSeenMetric := registry.DeviceLastSeen.With(prometheus.Labels{
 		"device": "test-device",
 	})
 	deviceLastSeenMetric.Set(float64(time.Now().Unix()))
-	
+
 	deviceSeenCountMetric := registry.DeviceSeenCount.With(prometheus.Labels{
 		"device": "test-device",
 	})
