@@ -1,4 +1,4 @@
-.PHONY: help build test lint clean fmt lint-only
+.PHONY: help build test lint clean fmt lint-only dev-tag
 
 # Docker image versions
 GOLANGCI_LINT_VERSION := v2.5.0
@@ -12,6 +12,7 @@ help:
 	@echo "  fmt      - Format code using golangci-lint"
 	@echo "  lint-only - Run golangci-lint without formatting"
 	@echo "  clean    - Clean build artifacts"
+	@echo "  dev-tag  - Generate dev tag for Docker image"
 
 # Build the application
 build:
@@ -68,3 +69,17 @@ lint-only:
 # Clean build artifacts
 clean:
 	rm -f zigbee2mqtt-exporter coverage.txt
+
+# Generate dev tag for Docker image
+dev-tag:
+	@SHORT_SHA=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown"); \
+	LAST_TAG=$$(git describe --tags --abbrev=0 --match="v[0-9]*.[0-9]*.[0-9]*" 2>/dev/null || echo ""); \
+	if [ -z "$$LAST_TAG" ]; then \
+		VERSION="0.0.0"; \
+		COMMIT_COUNT=$$(git rev-list --count HEAD); \
+	else \
+		VERSION=$${LAST_TAG#v}; \
+		COMMIT_COUNT=$$(git rev-list --count $${LAST_TAG}..HEAD); \
+	fi; \
+	DEV_TAG="v$${VERSION}-dev.$${COMMIT_COUNT}.$${SHORT_SHA}"; \
+	echo "$$DEV_TAG"
