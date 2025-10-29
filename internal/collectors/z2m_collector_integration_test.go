@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/d0ugal/promexporter/app"
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
@@ -42,7 +43,13 @@ func TestZ2MCollectorIntegration(t *testing.T) {
 	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
 	registry := metrics.NewZ2MRegistry(baseRegistry)
 
-	collector := NewZ2MCollector(cfg, registry)
+	// Create a minimal app instance for testing
+	testApp := app.New("Test Exporter").
+		WithConfig(&cfg.BaseConfig).
+		WithMetrics(baseRegistry).
+		Build()
+
+	collector := NewZ2MCollector(cfg, registry, testApp)
 
 	// Test the collection flow
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
@@ -321,7 +328,13 @@ func TestZ2MCollectorErrorHandling(t *testing.T) {
 	baseRegistry := promexporter_metrics.NewRegistry("test_exporter_info")
 	registry := metrics.NewZ2MRegistry(baseRegistry)
 
-	collector := NewZ2MCollector(cfg, registry)
+	// Create a minimal app instance for testing
+	testApp := app.New("Test Exporter").
+		WithConfig(&cfg.BaseConfig).
+		WithMetrics(baseRegistry).
+		Build()
+
+	collector := NewZ2MCollector(cfg, registry, testApp)
 
 	// Test error handling without panicking
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)

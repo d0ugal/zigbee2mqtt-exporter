@@ -8,16 +8,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/d0ugal/promexporter/app"
+	"github.com/d0ugal/promexporter/tracing"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/config"
 	"github.com/d0ugal/zigbee2mqtt-exporter/internal/metrics"
 	"github.com/gorilla/websocket"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // Z2MCollector handles WebSocket connections to Zigbee2MQTT
 type Z2MCollector struct {
 	cfg     *config.Config
 	metrics *metrics.Z2MRegistry
+	app     *app.App
 	conn    *websocket.Conn
 	done    chan struct{}
 	// Device metadata cache - maps device name to device info
@@ -68,10 +72,11 @@ type BridgeDevice struct {
 }
 
 // NewZ2MCollector creates a new Z2M collector
-func NewZ2MCollector(cfg *config.Config, metrics *metrics.Z2MRegistry) *Z2MCollector {
+func NewZ2MCollector(cfg *config.Config, metrics *metrics.Z2MRegistry, app *app.App) *Z2MCollector {
 	return &Z2MCollector{
 		cfg:        cfg,
 		metrics:    metrics,
+		app:        app,
 		done:       make(chan struct{}),
 		deviceInfo: make(map[string]DeviceInfo),
 	}
@@ -88,10 +93,32 @@ func (c *Z2MCollector) run(ctx context.Context) {
 	maxReconnectDelay := time.Minute
 
 	for {
+		// Create a span for each connection attempt
+		tracer := c.app.GetTracer()
+
+		var collectorSpan *tracing.CollectorSpan
+
+		if tracer != nil && tracer.IsEnabled() {
+			collectorSpan = tracer.NewCollectorSpan(ctx, "z2m-collector", "connection-attempt")
+			collectorSpan.SetAttributes(
+				attribute.String("websocket.url", c.cfg.WebSocket.URL),
+			)
+		}
+
 		select {
 		case <-ctx.Done():
+			if collectorSpan != nil {
+				collectorSpan.AddEvent("shutdown_requested")
+				collectorSpan.End()
+			}
+
 			return
 		case <-c.done:
+			if collectorSpan != nil {
+				collectorSpan.AddEvent("stop_requested")
+				collectorSpan.End()
+			}
+
 			return
 		default:
 		}
@@ -102,6 +129,12 @@ func (c *Z2MCollector) run(ctx context.Context) {
 				"url", c.cfg.WebSocket.URL,
 				"reconnect_delay", reconnectDelay,
 			)
+
+			if collectorSpan != nil {
+				collectorSpan.RecordError(err, attribute.String("websocket.url", c.cfg.WebSocket.URL))
+				collectorSpan.End()
+			}
+
 			c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(0)
 			c.metrics.WebSocketReconnectsTotal.With(prometheus.Labels{}).Inc()
 
@@ -121,6 +154,11 @@ func (c *Z2MCollector) run(ctx context.Context) {
 
 		// Reset reconnect delay on successful connection
 		reconnectDelay = time.Second
+
+		if collectorSpan != nil {
+			collectorSpan.AddEvent("connection_successful")
+			collectorSpan.End()
+		}
 
 		slog.Info("Successfully connected to Zigbee2MQTT", "url", c.cfg.WebSocket.URL)
 		c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(1)
@@ -169,16 +207,38 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			return fmt.Errorf("read message error: %w", err)
 		}
 
-		c.processMessage(message)
+		c.processMessage(ctx, message)
 	}
 }
 
 // processMessage processes a single WebSocket message
-func (c *Z2MCollector) processMessage(message []byte) {
+func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
+	// Create span for message processing
+	tracer := c.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-message")
+		defer collectorSpan.End()
+	}
+
 	var z2mMsg Z2MMessage
 	if err := json.Unmarshal(message, &z2mMsg); err != nil {
 		slog.Error("Failed to unmarshal message", "error", err, "message", string(message))
+
+		if collectorSpan != nil {
+			collectorSpan.RecordError(err)
+		}
+
 		return
+	}
+
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.String("message.topic", z2mMsg.Topic),
+			attribute.Int("message.payload_length", len(message)),
+		)
 	}
 
 	// Increment message counter
@@ -206,6 +266,12 @@ func (c *Z2MCollector) processMessage(message []byte) {
 				c.processDeviceMessage(z2mMsg)
 			}
 		}
+	}
+
+	if collectorSpan != nil {
+		collectorSpan.AddEvent("message_processed",
+			attribute.String("message.topic", z2mMsg.Topic),
+		)
 	}
 }
 
