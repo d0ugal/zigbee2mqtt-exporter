@@ -56,6 +56,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_last_seen_timestamp", "Timestamp when device was last seen", []string{"device"})
 
 	z2m.DeviceSeenCount = factory.NewCounterVec(
@@ -65,6 +66,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_seen_total", "Number of times device has been seen", []string{"device"})
 
 	z2m.DeviceLinkQuality = factory.NewGaugeVec(
@@ -74,6 +76,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_link_quality", "Device link quality (0-255)", []string{"device"})
 
 	z2m.DeviceState = factory.NewGaugeVec(
@@ -83,6 +86,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_power_state", "Device power state (1=ON, 0=OFF)", []string{"device"})
 
 	z2m.DeviceBattery = factory.NewGaugeVec(
@@ -92,6 +96,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_battery_level", "Device battery level (0-100)", []string{"device"})
 
 	// Device info metric (always set to 1, used for joining)
@@ -102,6 +107,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state", "software_build_id", "date_code"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_info", "Device information (always 1, used for joining with other metrics)", []string{"device", "type", "power_source", "manufacturer", "model_id", "supported", "disabled", "interview_state", "software_build_id", "date_code"})
 
 	// Device availability metric (like Prometheus "up" metric)
@@ -112,6 +118,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_up", "Device availability status (1=online, 0=offline)", []string{"device"})
 
 	// Bridge metrics
@@ -122,6 +129,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_bridge_state", "Bridge state (1=online, 0=offline)", []string{})
 
 	z2m.BridgeEventsTotal = factory.NewCounterVec(
@@ -131,6 +139,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"event_type"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_bridge_events_total", "Total number of bridge events", []string{"event_type"})
 
 	// Connection metrics
@@ -141,6 +150,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_websocket_connection_status", "WebSocket connection status (1=connected, 0=disconnected)", []string{})
 
 	z2m.WebSocketMessagesTotal = factory.NewCounterVec(
@@ -150,6 +160,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"topic"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_websocket_messages_total", "Total number of WebSocket messages received", []string{"topic"})
 
 	z2m.WebSocketReconnectsTotal = factory.NewCounterVec(
@@ -159,6 +170,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_websocket_reconnects_total", "Total number of WebSocket reconnections", []string{})
 
 	// OTA Update metrics
@@ -169,6 +181,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_update_available", "Device OTA update availability (1=available, 0=not_available)", []string{"device"})
 
 	z2m.DeviceCurrentFirmware = factory.NewGaugeVec(
@@ -178,6 +191,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device", "firmware_version"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_current_firmware_version", "Device current firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
 
 	z2m.DeviceAvailableFirmware = factory.NewGaugeVec(
@@ -187,6 +201,7 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 		},
 		[]string{"device", "firmware_version"},
 	)
+
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_available_firmware_version", "Device available firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
 
 	return z2m
