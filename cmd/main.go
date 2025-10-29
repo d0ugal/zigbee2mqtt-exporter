@@ -45,16 +45,16 @@ func main() {
 	// Add custom metrics to the registry
 	z2mRegistry := metrics.NewZ2MRegistry(metricsRegistry)
 
-	// Create collector
-	z2mCollector := collectors.NewZ2MCollector(cfg, z2mRegistry)
-
-	// Create and run application using promexporter
+	// Create and build application using promexporter
 	application := app.New("Zigbee2MQTT Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
-		WithCollector(z2mCollector).
 		WithVersionInfo(version.Version, version.Commit, version.BuildDate).
 		Build()
+
+	// Create collector with app reference for tracing
+	z2mCollector := collectors.NewZ2MCollector(cfg, z2mRegistry, application)
+	application.WithCollector(z2mCollector)
 
 	if err := application.Run(); err != nil {
 		slog.Error("Application failed", "error", err)
