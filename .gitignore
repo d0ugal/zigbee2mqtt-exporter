@@ -19,7 +19,11 @@ go.work
 
 # Build artifacts
 zigbee2mqtt-exporter
+main
 coverage.txt
+
+# Linter cache
+.golangci-lint-cache/
 
 # IDE files
 .vscode/
