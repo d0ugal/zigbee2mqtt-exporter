@@ -16,6 +16,7 @@ linters:
     - unused
     - contextcheck
     - wsl_v5
+    - dupl
     
   disable:
     - cyclop  # Too strict
@@ -49,6 +50,9 @@ linters:
       excludes:
         - G204  # Subprocess launched with variable - inputs are validated and sanitized
         - G304  # Potential file inclusion via variable - path is validated and comes from trusted config
+    dupl:
+      # Set threshold for duplicate code detection (default is 150 tokens)
+      threshold: 100
 
 formatters:
   enable:
