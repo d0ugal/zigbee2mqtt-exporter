@@ -634,7 +634,7 @@ func (c *Z2MCollector) updateDeviceMetrics(deviceName string, data map[string]in
 		}).Set(battery)
 	} else if battery, ok := data["battery_voltage"].(float64); ok {
 		// Convert voltage to percentage (typical range: 2.5V-3.3V for Li-ion)
-		// This is a rough approximation - actual conversion depends on battery chemistry
+		// This is a reasonable approximation - actual conversion depends on battery chemistry
 		batteryPercent := ((battery - 2.5) / 0.8) * 100
 		if batteryPercent > 100 {
 			batteryPercent = 100
