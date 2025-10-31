@@ -251,19 +251,19 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 	tracer := c.app.GetTracer()
 
 	var (
-		parentSpan *tracing.CollectorSpan
-		spanCtx    context.Context
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
-		parentSpan = tracer.NewCollectorSpan(ctx, "z2m-collector", "read-messages")
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "read-messages")
 
-		parentSpan.SetAttributes(
+		span.SetAttributes(
 			attribute.String("websocket.url", c.cfg.WebSocket.URL),
 		)
 
-		spanCtx = parentSpan.Context()
-		defer parentSpan.End()
+		spanCtx = span.Context()
+		defer span.End()
 	} else {
 		spanCtx = ctx
 	}
@@ -273,20 +273,20 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 	for {
 		select {
 		case <-spanCtx.Done():
-			if parentSpan != nil {
-				parentSpan.SetAttributes(
+			if span != nil {
+				span.SetAttributes(
 					attribute.Int("messages.read_total", messagesRead),
 				)
-				parentSpan.AddEvent("read_loop_ended")
+				span.AddEvent("read_loop_ended")
 			}
 
 			return spanCtx.Err()
 		case <-c.done:
-			if parentSpan != nil {
-				parentSpan.SetAttributes(
+			if span != nil {
+				span.SetAttributes(
 					attribute.Int("messages.read_total", messagesRead),
 				)
-				parentSpan.AddEvent("read_loop_stopped")
+				span.AddEvent("read_loop_stopped")
 			}
 
 			return nil
@@ -297,7 +297,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 
 		var readSpan *tracing.CollectorSpan
 
-		if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
+		if tracer != nil && tracer.IsEnabled() {
 			readSpan = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "read-message")
 
 			defer readSpan.End()
@@ -336,12 +336,20 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			)
 		}
 
-		c.processMessage(spanCtx, message, readSpan)
+		var messageCtx context.Context
+
+		if readSpan != nil {
+			messageCtx = readSpan.Context()
+		} else {
+			messageCtx = spanCtx
+		}
+
+		c.processMessage(messageCtx, message)
 	}
 }
 
 // processMessage processes a single WebSocket message
-func (c *Z2MCollector) processMessage(ctx context.Context, message []byte, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 	// Create span for message processing
 	tracer := c.app.GetTracer()
 
@@ -351,18 +359,13 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte, paren
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
-		if parentSpan != nil {
-			spanCtx = parentSpan.Context()
-		} else {
-			spanCtx = ctx
-		}
-
-		collectorSpan = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-message")
+		collectorSpan = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-message")
 
 		collectorSpan.SetAttributes(
 			attribute.Int("message.size_bytes", len(message)),
 		)
 
+		spanCtx = collectorSpan.Context()
 		defer collectorSpan.End()
 	} else {
 		spanCtx = ctx
@@ -422,21 +425,21 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte, paren
 
 	switch z2mMsg.Topic {
 	case "bridge/logging":
-		c.processLoggingMessage(spanCtx, z2mMsg, collectorSpan)
+		c.processLoggingMessage(spanCtx, z2mMsg)
 	case "bridge/devices":
-		c.processBridgeDevicesMessage(spanCtx, z2mMsg, collectorSpan)
+		c.processBridgeDevicesMessage(spanCtx, z2mMsg)
 	case "bridge/state":
-		c.processBridgeStateMessage(spanCtx, z2mMsg, collectorSpan)
+		c.processBridgeStateMessage(spanCtx, z2mMsg)
 	case "bridge/event":
-		c.processBridgeEventMessage(spanCtx, z2mMsg, collectorSpan)
+		c.processBridgeEventMessage(spanCtx, z2mMsg)
 	default:
 		// This is likely a device message
 		if z2mMsg.Topic != "" && !strings.HasPrefix(z2mMsg.Topic, "bridge/") {
 			// Check if this is an availability message
 			if strings.HasSuffix(z2mMsg.Topic, "/availability") {
-				c.processAvailabilityMessage(spanCtx, z2mMsg, collectorSpan)
+				c.processAvailabilityMessage(spanCtx, z2mMsg)
 			} else {
-				c.processDeviceMessage(spanCtx, z2mMsg, collectorSpan)
+				c.processDeviceMessage(spanCtx, z2mMsg)
 			}
 		}
 	}
@@ -455,7 +458,7 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte, paren
 }
 
 // processBridgeDevicesMessage processes bridge/devices messages to cache device types
-func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
 	var (
@@ -463,14 +466,14 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 		spanCtx context.Context
 	)
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx = parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-bridge-devices")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-bridge-devices")
 
 		span.SetAttributes(
 			attribute.String("message.type", "bridge/devices"),
 		)
 
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -668,14 +671,13 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 }
 
 // processBridgeStateMessage processes bridge/state messages
-func (c *Z2MCollector) processBridgeStateMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processBridgeStateMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
 	var span *tracing.CollectorSpan
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx := parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-bridge-state")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-bridge-state")
 
 		span.SetAttributes(
 			attribute.String("message.type", "bridge/state"),
@@ -726,14 +728,13 @@ func (c *Z2MCollector) processBridgeStateMessage(ctx context.Context, msg Z2MMes
 }
 
 // processBridgeEventMessage processes bridge/event messages
-func (c *Z2MCollector) processBridgeEventMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processBridgeEventMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
 	var span *tracing.CollectorSpan
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx := parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-bridge-event")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-bridge-event")
 
 		span.SetAttributes(
 			attribute.String("message.type", "bridge/event"),
@@ -779,20 +780,25 @@ func (c *Z2MCollector) processBridgeEventMessage(ctx context.Context, msg Z2MMes
 }
 
 // processLoggingMessage processes bridge logging messages
-func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
-	var span *tracing.CollectorSpan
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx := parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-logging")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-logging")
 
 		span.SetAttributes(
 			attribute.String("message.type", "bridge/logging"),
 		)
 
+		spanCtx = span.Context()
 		defer span.End()
+	} else {
+		spanCtx = ctx
 	}
 	processStart := time.Now()
 
@@ -823,7 +829,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 
 	// Look for MQTT publish messages that contain device data
 	if strings.Contains(payload, "z2m:mqtt: MQTT publish:") {
-		c.extractDeviceDataFromLogging(ctx, payload, span)
+		c.extractDeviceDataFromLogging(spanCtx, payload)
 	}
 
 	processDuration := time.Since(processStart)
@@ -837,7 +843,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 }
 
 // extractDeviceDataFromLogging extracts device data from logging messages
-func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message string, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message string) {
 	tracer := c.app.GetTracer()
 
 	var (
@@ -845,14 +851,14 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 		spanCtx context.Context
 	)
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx = parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "extract-device-data-from-logging")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "extract-device-data-from-logging")
 
 		span.SetAttributes(
 			attribute.Int("logging.message_length", len(message)),
 		)
 
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -938,11 +944,11 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 		)
 	}
 
-	c.updateDeviceMetrics(spanCtx, deviceName, deviceData, span)
+	c.updateDeviceMetrics(spanCtx, deviceName, deviceData)
 }
 
 // processAvailabilityMessage processes device availability messages
-func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
 	var (
@@ -950,14 +956,14 @@ func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMe
 		spanCtx context.Context
 	)
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx = parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-availability")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-availability")
 
 		span.SetAttributes(
 			attribute.String("message.type", "availability"),
 		)
 
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1010,7 +1016,7 @@ func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMe
 }
 
 // processDeviceMessage processes direct device messages
-func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
 	var (
@@ -1018,14 +1024,14 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage,
 		spanCtx context.Context
 	)
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx = parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "process-device-message")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-device-message")
 
 		span.SetAttributes(
 			attribute.String("message.type", "device"),
 		)
 
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1049,7 +1055,7 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage,
 			)
 		}
 
-		c.updateDeviceMetrics(spanCtx, deviceName, payloadMap, span)
+		c.updateDeviceMetrics(spanCtx, deviceName, payloadMap)
 	} else {
 		if span != nil {
 			span.RecordError(fmt.Errorf("payload is not a map"), attribute.String("operation", "parse_payload"))
@@ -1069,17 +1075,13 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage,
 }
 
 // updateDeviceMetrics updates Prometheus metrics for a device
-func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName string, data map[string]interface{}, parentSpan *tracing.CollectorSpan) {
+func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName string, data map[string]interface{}) {
 	tracer := c.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
-	if tracer != nil && tracer.IsEnabled() && parentSpan != nil {
-		spanCtx = parentSpan.Context()
-		span = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "update-device-metrics")
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "update-device-metrics")
 
 		span.SetAttributes(
 			attribute.String("device.name", deviceName),
