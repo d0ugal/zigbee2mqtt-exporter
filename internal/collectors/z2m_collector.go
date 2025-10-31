@@ -461,10 +461,7 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-bridge-devices")
@@ -473,10 +470,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 			attribute.String("message.type", "bridge/devices"),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	processStart := time.Now()
@@ -951,10 +945,7 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "process-availability")
@@ -963,10 +954,7 @@ func (c *Z2MCollector) processAvailabilityMessage(ctx context.Context, msg Z2MMe
 			attribute.String("message.type", "availability"),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	updateStart := time.Now()
@@ -1214,8 +1202,6 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			attribute.Int("metrics_count", metricsUpdated),
 		)
 	}
-
-	_ = spanCtx // Use spanCtx for future operations if needed
 }
 
 // parseISOTimestamp parses an ISO timestamp to Unix timestamp
