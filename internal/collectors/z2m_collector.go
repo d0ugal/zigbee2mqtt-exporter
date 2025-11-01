@@ -126,7 +126,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		var connectCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if collectorSpan != nil {
-			connectCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+			connectCtx = collectorSpan.Context()
 		} else {
 			connectCtx = ctx
 		}
@@ -175,7 +175,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		var readCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if collectorSpan != nil {
-			readCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+			readCtx = collectorSpan.Context()
 		} else {
 			readCtx = ctx
 		}
@@ -193,7 +193,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -252,7 +252,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -336,10 +336,10 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			)
 		}
 
-		var messageCtx context.Context
+		var messageCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if readSpan != nil {
-			messageCtx = readSpan.Context()
+			messageCtx = readSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		} else {
 			messageCtx = spanCtx
 		}
@@ -792,7 +792,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 			attribute.String("message.type", "bridge/logging"),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -856,7 +856,7 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 			attribute.Int("logging.message_length", len(message)),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1023,7 +1023,7 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage)
 			attribute.String("message.type", "device"),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
