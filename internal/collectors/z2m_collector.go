@@ -1013,7 +1013,7 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage)
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
