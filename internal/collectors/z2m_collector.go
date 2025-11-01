@@ -203,7 +203,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 			attribute.String("websocket.url", c.cfg.WebSocket.URL),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -262,7 +262,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			attribute.String("websocket.url", c.cfg.WebSocket.URL),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -339,7 +339,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 		var messageCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if readSpan != nil {
-			messageCtx = readSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+			messageCtx = readSpan.Context()
 		} else {
 			messageCtx = spanCtx
 		}
@@ -355,7 +355,7 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 
 	var (
 		collectorSpan *tracing.CollectorSpan
-		spanCtx       context.Context
+		spanCtx       context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -782,7 +782,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -846,7 +846,7 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
