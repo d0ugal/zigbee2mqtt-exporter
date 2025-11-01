@@ -203,7 +203,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 			attribute.String("websocket.url", c.cfg.WebSocket.URL),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -262,7 +262,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 			attribute.String("websocket.url", c.cfg.WebSocket.URL),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -792,7 +792,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 			attribute.String("message.type", "bridge/logging"),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -856,7 +856,7 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 			attribute.Int("logging.message_length", len(message)),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1023,7 +1023,7 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage)
 			attribute.String("message.type", "device"),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
