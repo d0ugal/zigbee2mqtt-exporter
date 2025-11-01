@@ -123,10 +123,10 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		default:
 		}
 
-		var connectCtx context.Context
+		var connectCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if collectorSpan != nil {
-			connectCtx = collectorSpan.Context()
+			connectCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		} else {
 			connectCtx = ctx
 		}
@@ -172,10 +172,10 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(1)
 
 		// Start reading messages
-		var readCtx context.Context
+		var readCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 		if collectorSpan != nil {
-			readCtx = collectorSpan.Context()
+			readCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		} else {
 			readCtx = ctx
 		}
@@ -474,6 +474,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 	}
 
 	processStart := time.Now()
+
 	devicesData, ok := msg.Payload.([]interface{})
 	if !ok {
 		// Try parsing as array directly
@@ -679,6 +680,7 @@ func (c *Z2MCollector) processBridgeStateMessage(ctx context.Context, msg Z2MMes
 
 		defer span.End()
 	}
+
 	updateStart := time.Now()
 
 	payloadMap, ok := msg.Payload.(map[string]interface{})
@@ -736,6 +738,7 @@ func (c *Z2MCollector) processBridgeEventMessage(ctx context.Context, msg Z2MMes
 
 		defer span.End()
 	}
+
 	updateStart := time.Now()
 
 	payloadMap, ok := msg.Payload.(map[string]interface{})
@@ -794,6 +797,7 @@ func (c *Z2MCollector) processLoggingMessage(ctx context.Context, msg Z2MMessage
 	} else {
 		spanCtx = ctx
 	}
+
 	processStart := time.Now()
 
 	payloadMap, ok := msg.Payload.(map[string]interface{})
@@ -1080,11 +1084,13 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 	}
 
 	updateStart := time.Now()
+
 	var metricsUpdated int
 	// Increment seen count
 	c.metrics.DeviceSeenCount.With(prometheus.Labels{
 		"device": deviceName,
 	}).Inc()
+
 	metricsUpdated++
 
 	// Update last seen timestamp
@@ -1093,6 +1099,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			c.metrics.DeviceLastSeen.With(prometheus.Labels{
 				"device": deviceName,
 			}).Set(float64(timestamp))
+
 			metricsUpdated++
 
 			if span != nil {
@@ -1110,6 +1117,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 		c.metrics.DeviceLinkQuality.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(linkQuality)
+
 		metricsUpdated++
 
 		if span != nil {
@@ -1129,6 +1137,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 		c.metrics.DeviceState.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(stateValue)
+
 		metricsUpdated++
 
 		if span != nil {
@@ -1146,23 +1155,29 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 	if battery, ok := data["battery"].(float64); ok {
 		batteryValue = battery
 		batteryField = "battery"
+
 		c.metrics.DeviceBattery.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(battery)
+
 		metricsUpdated++
 	} else if battery, ok := data["battery_level"].(float64); ok {
 		batteryValue = battery
 		batteryField = "battery_level"
+
 		c.metrics.DeviceBattery.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(battery)
+
 		metricsUpdated++
 	} else if battery, ok := data["battery_percentage"].(float64); ok {
 		batteryValue = battery
 		batteryField = "battery_percentage"
+
 		c.metrics.DeviceBattery.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(battery)
+
 		metricsUpdated++
 	} else if battery, ok := data["battery_voltage"].(float64); ok {
 		// Convert voltage to percentage (typical range: 2.5V-3.3V for Li-ion)
@@ -1176,9 +1191,11 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 
 		batteryValue = batteryPercent
 		batteryField = "battery_voltage"
+
 		c.metrics.DeviceBattery.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(batteryPercent)
+
 		metricsUpdated++
 	}
 
