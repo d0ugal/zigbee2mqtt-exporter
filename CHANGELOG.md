@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.1.4...v3.2.0) (2025-11-02)
+
+
+### Features
+
+* add dev-tag Makefile target ([e241b64](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e241b64aa5f9caa2276ae6021ab7d3d7cb3ffe0a))
+* add duplication linter (dupl) to golangci configuration ([1f854e5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1f854e5faad718a2386f559ce88ed122470c7533))
+* add tracing configuration support ([448298c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/448298cab99b55ec82058bf8ccaeb1e9f97a6fd7))
+* **ci:** add auto-format workflow ([a48e8cb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a48e8cbf9bf974ca9d332e4bd43f239efd144ce4))
+* enhance tracing support with detailed spans ([f64ab1c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f64ab1c5f5eddf7807749c931e65ac35c0e777ca))
+* integrate OpenTelemetry tracing into collector ([a15d73e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a15d73e20c73d520a2fe4a70a58dec891e34cf76))
+* trigger CI after auto-format workflow completes ([3627331](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/362733183f2e3f93eb9bbda876029a1add18db13))
+
+
+### Bug Fixes
+
+* add nolint comment for remaining contextcheck error ([3ddaa4a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3ddaa4ac3863ae2a752c252d285ccadf3b8e07d4))
+* add nolint comments for contextcheck on span context extraction ([dcc897d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dcc897d1bdcb92b6caadf9c18fb3d4d093740ef6))
+* add nolint comments for contextcheck on variable declarations and assignments ([7e42002](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7e42002e8e5503074ebbfee7790bc1adcad2f96b))
+* add nolint comments to remaining contextcheck errors and remove unused nolint from assignments ([16b9af4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/16b9af474ee62db5e91407409ca5e266a8b5f154))
+* add nolint comments to span.Context() calls ([35b404b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/35b404b565d9d7739fc25747392095251d2e2a4b))
+* correct label mapping for device metrics ([a83ab2d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a83ab2d710ad80c55b87d6e87551c7d4c363de07))
+* format code and fix linting issues ([b21a3b8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b21a3b8bd4660437b4a6d29625f72d9ba80b65ef))
+* remove unused spanCtx variables and undefined reference ([8892716](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8892716eac5f5fb7ffa10febd6b55577050e2382))
+* Update google.golang.org/genproto/googleapis/api digest to ab9386a ([0525fce](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0525fced41b26b5c3846d8999b84f79eae72245c))
+* Update google.golang.org/genproto/googleapis/rpc digest to ab9386a ([352b510](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/352b510cde2c3e8a38c38c2881ceacd5778920d1))
+* Update module github.com/bytedance/sonic to v1.14.2 ([4a6a495](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4a6a495c2cdf25f1e3a5e89889cd73e9b5f5b5db))
+* Update module github.com/d0ugal/promexporter to v1.6.1 ([ca696a7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ca696a792c84fc3ed05f4827a8f68581a7b40f6f))
+* Update module github.com/d0ugal/promexporter to v1.7.1 ([ec4acb8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ec4acb8115f801efd720db40e068cada5c25f026))
+* Update module github.com/d0ugal/promexporter to v1.8.0 ([2276d4a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2276d4aa3f747a5d9b77cd56966e090e8ea734a5))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.11 ([5e5ed47](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5e5ed470cbcf011e3a15a3fa5d35b51e86ad3cf8))
+* Update module github.com/prometheus/common to v0.67.2 ([666fdc7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/666fdc7fc564f9d3038f13aaacdc09b235f8104b))
+* Update module github.com/prometheus/procfs to v0.19.2 ([5180392](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/51803922da7e612ee85e8a6b48dda730a023e31f))
+* Update module github.com/ugorji/go/codec to v1.3.1 ([85bb7db](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/85bb7dbcd5a77a38f8bb0dc0bd1d497bb3a9eca7))
+
 ## [3.1.4](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.1.3...v3.1.4) (2025-10-27)
 
 
