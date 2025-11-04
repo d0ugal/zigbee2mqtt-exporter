@@ -31,7 +31,11 @@ func main() {
 	}
 
 	// Load configuration from environment variables
-	cfg := config.LoadFromEnvironment()
+	cfg, err := config.LoadFromEnvironment()
+	if err != nil {
+		slog.Error("Failed to load configuration", "error", err)
+		os.Exit(1)
+	}
 
 	// Configure logging using promexporter
 	logging.Configure(&logging.Config{

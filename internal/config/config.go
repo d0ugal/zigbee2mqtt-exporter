@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -20,7 +21,7 @@ type WebSocketConfig struct {
 }
 
 // LoadFromEnvironment loads configuration from environment variables
-func LoadFromEnvironment() *Config {
+func LoadFromEnvironment() (*Config, error) {
 	cfg := &Config{}
 
 	// Load base configuration from environment
@@ -60,21 +61,13 @@ func LoadFromEnvironment() *Config {
 	baseConfig.Metrics.Collection.DefaultInterval = config.Duration{}
 	baseConfig.Metrics.Collection.DefaultIntervalSet = false
 
-	// Tracing configuration
-	if enabledStr := os.Getenv("TRACING_ENABLED"); enabledStr != "" {
-		enabled := enabledStr == "true"
-		baseConfig.Tracing.Enabled = &enabled
-	}
-
-	if serviceName := os.Getenv("TRACING_SERVICE_NAME"); serviceName != "" {
-		baseConfig.Tracing.ServiceName = serviceName
-	}
-
-	if endpoint := os.Getenv("TRACING_ENDPOINT"); endpoint != "" {
-		baseConfig.Tracing.Endpoint = endpoint
-	}
-
 	cfg.BaseConfig = *baseConfig
+
+	// Apply generic environment variables (TRACING_ENABLED, PROFILING_ENABLED, etc.)
+	// These are handled by promexporter and are shared across all exporters
+	if err := config.ApplyGenericEnvVars(&cfg.BaseConfig); err != nil {
+		return nil, fmt.Errorf("failed to apply generic environment variables: %w", err)
+	}
 
 	// WebSocket configuration
 	if url := os.Getenv("Z2M_EXPORTER_WEBSOCKET_URL"); url != "" {
@@ -83,5 +76,5 @@ func LoadFromEnvironment() *Config {
 		cfg.WebSocket.URL = "ws://localhost:8081/api"
 	}
 
-	return cfg
+	return cfg, nil
 }
