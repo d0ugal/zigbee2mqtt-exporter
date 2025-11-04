@@ -7,7 +7,10 @@ import (
 
 func TestLoadFromEnvironment(t *testing.T) {
 	// Test default values
-	cfg := LoadFromEnvironment()
+	cfg, err := LoadFromEnvironment()
+	if err != nil {
+		t.Fatalf("Failed to load configuration: %v", err)
+	}
 
 	if cfg.Server.Host != "0.0.0.0" {
 		t.Errorf("Expected default server host to be '0.0.0.0', got '%s'", cfg.Server.Host)
@@ -46,7 +49,10 @@ func TestLoadFromEnvironmentWithCustomValues(t *testing.T) {
 		_ = os.Unsetenv("Z2M_EXPORTER_WEBSOCKET_URL")
 	}()
 
-	cfg := LoadFromEnvironment()
+	cfg, err := LoadFromEnvironment()
+	if err != nil {
+		t.Fatalf("Failed to load configuration: %v", err)
+	}
 
 	if cfg.Server.Host != "127.0.0.1" {
 		t.Errorf("Expected server host to be '127.0.0.1', got '%s'", cfg.Server.Host)
@@ -77,7 +83,10 @@ func TestLoadFromEnvironmentWithInvalidPort(t *testing.T) {
 		_ = os.Unsetenv("Z2M_EXPORTER_SERVER_PORT")
 	}()
 
-	cfg := LoadFromEnvironment()
+	cfg, err := LoadFromEnvironment()
+	if err != nil {
+		t.Fatalf("Failed to load configuration: %v", err)
+	}
 
 	// Should fall back to default port
 	if cfg.Server.Port != 8087 {
