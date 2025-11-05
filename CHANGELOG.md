@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.2.0...v3.2.1) (2025-11-04)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to f26f940 ([c73fb26](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c73fb26807ec5e47273e7136d07d2ed47d67e248))
+* Update google.golang.org/genproto/googleapis/rpc digest to f26f940 ([08a4376](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/08a43764be070a7eca707735e95bdc52e5948718))
+* Update module github.com/d0ugal/promexporter to v1.9.0 ([e23b8f9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e23b8f9365089c23f0233a46c8ab54faf160af9e))
+* Update module go.opentelemetry.io/proto/otlp to v1.9.0 ([3807daa](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3807daa07f68989cb2991d1794aa57724c82603f))
+* update tests for LoadFromEnvironment error return ([3a1cc52](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3a1cc52f712941d7805112205d0e097c67148c22))
+
 ## [3.2.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.1.4...v3.2.0) (2025-11-02)
 
 
