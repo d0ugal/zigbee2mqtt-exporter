@@ -2,7 +2,7 @@ module github.com/d0ugal/zigbee2mqtt-exporter
 
 go 1.25
 
-toolchain go1.25.3
+toolchain go1.25.4
 
 require (
 	github.com/d0ugal/promexporter v1.11.0
