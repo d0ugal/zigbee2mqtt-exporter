@@ -6,19 +6,6 @@
   automerge: true,
   packageRules: [
     {
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-      automerge: true,
-    },
-    {
-      matchDepTypes: [
-        'devDependencies',
-      ],
-      automerge: true,
-    },
-    {
       matchManagers: [
         'gomod',
       ],
