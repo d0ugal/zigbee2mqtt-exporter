@@ -22,14 +22,16 @@ jobs:
     - uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.RELEASE_TOKEN }}
     
     - uses: googleapis/release-please-action@v4
       id: release_please
       with:
         release-type: go
         path: .
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.RELEASE_TOKEN }}
+        default-branch: main
+        fork: false
 
     # Debug info
     - name: Debug Release Info
