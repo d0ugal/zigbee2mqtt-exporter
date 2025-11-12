@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'release-please--branches--main' ]
   pull_request:
     paths-ignore:
       - CHANGELOG.md
@@ -134,8 +134,21 @@ jobs:
         echo "Commit message: $COMMIT_MSG"
         
         # Check if it's a release commit (pattern: "chore(main): release" or similar)
+        # BUT: Always run CI for release-please branches and PRs
         if echo "$COMMIT_MSG" | grep -qiE "^(chore|release|version).*(release|version|changelog)"; then
-          echo "Skip reason: Release commit detected"
+          # Check if this is from a release-please branch (should always run CI)
+          if echo "${{ github.ref }}" | grep -qiE "release-please"; then
+            echo "Release commit from release-please branch - running CI"
+            echo "should-build=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          # Check if commit message explicitly says to skip CI
+          if echo "$COMMIT_MSG" | grep -qiE "[skip ci]|[ci skip]|skip ci"; then
+            echo "Skip reason: [skip ci] detected in commit message"
+            echo "should-build=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "Skip reason: Release commit detected (not from release-please branch)"
           echo "should-build=false" >> $GITHUB_OUTPUT
           exit 0
         fi
