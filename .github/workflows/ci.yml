@@ -136,9 +136,9 @@ jobs:
         # Check if it's a release commit (pattern: "chore(main): release" or similar)
         # BUT: Always run CI for release-please branches and PRs
         if echo "$COMMIT_MSG" | grep -qiE "^(chore|release|version).*(release|version|changelog)"; then
-          # Check if this is from a release-please branch (should always run CI)
-          if echo "${{ github.ref }}" | grep -qiE "release-please"; then
-            echo "Release commit from release-please branch - running CI"
+          # Check if this is from a release-please branch or PR (should always run CI)
+          if echo "${{ github.ref }}" | grep -qiE "release-please" || echo "${{ github.head_ref }}" | grep -qiE "release-please"; then
+            echo "Release commit from release-please branch/PR - running CI"
             echo "should-build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
