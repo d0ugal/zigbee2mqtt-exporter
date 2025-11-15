@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.2](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.1...v3.3.2) (2025-11-15)
+
+
+### Bug Fixes
+
+* **collectors:** fix memory leak in readMessages loop ([a30c337](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a30c337c847d7a6375a21aabd9ab6efaed14ce11))
+
 ## [3.3.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.0...v3.3.1) (2025-11-12)
 
 
