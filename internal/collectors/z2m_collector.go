@@ -299,8 +299,6 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 
 		if tracer != nil && tracer.IsEnabled() {
 			readSpan = tracer.NewCollectorSpan(spanCtx, "z2m-collector", "read-message")
-
-			defer readSpan.End()
 		}
 
 		_, message, err := c.conn.ReadMessage()
@@ -313,6 +311,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 					attribute.Bool("read.success", false),
 				)
 				readSpan.RecordError(err)
+				readSpan.End()
 			}
 
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
@@ -345,6 +344,12 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 		}
 
 		c.processMessage(messageCtx, message)
+
+		// Explicitly end the span at the end of each iteration to prevent memory leaks
+		// This ensures spans are properly finalized and can be garbage collected
+		if readSpan != nil {
+			readSpan.End()
+		}
 	}
 }
 
