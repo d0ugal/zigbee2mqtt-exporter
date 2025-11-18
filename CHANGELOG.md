@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.3](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.2...v3.3.3) (2025-11-18)
+
+
+### Bug Fixes
+
+* Update module google.golang.org/grpc to v1.77.0 ([e6b9d22](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e6b9d22f0721d79bd7a9b7d4a1d53e35bf2cb779))
+
 ## [3.3.2](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.1...v3.3.2) (2025-11-15)
 
 
