@@ -38,6 +38,7 @@
         'gomod',
       ],
       commitMessagePrefix: 'fix:',
+      commitMessageAction: 'update',
     },
   ],
   customManagers: [
