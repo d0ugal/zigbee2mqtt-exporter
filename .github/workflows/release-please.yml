@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0
         token: ${{ secrets.RELEASE_TOKEN }}
-    
+
     - uses: googleapis/release-please-action@v4
       id: release_please
       with:

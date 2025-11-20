@@ -36,4 +36,3 @@ jobs:
           commit_user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_options: '--no-verify --no-gpg-sign'
           skip_dirty_check: false
-
