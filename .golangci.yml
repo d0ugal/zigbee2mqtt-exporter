@@ -17,7 +17,7 @@ linters:
     - contextcheck
     - wsl_v5
     - dupl
-    
+
   disable:
     - cyclop  # Too strict
     - depguard  # Allow internal imports
