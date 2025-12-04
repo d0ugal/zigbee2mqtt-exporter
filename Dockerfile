@@ -32,11 +32,9 @@ RUN VERSION=${VERSION:-$(git describe --tags --always --dirty 2>/dev/null || ech
     -o zigbee2mqtt-exporter ./cmd
 
 # Final stage
-FROM alpine:3.23.0
+FROM alpine:3.22.2
 
-# Workaround for Alpine 3.23.0 qemu emulation issue with apk triggers
-# Install ca-certificates without running triggers to avoid execve errors
-RUN apk --no-cache --no-scripts add ca-certificates
+RUN apk --no-cache add ca-certificates
 
 # Setup an unprivileged user
 RUN addgroup -g 1000 appgroup && \
