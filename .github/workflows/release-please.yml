@@ -30,7 +30,7 @@ jobs:
         release-type: go
         path: .
         token: ${{ secrets.RELEASE_TOKEN }}
-        default-branch: main
+        target-branch: main
         fork: false
 
     # Debug info
@@ -77,7 +77,6 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha,scope=release-${{ steps.release_please.outputs.tag_name }}
         cache-to: type=gha,mode=max,scope=release-${{ steps.release_please.outputs.tag_name }}
-        continue-on-error: false
         build-args: |
           VERSION=${{ steps.release_please.outputs.tag_name }}
           COMMIT=${{ github.sha }}
