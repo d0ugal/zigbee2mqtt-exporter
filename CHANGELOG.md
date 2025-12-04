@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.14...v3.4.0) (2025-12-04)
+
+
+### Features
+
+* **workflows:** build on PRs but only push on main branch ([a1216d3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a1216d34d8e422d322b23c4fe54ffcb9aab627a1))
+
 ## [3.3.14](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.13...v3.3.14) (2025-12-04)
 
 
