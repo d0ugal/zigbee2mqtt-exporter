@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.14](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.13...v3.3.14) (2025-12-04)
+
+
+### Bug Fixes
+
+* **docker:** use golang:1.25.4-alpine to avoid Alpine 3.23.0 qemu issues ([a041649](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a041649ce513d20206888b8da5708f3432e35459))
+* **docker:** workaround for Alpine 3.23.0 qemu emulation issue ([25522fb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/25522fb98eb3b2379d1d7772c7c667ca58523cf2))
+* **workflows:** remove invalid continue-on-error from dev-build workflow ([dfc3a48](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dfc3a4885425de90b1ca694fae14b1778e81d81d))
+
+
+### Reverts
+
+* **docker:** revert to Alpine 3.22.2 to fix ARM64 build issues ([3fc3966](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3fc39667619fbc8a94d4168048482b5c2407fc59))
+
 ## [3.3.13](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.12...v3.3.13) (2025-12-04)
 
 
