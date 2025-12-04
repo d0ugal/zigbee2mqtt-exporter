@@ -34,7 +34,9 @@ RUN VERSION=${VERSION:-$(git describe --tags --always --dirty 2>/dev/null || ech
 # Final stage
 FROM alpine:3.23.0
 
-RUN apk --no-cache add ca-certificates
+# Workaround for Alpine 3.23.0 qemu emulation issue with apk triggers
+# Install ca-certificates without running triggers to avoid execve errors
+RUN apk --no-cache --no-scripts add ca-certificates
 
 # Setup an unprivileged user
 RUN addgroup -g 1000 appgroup && \
