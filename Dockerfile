@@ -1,5 +1,6 @@
 # Build stage
-FROM golang:1.25.5-alpine AS builder
+# Use golang:1.25.4-alpine which uses Alpine 3.22.2 to avoid qemu emulation issues
+FROM golang:1.25.4-alpine AS builder
 
 WORKDIR /app
 
@@ -32,7 +33,7 @@ RUN VERSION=${VERSION:-$(git describe --tags --always --dirty 2>/dev/null || ech
     -o zigbee2mqtt-exporter ./cmd
 
 # Final stage
-FROM alpine:3.23.0
+FROM alpine:3.22.2
 
 RUN apk --no-cache add ca-certificates
 
