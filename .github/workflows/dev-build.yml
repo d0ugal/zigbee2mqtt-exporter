@@ -159,7 +159,6 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=min
-          continue-on-error: false
           build-args: |
             VERSION=${{ steps.meta.outputs.dev_tag }}
             COMMIT=${{ github.sha }}
