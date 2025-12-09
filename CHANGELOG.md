@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.0...v3.4.1) (2025-12-09)
+
+
+### Bug Fixes
+
+* **ci:** add GOMODCACHE env var to fix permission denied error ([1d26ff1](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1d26ff1d50816ec668e2999cb5ebf63759bc86d9))
+* Update module golang.org/x/crypto to v0.46.0 ([51901e0](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/51901e09f3c19b5eda8793d4c4a5619815e0af51))
+* Update module golang.org/x/net to v0.48.0 ([d6b4a67](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d6b4a67916ec41f2681e672fe037f6bcf3d28f9b))
+* Update module golang.org/x/sys to v0.39.0 ([d889794](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d8897947e93cf5decdaea5c309126b689be9f0c3))
+* Update opentelemetry-go monorepo to v1.39.0 ([8e09198](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8e091982515e85bc0296171ee9d3ad93c1734079))
+* Update opentelemetry-go-contrib monorepo to v0.64.0 ([d611af2](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d611af2356967dddc8bb999461a12d7a16c397ff))
+
 ## [3.4.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.3.14...v3.4.0) (2025-12-04)
 
 
