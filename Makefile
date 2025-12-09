@@ -35,6 +35,7 @@ fmt:
 	docker run --rm \
 		-u "$(shell id -u):$(shell id -g)" \
 		-e GOCACHE=/tmp/go-cache \
+		-e GOMODCACHE=/tmp/go-mod-cache \
 		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
@@ -47,6 +48,7 @@ lint:
 	docker run --rm \
 		-u "$(shell id -u):$(shell id -g)" \
 		-e GOCACHE=/tmp/go-cache \
+		-e GOMODCACHE=/tmp/go-mod-cache \
 		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
@@ -59,6 +61,7 @@ lint-only:
 	docker run --rm \
 		-u "$(shell id -u):$(shell id -g)" \
 		-e GOCACHE=/tmp/go-cache \
+		-e GOMODCACHE=/tmp/go-mod-cache \
 		-e GOLANGCI_LINT_CACHE=/tmp/golangci-lint-cache \
 		-v "$(PWD):/app" \
 		-v "$(HOME)/.cache:/tmp/cache" \
