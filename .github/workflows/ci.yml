@@ -74,7 +74,7 @@ jobs:
           go build -v -ldflags="-s -w" -o zigbee2mqtt-exporter ./cmd
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: zigbee2mqtt-exporter
           path: zigbee2mqtt-exporter
