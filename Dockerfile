@@ -33,7 +33,7 @@ RUN VERSION=${VERSION:-$(git describe --tags --always --dirty 2>/dev/null || ech
     -o zigbee2mqtt-exporter ./cmd
 
 # Final stage
-FROM alpine:3.22.2
+FROM alpine:3.23.2
 
 RUN apk --no-cache add ca-certificates
 
