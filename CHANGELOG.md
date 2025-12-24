@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.10](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.9...v3.4.10) (2025-12-24)
+
+
+### Bug Fixes
+
+* Update module github.com/go-playground/validator/v10 to v10.30.1 ([0be0525](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0be0525aa1e47c72c0b278148a047439c6c8e67f))
+
 ## [3.4.9](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.8...v3.4.9) (2025-12-23)
 
 
