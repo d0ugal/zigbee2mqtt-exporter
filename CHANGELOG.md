@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.11](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.10...v3.4.11) (2025-12-27)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.12 ([186f934](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/186f9348c1915c685915be0894a1b2ec648ea2d8))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.4 ([7892b70](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7892b705b31b9a5127456c5a6497001814c300e1))
+
 ## [3.4.10](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.9...v3.4.10) (2025-12-24)
 
 
