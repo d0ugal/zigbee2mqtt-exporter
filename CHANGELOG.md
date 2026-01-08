@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.14](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.13...v3.4.14) (2026-01-08)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.14 ([c14c3b5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c14c3b583047c839c3f83a53040a2781c6b66c79))
+* Update module golang.org/x/sys to v0.40.0 ([d4f93c3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d4f93c3b04b7d2cec0b16460af051e905f9e36be))
+
 ## [3.4.13](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.12...v3.4.13) (2026-01-08)
 
 
