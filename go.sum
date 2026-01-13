@@ -12,8 +12,8 @@ github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UF
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cloudwego/base64x v0.1.6 h1:t11wG9AECkCDk5fMSoxmufanudBtJ+/HemLstXDLI2M=
 github.com/cloudwego/base64x v0.1.6/go.mod h1:OFcloc187FXDaYHvrNIjxSe8ncn0OOM8gEHfghB2IPU=
-github.com/d0ugal/promexporter v1.14.17 h1:Qz0AfWvlgWq/hBSJ76MPwHopj8xdOjiaMvzrCF1z9MM=
-github.com/d0ugal/promexporter v1.14.17/go.mod h1:f70xYGC2v78IbU9135CwXcXxtATxdYiaukO833QZW9U=
+github.com/d0ugal/promexporter v1.14.18 h1:ZUw85PTOLiHy/TERhOUKwKCAOKq16j0TiOdyJYw5/w4=
+github.com/d0ugal/promexporter v1.14.18/go.mod h1:GKbPX7olWtOVejdkYmc/UReGTiGxfmcy1JtUw2B8r64=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
