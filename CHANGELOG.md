@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.18](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.17...v3.4.18) (2026-01-16)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.6 ([4cb1a68](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4cb1a68de8ffcd759b14e02f61524723da4c647c))
+* Update module github.com/klauspost/compress to v1.18.3 ([00349c5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/00349c559d8035e8a70583d426030d8b5e0985fe))
+
 ## [3.4.17](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.16...v3.4.17) (2026-01-14)
 
 
