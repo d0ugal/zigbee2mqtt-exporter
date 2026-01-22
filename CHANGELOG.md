@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.19](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.18...v3.4.19) (2026-01-17)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.21 ([84bf347](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/84bf3479ef63003546950fd10387a436e20aa82c))
+
+## [3.4.18](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.17...v3.4.18) (2026-01-16)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.6 ([4cb1a68](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4cb1a68de8ffcd759b14e02f61524723da4c647c))
+* Update module github.com/klauspost/compress to v1.18.3 ([00349c5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/00349c559d8035e8a70583d426030d8b5e0985fe))
+
+## [3.4.17](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.16...v3.4.17) (2026-01-14)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 3f89685 ([37fa969](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/37fa969c72ed4f451c57e58d7439ded14251f941))
+* Update google.golang.org/genproto/googleapis/api digest to 99fd39f ([45dd6c2](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/45dd6c2d27c2e80452f67736c72dec88e8c6ebd6))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3f89685 ([59e31b7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/59e31b726c4acf60057e47a9156ddf0e9ee550d6))
+* Update google.golang.org/genproto/googleapis/rpc digest to 99fd39f ([f425fbe](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f425fbe23b9b1c538387c59e2276ceaf686db182))
+* Update module github.com/d0ugal/promexporter to v1.14.18 ([09f97c4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/09f97c459f94494b7b9c6a6413705332a162159b))
+* Update module github.com/d0ugal/promexporter to v1.14.19 ([cb8b8f2](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/cb8b8f2ba1143a3d1bf84aa7106839bbb7395a57))
+* Update module github.com/d0ugal/promexporter to v1.14.20 ([f1e49c2](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f1e49c2e627d8ae6ff388cd37b09ad8fd32cdae2))
+* Update module golang.org/x/crypto to v0.47.0 ([0e0f9a6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0e0f9a6a335b0cb23236abd363db18dfa9d0a333))
+
 ## [3.4.16](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.15...v3.4.16) (2026-01-11)
 
 
