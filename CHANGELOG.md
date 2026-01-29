@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.21](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.20...v3.4.21) (2026-01-29)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 8636f87 ([6cb4101](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/6cb410184d0669cda391aec21d24b0b8a33dfb42))
+* Update google.golang.org/genproto/googleapis/api digest to d11affd ([19ca07b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/19ca07b932c4c9a56a288d63aea9f19f68e82a9e))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8636f87 ([e473138](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e473138e47519c7dc820491236dd707d8d5c4409))
+* Update google.golang.org/genproto/googleapis/rpc digest to d11affd ([b532da8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b532da81b7aa14c59d23e59baab8db68c7e98786))
+* Update module github.com/d0ugal/promexporter to v1.14.25 ([5f6918b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5f6918b35c55e11e5fc0a24d287d7578d075b18a))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.6 ([bc1339d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/bc1339d8a4cef917a098e8e07c3561c106192850))
+
 ## [3.4.20](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.19...v3.4.20) (2026-01-23)
 
 
