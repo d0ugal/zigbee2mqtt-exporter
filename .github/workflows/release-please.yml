@@ -68,7 +68,7 @@ jobs:
 
     - name: Build and push Docker image
       if: steps.release_please.outputs.release_created == 'true'
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7
       with:
         context: .
         platforms: linux/amd64,linux/arm64
