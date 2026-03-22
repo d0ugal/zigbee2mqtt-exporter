@@ -1,7 +1,7 @@
 .PHONY: help build test lint clean fmt lint-only dev-tag
 
 # Docker image versions
-GOLANGCI_LINT_VERSION := v2.11.3
+GOLANGCI_LINT_VERSION := v2.11.4
 
 # Default target
 help:
