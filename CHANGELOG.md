@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.23](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.22...v3.4.23) (2026-03-24)
+
+
+### Bug Fixes
+
+* Update module github.com/pelletier/go-toml/v2 to v2.3.0 ([db1106c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/db1106c025eb302e15798eefe155270b9eed3bfb))
+
 ## [3.4.22](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.21...v3.4.22) (2026-03-23)
 
 
