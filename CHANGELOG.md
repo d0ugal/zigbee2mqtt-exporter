@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.26](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.25...v3.4.26) (2026-03-28)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic/loader to v0.5.1 ([1c9ab20](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1c9ab200787b5f4059122d4070687f0af3010af5))
+* Update module github.com/d0ugal/promexporter to v1.14.29 ([51821ca](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/51821ca61b2b22b78a85cf53bcb4ac6c8eadff6c))
+* Update module github.com/gin-contrib/sse to v1.1.1 ([97eb248](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/97eb24867108986a3cfd13aeb01608f764cb6bff))
+
 ## [3.4.25](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.24...v3.4.25) (2026-03-26)
 
 
