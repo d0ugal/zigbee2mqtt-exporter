@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.36](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.35...v3.4.36) (2026-04-08)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.26.2 ([9575fd8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9575fd87fda9e5729e3f84723f0d957e247ef07c))
+
 ## [3.4.35](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.34...v3.4.35) (2026-04-07)
 
 
