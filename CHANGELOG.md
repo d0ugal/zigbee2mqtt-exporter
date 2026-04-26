@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.46](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.45...v3.4.46) (2026-04-26)
+
+
+### Bug Fixes
+
+* remove trailing blank line in commits.yml ([27e7124](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/27e7124abbc8b4423e65c4f3bcef39c050715a72))
+* Update module github.com/d0ugal/promexporter to v1.14.43 ([8b4ba71](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8b4ba71ffac05f40d3eef39413f911c5737e6860))
+* use RELEASE_TOKEN in auto-format workflow to trigger CI ([bbeff27](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/bbeff27c66979d5007f296fc487448e0bcb2133e))
+
 ## [3.4.45](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.44...v3.4.45) (2026-04-21)
 
 
