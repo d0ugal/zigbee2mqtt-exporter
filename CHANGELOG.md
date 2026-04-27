@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.47](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.46...v3.4.47) (2026-04-27)
+
+
+### Bug Fixes
+
+* Update module github.com/mattn/go-isatty to v0.0.22 ([bc0d412](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/bc0d4121a954ac3fe3715b937328e6c944ed26a2))
+
 ## [3.4.46](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.45...v3.4.46) (2026-04-26)
 
 
