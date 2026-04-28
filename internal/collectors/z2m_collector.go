@@ -1204,6 +1204,31 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 		metricsUpdated++
 	}
 
+	// Update OTA state from the "update" object published on device state topics.
+	// Z2M publishes update.state as idle|available|scheduled|updating alongside
+	// device state — available/scheduled/updating all mean an update is pending.
+	if updateData, ok := data["update"].(map[string]interface{}); ok {
+		if otaState, ok := updateData["state"].(string); ok {
+			updateAvailable := 0.0
+			if otaState == "available" || otaState == "scheduled" || otaState == "updating" {
+				updateAvailable = 1.0
+			}
+
+			c.metrics.DeviceOTAUpdateAvailable.With(prometheus.Labels{
+				"device": deviceName,
+			}).Set(updateAvailable)
+
+			metricsUpdated++
+
+			if span != nil {
+				span.SetAttributes(
+					attribute.String("device.ota_state", otaState),
+					attribute.Float64("device.ota_update_available", updateAvailable),
+				)
+			}
+		}
+	}
+
 	updateDuration := time.Since(updateStart)
 
 	if span != nil {
