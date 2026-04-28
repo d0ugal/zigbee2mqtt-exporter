@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.49](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.48...v3.4.49) (2026-04-28)
+
+
+### Bug Fixes
+
+* parse update.state from device messages to set OTA update metric ([c807797](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c807797cdd56c87397f86f974059f13f9c696f78))
+
 ## [3.4.48](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.47...v3.4.48) (2026-04-28)
 
 
