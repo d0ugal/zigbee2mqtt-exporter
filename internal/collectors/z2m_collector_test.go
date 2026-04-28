@@ -71,6 +71,7 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 			labels := prometheus.Labels{"device": "test_device"}
 			check := func(name string, vec *prometheus.GaugeVec, want float64) {
 				t.Helper()
+
 				if got := testutil.ToFloat64(vec.With(labels)); got != want {
 					t.Errorf("OTA state %q: %s = %v, want %v", tt.otaState, name, got, want)
 				}

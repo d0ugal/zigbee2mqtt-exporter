@@ -1230,6 +1230,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			c.metrics.DeviceOTAUpdateAvailable.With(labels).Set(available)
 			c.metrics.DeviceOTAUpdateScheduled.With(labels).Set(scheduled)
 			c.metrics.DeviceOTAUpdateUpdating.With(labels).Set(updating)
+
 			metricsUpdated += 4
 
 			if span != nil {
