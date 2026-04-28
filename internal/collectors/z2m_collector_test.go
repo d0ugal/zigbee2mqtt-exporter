@@ -41,14 +41,17 @@ func TestNewZ2MCollector(t *testing.T) {
 
 func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 	tests := []struct {
-		name          string
-		otaState      string
-		expectedGauge float64
+		name      string
+		otaState  string
+		wantIdle  float64
+		wantAvail float64
+		wantSched float64
+		wantUpd   float64
 	}{
-		{"idle means no update", "idle", 0.0},
-		{"available means update pending", "available", 1.0},
-		{"scheduled means update pending", "scheduled", 1.0},
-		{"updating means update in progress", "updating", 1.0},
+		{"idle", "idle", 1, 0, 0, 0},
+		{"available", "available", 0, 1, 0, 0},
+		{"scheduled", "scheduled", 0, 0, 1, 0},
+		{"updating", "updating", 0, 0, 0, 1},
 	}
 
 	for _, tt := range tests {
@@ -65,13 +68,18 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 
 			collector.updateDeviceMetrics(context.Background(), "test_device", payload)
 
-			got := testutil.ToFloat64(registry.DeviceOTAUpdateAvailable.With(prometheus.Labels{
-				"device": "test_device",
-			}))
-
-			if got != tt.expectedGauge {
-				t.Errorf("OTA state %q: got %v, want %v", tt.otaState, got, tt.expectedGauge)
+			labels := prometheus.Labels{"device": "test_device"}
+			check := func(name string, vec *prometheus.GaugeVec, want float64) {
+				t.Helper()
+				if got := testutil.ToFloat64(vec.With(labels)); got != want {
+					t.Errorf("OTA state %q: %s = %v, want %v", tt.otaState, name, got, want)
+				}
 			}
+
+			check("idle", registry.DeviceOTAUpdateIdle, tt.wantIdle)
+			check("available", registry.DeviceOTAUpdateAvailable, tt.wantAvail)
+			check("scheduled", registry.DeviceOTAUpdateScheduled, tt.wantSched)
+			check("updating", registry.DeviceOTAUpdateUpdating, tt.wantUpd)
 		})
 	}
 }

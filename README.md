@@ -17,7 +17,10 @@ A Prometheus exporter for Zigbee2MQTT that connects to the WebSocket API and exp
 - `zigbee2mqtt_device_info{device,type,power_source,manufacturer,model_id,supported,disabled,interview_state,software_build_id,date_code}` - Device information (always 1, used for joining)
 
 ### OTA Update Metrics
-- `zigbee2mqtt_device_ota_update_available{device}` - Device OTA update availability (1=available, 0=not_available)
+- `zigbee2mqtt_device_ota_update_idle{device}` - Device OTA state: idle (1=in this state)
+- `zigbee2mqtt_device_ota_update_available{device}` - Device OTA state: available (1=in this state)
+- `zigbee2mqtt_device_ota_update_scheduled{device}` - Device OTA state: scheduled (1=in this state)
+- `zigbee2mqtt_device_ota_update_updating{device}` - Device OTA state: updating (1=in this state)
 - `zigbee2mqtt_device_current_firmware_version{device,firmware_version}` - Device current firmware version (always 1, used for joining)
 - `zigbee2mqtt_device_available_firmware_version{device,firmware_version}` - Device available firmware version (always 1, used for joining)
 
@@ -141,6 +144,18 @@ count by (type) (zigbee2mqtt_device_info)
 ### Get devices with OTA updates available
 ```promql
 zigbee2mqtt_device_ota_update_available == 1
+```
+
+### Get devices currently updating
+```promql
+zigbee2mqtt_device_ota_update_updating == 1
+```
+
+### Get count of devices in each OTA state
+```promql
+sum(zigbee2mqtt_device_ota_update_available)
+sum(zigbee2mqtt_device_ota_update_scheduled)
+sum(zigbee2mqtt_device_ota_update_updating)
 ```
 
 ### Get unsupported devices
