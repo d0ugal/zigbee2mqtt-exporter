@@ -575,15 +575,17 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 				}).Set(1)
 			}
 
-			// Update OTA update availability
-			updateAvailable := 0.0
+			// Update OTA metrics from bridge/devices boolean (no state granularity here)
+			idle, available := 1.0, 0.0
 			if device.UpdateAvailable {
-				updateAvailable = 1.0
+				idle, available = 0.0, 1.0
 			}
 
-			c.metrics.DeviceOTAUpdateAvailable.With(prometheus.Labels{
-				"device": device.FriendlyName,
-			}).Set(updateAvailable)
+			labels := prometheus.Labels{"device": device.FriendlyName}
+			c.metrics.DeviceOTAUpdateIdle.With(labels).Set(idle)
+			c.metrics.DeviceOTAUpdateAvailable.With(labels).Set(available)
+			c.metrics.DeviceOTAUpdateScheduled.With(labels).Set(0)
+			c.metrics.DeviceOTAUpdateUpdating.With(labels).Set(0)
 		}
 
 		return
@@ -1205,25 +1207,34 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 	}
 
 	// Update OTA state from the "update" object published on device state topics.
-	// Z2M publishes update.state as idle|available|scheduled|updating alongside
-	// device state — available/scheduled/updating all mean an update is pending.
+	// Z2M publishes update.state as idle|available|scheduled|updating — each maps
+	// to its own gauge so callers can alert on available-only without noise from
+	// in-progress updates.
 	if updateData, ok := data["update"].(map[string]interface{}); ok {
 		if otaState, ok := updateData["state"].(string); ok {
-			updateAvailable := 0.0
-			if otaState == "available" || otaState == "scheduled" || otaState == "updating" {
-				updateAvailable = 1.0
+			idle, available, scheduled, updating := 0.0, 0.0, 0.0, 0.0
+
+			switch otaState {
+			case "available":
+				available = 1.0
+			case "scheduled":
+				scheduled = 1.0
+			case "updating":
+				updating = 1.0
+			default:
+				idle = 1.0
 			}
 
-			c.metrics.DeviceOTAUpdateAvailable.With(prometheus.Labels{
-				"device": deviceName,
-			}).Set(updateAvailable)
-
-			metricsUpdated++
+			labels := prometheus.Labels{"device": deviceName}
+			c.metrics.DeviceOTAUpdateIdle.With(labels).Set(idle)
+			c.metrics.DeviceOTAUpdateAvailable.With(labels).Set(available)
+			c.metrics.DeviceOTAUpdateScheduled.With(labels).Set(scheduled)
+			c.metrics.DeviceOTAUpdateUpdating.With(labels).Set(updating)
+			metricsUpdated += 4
 
 			if span != nil {
 				span.SetAttributes(
 					attribute.String("device.ota_state", otaState),
-					attribute.Float64("device.ota_update_available", updateAvailable),
 				)
 			}
 		}
