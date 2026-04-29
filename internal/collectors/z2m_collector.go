@@ -1210,6 +1210,8 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 	// Z2M publishes update.state as idle|available|scheduled|updating — each maps
 	// to its own gauge so callers can alert on available-only without noise from
 	// in-progress updates.
+	// When state is "idle" but latest_version > installed_version, treat as available
+	// to match Z2M UI behaviour (which uses version comparison, not state field).
 	if updateData, ok := data["update"].(map[string]interface{}); ok {
 		if otaState, ok := updateData["state"].(string); ok {
 			idle, available, scheduled, updating := 0.0, 0.0, 0.0, 0.0
@@ -1222,7 +1224,13 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			case "updating":
 				updating = 1.0
 			default:
-				idle = 1.0
+				installedVersion, hasInstalled := updateData["installed_version"].(float64)
+				latestVersion, hasLatest := updateData["latest_version"].(float64)
+				if hasInstalled && hasLatest && latestVersion > installedVersion {
+					available = 1.0
+				} else {
+					idle = 1.0
+				}
 			}
 
 			labels := prometheus.Labels{"device": deviceName}
