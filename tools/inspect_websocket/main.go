@@ -24,6 +24,7 @@ func main() {
 	limit := flag.Int("n", 0, "Stop after N matching messages (0 = unlimited)")
 	initialOnly := flag.Bool("initial", false, "Stop after initial burst (no new messages for 2s)")
 	ota := flag.Bool("ota", false, "Shorthand: show only messages with an 'update' field")
+
 	flag.Parse()
 
 	if *ota {
@@ -35,6 +36,7 @@ func main() {
 	if err != nil {
 		log.Fatal("connect:", err)
 	}
+
 	defer func() {
 		if cerr := conn.Close(); cerr != nil {
 			log.Printf("close: %v", cerr)
@@ -58,8 +60,10 @@ func main() {
 			if *initialOnly && time.Since(lastReceived) >= 2*time.Second {
 				break
 			}
+
 			log.Fatal("read:", err)
 		}
+
 		lastReceived = time.Now()
 
 		var msg wsMessage
@@ -76,6 +80,7 @@ func main() {
 			if !ok {
 				continue
 			}
+
 			if _, has := payload[*field]; !has {
 				continue
 			}
@@ -83,6 +88,7 @@ func main() {
 
 		out, _ := json.MarshalIndent(msg, "", "  ")
 		fmt.Printf("%s\n", out)
+
 		matched++
 
 		if *limit > 0 && matched >= *limit {

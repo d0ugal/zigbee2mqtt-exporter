@@ -1225,6 +1225,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 				updating = 1.0
 			default:
 				installedVersion, hasInstalled := updateData["installed_version"].(float64)
+
 				latestVersion, hasLatest := updateData["latest_version"].(float64)
 				if hasInstalled && hasLatest && latestVersion > installedVersion {
 					available = 1.0

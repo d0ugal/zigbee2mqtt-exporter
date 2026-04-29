@@ -41,14 +41,14 @@ func TestNewZ2MCollector(t *testing.T) {
 
 func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 	tests := []struct {
-		name              string
-		otaState          string
-		installedVersion  float64
-		latestVersion     float64
-		wantIdle          float64
-		wantAvail         float64
-		wantSched         float64
-		wantUpd           float64
+		name             string
+		otaState         string
+		installedVersion float64
+		latestVersion    float64
+		wantIdle         float64
+		wantAvail        float64
+		wantSched        float64
+		wantUpd          float64
 	}{
 		{"idle same versions", "idle", 620834817, 620834817, 1, 0, 0, 0},
 		{"idle newer version available", "idle", 620834817, 620834818, 0, 1, 0, 0},
