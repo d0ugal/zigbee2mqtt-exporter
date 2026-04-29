@@ -41,17 +41,21 @@ func TestNewZ2MCollector(t *testing.T) {
 
 func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 	tests := []struct {
-		name      string
-		otaState  string
-		wantIdle  float64
-		wantAvail float64
-		wantSched float64
-		wantUpd   float64
+		name              string
+		otaState          string
+		installedVersion  float64
+		latestVersion     float64
+		wantIdle          float64
+		wantAvail         float64
+		wantSched         float64
+		wantUpd           float64
 	}{
-		{"idle", "idle", 1, 0, 0, 0},
-		{"available", "available", 0, 1, 0, 0},
-		{"scheduled", "scheduled", 0, 0, 1, 0},
-		{"updating", "updating", 0, 0, 0, 1},
+		{"idle same versions", "idle", 620834817, 620834817, 1, 0, 0, 0},
+		{"idle newer version available", "idle", 620834817, 620834818, 0, 1, 0, 0},
+		{"idle installed newer than latest", "idle", 620834818, 620834817, 1, 0, 0, 0},
+		{"available", "available", 620834817, 620834817, 0, 1, 0, 0},
+		{"scheduled", "scheduled", 620834817, 620834817, 0, 0, 1, 0},
+		{"updating", "updating", 620834817, 620834817, 0, 0, 0, 1},
 	}
 
 	for _, tt := range tests {
@@ -61,8 +65,8 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 			payload := map[string]interface{}{
 				"update": map[string]interface{}{
 					"state":             tt.otaState,
-					"installed_version": float64(620834817),
-					"latest_version":    float64(620834817),
+					"installed_version": tt.installedVersion,
+					"latest_version":    tt.latestVersion,
 				},
 			}
 
