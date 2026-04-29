@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.49...v3.5.0) (2026-04-29)
+
+
+### Features
+
+* add inspect_websocket tool for agent-friendly WebSocket inspection ([8098ee5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8098ee5c9bd728957d26e8a69c7cc156b3ff795d))
+
+
+### Bug Fixes
+
+* handle SetReadDeadline error to satisfy gosec G104 ([d20354f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d20354f8c1dd66ecc1eb5b2e9df46f8bca72ad04))
+* move inspect_websocket into its own subdirectory to avoid main redeclaration ([0d5ea3c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0d5ea3ca176262d6cc2ca158ff63a3164bff86e5))
+* treat idle state with newer latest_version as OTA available ([c7f78cd](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c7f78cd34d3b1b7d7ed7b129135f1ab43e4425ef))
+
 ## [3.4.49](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.48...v3.4.49) (2026-04-28)
 
 
