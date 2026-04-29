@@ -32,11 +32,8 @@ type Z2MRegistry struct {
 	WebSocketMessagesTotal    *prometheus.CounterVec
 	WebSocketReconnectsTotal  *prometheus.CounterVec
 
-	// OTA Update metrics - one per state, value is 1 when device is in that state
-	DeviceOTAUpdateIdle      *prometheus.GaugeVec
-	DeviceOTAUpdateAvailable *prometheus.GaugeVec
-	DeviceOTAUpdateScheduled *prometheus.GaugeVec
-	DeviceOTAUpdateUpdating  *prometheus.GaugeVec
+	// OTA Update metric - state label is idle|available|scheduled|updating, value is 1 when device is in that state
+	DeviceOTAState *prometheus.GaugeVec
 	DeviceCurrentFirmware    *prometheus.GaugeVec
 	DeviceAvailableFirmware  *prometheus.GaugeVec
 }
@@ -176,46 +173,15 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 
 	baseRegistry.AddMetricInfo("zigbee2mqtt_websocket_reconnects_total", "Total number of WebSocket reconnections", []string{})
 
-	// OTA Update metrics - one per state, value is 1 when device is in that state
-	z2m.DeviceOTAUpdateIdle = factory.NewGaugeVec(
+	z2m.DeviceOTAState = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "zigbee2mqtt_device_ota_update_idle",
-			Help: "Device OTA update state: idle (1=in this state)",
+			Name: "zigbee2mqtt_device_ota",
+			Help: "Device OTA update state (state=idle|available|scheduled|updating, value is 1 when device is in that state)",
 		},
-		[]string{"device"},
+		[]string{"device", "state"},
 	)
 
-	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_update_idle", "Device OTA update state: idle (1=in this state)", []string{"device"})
-
-	z2m.DeviceOTAUpdateAvailable = factory.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "zigbee2mqtt_device_ota_update_available",
-			Help: "Device OTA update state: available (1=in this state)",
-		},
-		[]string{"device"},
-	)
-
-	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_update_available", "Device OTA update state: available (1=in this state)", []string{"device"})
-
-	z2m.DeviceOTAUpdateScheduled = factory.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "zigbee2mqtt_device_ota_update_scheduled",
-			Help: "Device OTA update state: scheduled (1=in this state)",
-		},
-		[]string{"device"},
-	)
-
-	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_update_scheduled", "Device OTA update state: scheduled (1=in this state)", []string{"device"})
-
-	z2m.DeviceOTAUpdateUpdating = factory.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "zigbee2mqtt_device_ota_update_updating",
-			Help: "Device OTA update state: updating (1=in this state)",
-		},
-		[]string{"device"},
-	)
-
-	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_update_updating", "Device OTA update state: updating (1=in this state)", []string{"device"})
+	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota", "Device OTA update state (state=idle|available|scheduled|updating, value is 1 when device is in that state)", []string{"device", "state"})
 
 	z2m.DeviceCurrentFirmware = factory.NewGaugeVec(
 		prometheus.GaugeOpts{

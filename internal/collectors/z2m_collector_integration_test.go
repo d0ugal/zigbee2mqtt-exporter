@@ -137,8 +137,9 @@ func TestZ2MCollectorIntegration(t *testing.T) {
 	t.Logf("Device battery metric: %f", deviceBatteryMetric)
 
 	// Test OTA update metrics
-	deviceOTAUpdateMetric := testutil.ToFloat64(registry.DeviceOTAUpdateAvailable.With(prometheus.Labels{
+	deviceOTAUpdateMetric := testutil.ToFloat64(registry.DeviceOTAState.With(prometheus.Labels{
 		"device": "test-device",
+		"state":  "available",
 	}))
 	t.Logf("Device OTA update metric: %f", deviceOTAUpdateMetric)
 
@@ -270,10 +271,10 @@ func TestZ2MCollectorLabelConsistency(t *testing.T) {
 			description: "Should accept 'device' label",
 		},
 		{
-			name:        "DeviceOTAUpdateAvailable",
-			metric:      registry.DeviceOTAUpdateAvailable,
-			labels:      prometheus.Labels{"device": "test-device"},
-			description: "Should accept 'device' label",
+			name:        "DeviceOTAState",
+			metric:      registry.DeviceOTAState,
+			labels:      prometheus.Labels{"device": "test-device", "state": "available"},
+			description: "Should accept 'device' and 'state' labels",
 		},
 		{
 			name:        "DeviceCurrentFirmware",

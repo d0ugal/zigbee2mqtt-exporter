@@ -581,11 +581,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 				idle, available = 0.0, 1.0
 			}
 
-			labels := prometheus.Labels{"device": device.FriendlyName}
-			c.metrics.DeviceOTAUpdateIdle.With(labels).Set(idle)
-			c.metrics.DeviceOTAUpdateAvailable.With(labels).Set(available)
-			c.metrics.DeviceOTAUpdateScheduled.With(labels).Set(0)
-			c.metrics.DeviceOTAUpdateUpdating.With(labels).Set(0)
+			c.setOTAState(device.FriendlyName, idle, available, 0, 0)
 		}
 
 		return
@@ -1074,6 +1070,13 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage)
 }
 
 // updateDeviceMetrics updates Prometheus metrics for a device
+func (c *Z2MCollector) setOTAState(device string, idle, available, scheduled, updating float64) {
+	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "idle"}).Set(idle)
+	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "available"}).Set(available)
+	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "scheduled"}).Set(scheduled)
+	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "updating"}).Set(updating)
+}
+
 func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName string, data map[string]interface{}) {
 	tracer := c.app.GetTracer()
 
@@ -1234,12 +1237,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 				}
 			}
 
-			labels := prometheus.Labels{"device": deviceName}
-			c.metrics.DeviceOTAUpdateIdle.With(labels).Set(idle)
-			c.metrics.DeviceOTAUpdateAvailable.With(labels).Set(available)
-			c.metrics.DeviceOTAUpdateScheduled.With(labels).Set(scheduled)
-			c.metrics.DeviceOTAUpdateUpdating.With(labels).Set(updating)
-
+			c.setOTAState(deviceName, idle, available, scheduled, updating)
 			metricsUpdated += 4
 
 			if span != nil {
