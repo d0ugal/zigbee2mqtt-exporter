@@ -1238,6 +1238,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			}
 
 			c.setOTAState(deviceName, idle, available, scheduled, updating)
+
 			metricsUpdated += 4
 
 			if span != nil {

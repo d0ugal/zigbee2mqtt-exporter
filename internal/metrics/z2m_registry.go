@@ -33,9 +33,9 @@ type Z2MRegistry struct {
 	WebSocketReconnectsTotal  *prometheus.CounterVec
 
 	// OTA Update metric - state label is idle|available|scheduled|updating, value is 1 when device is in that state
-	DeviceOTAState *prometheus.GaugeVec
-	DeviceCurrentFirmware    *prometheus.GaugeVec
-	DeviceAvailableFirmware  *prometheus.GaugeVec
+	DeviceOTAState          *prometheus.GaugeVec
+	DeviceCurrentFirmware   *prometheus.GaugeVec
+	DeviceAvailableFirmware *prometheus.GaugeVec
 }
 
 // NewZ2MRegistry creates a new Z2M metrics registry

@@ -74,6 +74,7 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 
 			check := func(state string, want float64) {
 				t.Helper()
+
 				labels := prometheus.Labels{"device": "test_device", "state": state}
 				if got := testutil.ToFloat64(registry.DeviceOTAState.With(labels)); got != want {
 					t.Errorf("OTA state %q: zigbee2mqtt_device_ota{state=%q} = %v, want %v", tt.otaState, state, got, want)
