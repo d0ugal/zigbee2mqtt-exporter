@@ -48,7 +48,9 @@ func main() {
 
 	for {
 		if *initialOnly {
-			conn.SetReadDeadline(time.Now().Add(2 * time.Second)) //nolint:errcheck
+			if err := conn.SetReadDeadline(time.Now().Add(2 * time.Second)); err != nil {
+				log.Fatal("set deadline:", err)
+			}
 		}
 
 		_, raw, err := conn.ReadMessage()
