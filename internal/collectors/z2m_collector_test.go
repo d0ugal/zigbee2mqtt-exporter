@@ -72,19 +72,18 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 
 			collector.updateDeviceMetrics(context.Background(), "test_device", payload)
 
-			labels := prometheus.Labels{"device": "test_device"}
-			check := func(name string, vec *prometheus.GaugeVec, want float64) {
+			check := func(state string, want float64) {
 				t.Helper()
-
-				if got := testutil.ToFloat64(vec.With(labels)); got != want {
-					t.Errorf("OTA state %q: %s = %v, want %v", tt.otaState, name, got, want)
+				labels := prometheus.Labels{"device": "test_device", "state": state}
+				if got := testutil.ToFloat64(registry.DeviceOTAState.With(labels)); got != want {
+					t.Errorf("OTA state %q: zigbee2mqtt_device_ota{state=%q} = %v, want %v", tt.otaState, state, got, want)
 				}
 			}
 
-			check("idle", registry.DeviceOTAUpdateIdle, tt.wantIdle)
-			check("available", registry.DeviceOTAUpdateAvailable, tt.wantAvail)
-			check("scheduled", registry.DeviceOTAUpdateScheduled, tt.wantSched)
-			check("updating", registry.DeviceOTAUpdateUpdating, tt.wantUpd)
+			check("idle", tt.wantIdle)
+			check("available", tt.wantAvail)
+			check("scheduled", tt.wantSched)
+			check("updating", tt.wantUpd)
 		})
 	}
 }
