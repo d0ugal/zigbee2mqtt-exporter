@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.7](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.6...v3.5.7) (2026-05-06)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.3.0 ([a976295](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a9762958ffce3955468e1fa731b70ffa019fbb78))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.10 ([547d6bf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/547d6bfeecd2cb0dfa2a3ab1aa5c4bc7738af237))
+
 ## [3.5.6](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.5...v3.5.6) (2026-05-05)
 
 
