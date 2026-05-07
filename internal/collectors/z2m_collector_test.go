@@ -39,6 +39,28 @@ func TestNewZ2MCollector(t *testing.T) {
 	}
 }
 
+// TestDeviceFirmware_LabelsMatchRegistry guards against the label-name
+// mismatch between the registry definitions (device, firmware_version) and
+// the call sites in processBridgeDevicesMessage. If the labels drift again,
+// prometheus.Labels.With() panics here.
+func TestDeviceFirmware_LabelsMatchRegistry(t *testing.T) {
+	_, registry := newTestCollector(t)
+
+	defer func() {
+		if r := recover(); r != nil {
+			t.Fatalf("unexpected panic: %v", r)
+		}
+	}()
+	registry.DeviceCurrentFirmware.With(prometheus.Labels{
+		"device":           "test-device",
+		"firmware_version": "1.2.3",
+	}).Set(1)
+	registry.DeviceAvailableFirmware.With(prometheus.Labels{
+		"device":           "test-device",
+		"firmware_version": "1.2.4",
+	}).Set(1)
+}
+
 func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 	tests := []struct {
 		name             string
