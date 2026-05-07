@@ -1,6 +1,6 @@
 # Build stage
 # Use golang:1.25.4-alpine which uses Alpine 3.22.2 to avoid qemu emulation issues
-FROM golang:1.26.2-alpine@sha256:f85330846cde1e57ca9ec309382da3b8e6ae3ab943d2739500e08c86393a21b1 AS builder
+FROM golang:1.26.3-alpine@sha256:2fc3989c4cb754d78787eb466716d44d4e88650ac9281da70267b55df9b25b9d AS builder
 
 WORKDIR /app
 
