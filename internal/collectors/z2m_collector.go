@@ -563,15 +563,15 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 			// Update OTA metrics
 			if device.CurrentFirmwareVersion != "" {
 				c.metrics.DeviceCurrentFirmware.With(prometheus.Labels{
-					"device":  device.FriendlyName,
-					"version": device.CurrentFirmwareVersion,
+					"device":           device.FriendlyName,
+					"firmware_version": device.CurrentFirmwareVersion,
 				}).Set(1)
 			}
 
 			if device.AvailableFirmwareVersion != "" {
 				c.metrics.DeviceAvailableFirmware.With(prometheus.Labels{
-					"device":  device.FriendlyName,
-					"version": device.AvailableFirmwareVersion,
+					"device":           device.FriendlyName,
+					"firmware_version": device.AvailableFirmwareVersion,
 				}).Set(1)
 			}
 
