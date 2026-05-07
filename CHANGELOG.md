@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.8](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.7...v3.5.8) (2026-05-07)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.51 ([236fa26](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/236fa26e4f879d40d9c4194ff7dfad69c36479b3))
+
+## [3.5.7](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.6...v3.5.7) (2026-05-06)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.3.0 ([a976295](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a9762958ffce3955468e1fa731b70ffa019fbb78))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.10 ([547d6bf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/547d6bfeecd2cb0dfa2a3ab1aa5c4bc7738af237))
+
+## [3.5.6](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.5...v3.5.6) (2026-05-05)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to 60b97b3 ([792c0e4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/792c0e48c5928540ca63482d0de4e9e162e25ff2))
+* Update module github.com/d0ugal/promexporter to v1.14.50 ([7948550](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/79485505ded0836ea7f83875e1439134f89b1c3c))
+
+## [3.5.5](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.4...v3.5.5) (2026-05-04)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 60b97b3 ([729b675](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/729b675b423e5d86cefbce88e9945624e0a77123))
+
+## [3.5.4](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.3...v3.5.4) (2026-05-04)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.49 ([358a8f3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/358a8f32ed6461c7773c1ab8d08cd8b0ab5ad6bc))
+
+## [3.5.3](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.2...v3.5.3) (2026-05-02)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.48 ([c1eb5f1](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c1eb5f153742d852b57d99233fd0791768b05a87))
+
+## [3.5.2](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.1...v3.5.2) (2026-05-02)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.47 ([fd71f96](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fd71f96b0183d37a290bcb23421b1ce6dbe572fe))
+* Update module github.com/pelletier/go-toml/v2 to v2.3.1 ([8191dab](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8191dab9b83761e0f608dd7be48b6c4c52cea308))
+
+## [3.5.1](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.0...v3.5.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* Update module github.com/cloudwego/base64x to v0.1.7 ([2c226bf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2c226bf448ba34fde70333a0a1d16d63ea0e18b7))
+* Update module github.com/d0ugal/promexporter to v1.14.46 ([4c3f9be](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4c3f9bed15fae7657efca671057c55cec52c7007))
+* Update module github.com/klauspost/compress to v1.18.6 ([e068322](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e068322f30cfa096b7b8e514bcf8fd07cca216b1))
+
 ## [3.5.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.4.49...v3.5.0) (2026-04-29)
 
 
