@@ -51,6 +51,7 @@ func TestDeviceFirmware_LabelsMatchRegistry(t *testing.T) {
 			t.Fatalf("unexpected panic: %v", r)
 		}
 	}()
+
 	registry.DeviceCurrentFirmware.With(prometheus.Labels{
 		"device":           "test-device",
 		"firmware_version": "1.2.3",
