@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.9](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.8...v3.5.9) (2026-05-11)
+
+
+### Bug Fixes
+
+* align device firmware metric label with registered name ([04a3588](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/04a3588bcad59a180d903e0c60e103b8523d06a3))
+* Update go toolchain directive to v1.26.3 ([d87d46e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d87d46ef90cc58a21994412ea142b6b946d0cf55))
+* Update google.golang.org/genproto/googleapis/api digest to 3700d41 ([3b05d73](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3b05d738130b4521562d855f4d84eb49bde351d7))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3700d41 ([dc683b6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dc683b6faf4d1bb21e373258d00327217d4d1c6c))
+* Update module github.com/d0ugal/promexporter to v1.14.53 ([29f804c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/29f804c800a49154e285efa3a7b7bc8dd95579c5))
+* Update module github.com/d0ugal/promexporter to v1.14.54 ([c2b57eb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c2b57ebb789090175998f220521a176b05e38db0))
+* Update module github.com/quic-go/quic-go to v0.59.1 ([63ea261](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/63ea2611c5bbb4f794cea368eed908f6ed3c633b))
+* Update module golang.org/x/arch to v0.27.0 ([ba9ca82](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ba9ca82db4d1075546030b1be48e65b502cf54e4))
+* Update module golang.org/x/crypto to v0.51.0 ([9b6f283](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9b6f283f3daf689e3ffdda04b5e9044a69da2cf6))
+* Update module golang.org/x/net to v0.54.0 ([824bf98](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/824bf9853a952d6cf4cc496df4cc0d3aa0baed25))
+* Update module golang.org/x/sys to v0.44.0 ([a01fd48](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a01fd488722e612444228c82d2befc6c0a8373b4))
+* Update module golang.org/x/text to v0.37.0 ([f39fd8f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f39fd8fe44644be0d77ad8027a0e306fb74997b6))
+
 ## [3.5.8](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.7...v3.5.8) (2026-05-07)
 
 
