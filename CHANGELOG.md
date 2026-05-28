@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.17](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.16...v3.5.17) (2026-05-28)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.60 ([f851b6a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f851b6a4234c6bfd0ff84390fa20d8f766e89d97))
+* Update module github.com/grafana/pyroscope-go to v1.3.1 ([ec779b9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ec779b9f1e3a15f57b6015c24692dad5df8aea68))
+* Update opentelemetry-go monorepo to v1.44.0 ([59de67c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/59de67c81802765bb85afdfad551d63cc1ba0575))
+* Update opentelemetry-go-contrib monorepo to v0.69.0 ([dd54ddb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dd54ddb1e9e72a79be44f4e69f22cac5022020e1))
+
 ## [3.5.16](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.15...v3.5.16) (2026-05-23)
 
 
