@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.19](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.18...v3.5.19) (2026-06-03)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.4 ([a5d6d4c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a5d6d4cf99385454e828ec14045020ea3b223cce))
+* Update module github.com/d0ugal/promexporter to v1.14.62 ([3a46ecc](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3a46ecceee302ac908146942b4d3cd852f2eb8f2))
+* Update module github.com/go-playground/validator/v10 to v10.30.3 ([304ca45](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/304ca454b41cfabd681e6c1c175838d676867db9))
+* Update module github.com/prometheus/common to v0.68.1 ([9a446f9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9a446f993271fb88b563117cf57dda5636a0f8ea))
+
 ## [3.5.18](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.17...v3.5.18) (2026-05-29)
 
 
