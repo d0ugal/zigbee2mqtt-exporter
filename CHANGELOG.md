@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.21](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.20...v3.5.21) (2026-06-04)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic to v1.15.2 ([b221fb7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b221fb7b942e88fe428f277bdbe8953f0530711b))
+
 ## [3.5.20](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.19...v3.5.20) (2026-06-03)
 
 
