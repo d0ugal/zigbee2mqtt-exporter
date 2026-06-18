@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.26](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.25...v3.5.26) (2026-06-18)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to 62b3387 ([95de140](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/95de14053c0cf56998765598cf2f4195d441646c))
+* Update module github.com/cenkalti/backoff/v5 to v6 ([b1abd55](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b1abd558a40659e945b525c72315715a9c52a4e1))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.0 ([1550173](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1550173606094da38270e4ef6445e8f523b211cf))
+* Update module github.com/prometheus/common to v0.69.0 ([fc8b734](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fc8b73481befce5c9d2a34658056e02c10c4d8b7))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.6.1 ([b412de5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b412de5e816ff3071170f46a11223b7fc308587d))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.7.0 ([6bc6ab4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/6bc6ab4083bab152720eda32ee2bd75720fb03cf))
+
 ## [3.5.25](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.24...v3.5.25) (2026-06-16)
 
 
