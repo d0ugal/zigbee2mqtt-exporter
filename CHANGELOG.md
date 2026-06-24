@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.29](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.28...v3.5.29) (2026-06-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to b703f56 ([9cc124d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9cc124d8e4faf75a87e7665a76176ce61d2ec445))
+* Update google.golang.org/genproto/googleapis/rpc digest to b703f56 ([aeb26cc](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/aeb26cc2614377134b806cdbc1ab0d183021cbde))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.1 ([9b62132](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9b621327c9978dea05313cd64db0b076388df37f))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.2 ([2034197](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/20341977a0afe267eaabee498ef964814e72460e))
+
 ## [3.5.28](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.27...v3.5.28) (2026-06-19)
 
 
