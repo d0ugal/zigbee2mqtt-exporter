@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.30](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.29...v3.5.30) (2026-06-27)
+
+
+### Bug Fixes
+
+* Update module github.com/prometheus/procfs to v0.21.0 ([9cae36a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/9cae36a4527ae19cf2318267f02fe7dd29844ef7))
+
 ## [3.5.29](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.28...v3.5.29) (2026-06-24)
 
 
