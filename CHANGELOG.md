@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.31](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.30...v3.5.31) (2026-07-01)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 925bb5d ([dff974f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dff974ff38fd5c07cd705d3c72bbe0bba2aa9ec4))
+* Update google.golang.org/genproto/googleapis/rpc digest to 925bb5d ([3ad7f7b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3ad7f7b9487a96baba5153d9c1bdded93823db29))
+* Update module github.com/cenkalti/backoff/v5 to v7 ([2a9f037](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2a9f037f30251cedf1ad2fe229fbe392bc8ec893))
+* Update module github.com/klauspost/compress to v1.18.7 ([f498d64](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f498d64b762af404c6235095f3452642919e9c1a))
+* Update module github.com/klauspost/compress to v1.19.0 ([7751310](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/77513104eb41aba6202695686680e57d01bebc49))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.0 ([df8b148](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/df8b1486515e437b3d621186d704704c01d93e7d))
+* Update module github.com/prometheus/procfs to v0.21.1 ([560b77f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/560b77ff7544dd11527afbf2f81f445cfdabbf35))
+* Update module google.golang.org/grpc to v1.82.0 ([134c3ef](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/134c3ef72403b9bc9cfdf3f0efa3a63c011ec7a2))
+
 ## [3.5.30](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.29...v3.5.30) (2026-06-27)
 
 
