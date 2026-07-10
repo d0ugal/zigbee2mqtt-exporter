@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.36](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.35...v3.5.36) (2026-07-10)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.66 ([afcbfdc](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/afcbfdca69644f090238d41180f36f0fedb8307e))
+* Update module github.com/grafana/pyroscope-go to v1.4.1 ([e462eeb](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e462eebc412d73d59e8dfe9e8af6c23311bb5dae))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.12 ([63ec1fd](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/63ec1fddadb049119910303fd37ad6cd5af33805))
+* Update module github.com/prometheus/common to v0.70.0 ([7c51b14](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7c51b146f4b7b74b49f20c2ba4abed1076fd1029))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.0 ([1482dce](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1482dce4d82c428cb0310606dc74b21984f0cd67))
+* Update module golang.org/x/arch to v0.29.0 ([7873ad6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7873ad64d71da5b8133e28398e3c0da5e6f859a9))
+* Update module golang.org/x/crypto to v0.54.0 ([188b18d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/188b18d8de8514fe26ac982979b0334c979302b6))
+* Update module golang.org/x/net to v0.57.0 ([1a67b41](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1a67b41860193e5ae5aa8974224c063a60c42f5c))
+* Update module golang.org/x/sys to v0.47.0 ([6a4ef5c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/6a4ef5cd1eb1661e76496235384c87a8222c42a3))
+
 ## [3.5.35](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.34...v3.5.35) (2026-07-08)
 
 
