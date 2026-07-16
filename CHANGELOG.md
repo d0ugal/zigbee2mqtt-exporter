@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.38](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.37...v3.5.38) (2026-07-16)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 33e4544 ([290fa63](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/290fa63fbf107bbb72d93d82e8c319e7d4365313))
+* Update google.golang.org/genproto/googleapis/api digest to e75dac1 ([e97d497](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e97d497f6dc4597eabb4490006bd6e5cd491a5c7))
+* Update google.golang.org/genproto/googleapis/rpc digest to e75dac1 ([897a5b4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/897a5b4eb7c16423918c2e952419d6eeb68ea832))
+* Update module google.golang.org/grpc to v1.82.1 ([3812a3a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3812a3a61d67d81fce290e15c6e0cac5327b8d45))
+
 ## [3.5.37](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.36...v3.5.37) (2026-07-14)
 
 
