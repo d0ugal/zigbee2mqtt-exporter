@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.39](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.38...v3.5.39) (2026-07-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 0afa2a6 ([e784b48](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e784b48ccc57fd72aae50f2ccddac88c7f236cc7))
+* Update google.golang.org/genproto/googleapis/api digest to 3fe39f3 ([00e7a6c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/00e7a6cd8d4b5124940c1807f86bdeea2f305957))
+* Update google.golang.org/genproto/googleapis/api digest to e059f2f ([01cb0d8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/01cb0d832ea62a952d948d0bdd711b56c2077eed))
+* Update google.golang.org/genproto/googleapis/rpc digest to 0afa2a6 ([dae5d3c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dae5d3c42e0746f4edaff1b8a41ff2a21684d64f))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3fe39f3 ([f20ce61](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f20ce614eac352d1623f12b37dd67145f3a3950a))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.14 ([b62c153](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b62c153edd874a19cb12e28f5700a6e09e71f394))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.15 ([39d323c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/39d323c4a3051f9aa5aadbbdae74a2ce1b352844))
+* Update module github.com/go-logr/logr to v1.4.4 ([7ca4b64](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7ca4b64bdd6c2f8044656c325477a40d85f5f404))
+* Update module github.com/klauspost/compress to v1.19.1 ([be3029b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/be3029b6f9062b4078306d73d9bfd0ae6497b20e))
+* Update module github.com/leodido/go-urn to v1.5.0 ([0a96028](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0a96028f0a7d0a2e3b9fc20a81fc083489a93a72))
+* Update module github.com/mattn/go-isatty to v0.0.23 ([61e7749](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/61e7749e4bb86ce2dc8c0dd9e08d9df9bc9c8db2))
+* Update module github.com/prometheus/client_golang to v1.24.0 ([ad85e2f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ad85e2f7406038c5f5bc965c01ae24470fc27b47))
+* Update module github.com/prometheus/common to v0.70.1 ([cc8e022](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/cc8e022ced093358f8b95d1f5241369019214e1a))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.0 ([1885e31](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1885e31284255675b88b3ed13c659425f8d7078b))
+
 ## [3.5.38](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.37...v3.5.38) (2026-07-16)
 
 
