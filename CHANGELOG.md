@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.40](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.39...v3.5.40) (2026-08-08)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 6ac0973 ([fab5575](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fab5575b8ccf058bf5fe324c71576d65255fe807))
+* Update google.golang.org/genproto/googleapis/api digest to c8921c7 ([29412b4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/29412b4e078fb3383cd9dc708ab4f393105e522d))
+* Update google.golang.org/genproto/googleapis/rpc digest to 6ac0973 ([4be0cf6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4be0cf6bcfd96f2923d5ab01b0e82c8612aa7577))
+* Update google.golang.org/genproto/googleapis/rpc digest to c8921c7 ([0f2ee33](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0f2ee33c80237ea3ec116fee84e8a17ab3fedf50))
+* Update module github.com/d0ugal/promexporter to v1.14.68 ([b92da79](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b92da79a9ebc2eef5c6501d87772210a8a65d43b))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.30.0 ([c0384a9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c0384a905217600919b33ba2c07768c4d037f638))
+* Update module github.com/klauspost/compress to v1.19.2 ([3c9d823](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3c9d823765e6d85fed82e9af20194fb9081c5f7f))
+* Update module github.com/ugorji/go/codec to v1.3.2 ([be74c3f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/be74c3fe96a7162d1e671263b763ffc5fce30f76))
+* Update opentelemetry-go monorepo to v1.45.0 ([a570658](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a57065809c5fc06499797de1e9f10c54e6969659))
+* Update opentelemetry-go-contrib monorepo to v0.70.0 ([d55b31e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d55b31ebd61ee2f8b420640afa0293713e3f9714))
+
 ## [3.5.39](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.38...v3.5.39) (2026-07-30)
 
 
