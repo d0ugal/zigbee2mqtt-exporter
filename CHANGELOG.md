@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.41](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.40...v3.5.41) (2026-09-05)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.6 ([828f7dd](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/828f7dd27b287fce696c34c34caa33f782d11bfd))
+* Update go toolchain directive to v1.27.0 ([e8033b1](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e8033b1aa0f31baebbf2d5b6d106df1207ae4c07))
+* Update go toolchain directive to v1.27.1 ([8db45da](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8db45da7bbb4f101a93679935b7939290f670f47))
+* Update google.golang.org/genproto/googleapis/api digest to 08b0e42 ([5b2ddd6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5b2ddd63d2f5b5ed276893a7f4963e174a8bbe99))
+* Update google.golang.org/genproto/googleapis/api digest to 18b4a75 ([aed22e5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/aed22e5bfdbce1124788ea9d20a21290a10bce32))
+* Update google.golang.org/genproto/googleapis/api digest to 1b09341 ([aecedba](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/aecedba9c80888c9f5e90343b9a5c0281ceef6dd))
+* Update google.golang.org/genproto/googleapis/api digest to ac3dfec ([5176eb3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5176eb38241696a06bbcba440f65fe02532335ec))
+* Update google.golang.org/genproto/googleapis/api digest to d0f1323 ([eaf5dd4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/eaf5dd4bef987acd9925ac6e7c3698551011a621))
+* Update google.golang.org/genproto/googleapis/api digest to da73d73 ([946a686](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/946a6864a551f24a9223996904157eb9422935fe))
+* Update google.golang.org/genproto/googleapis/rpc digest to 08b0e42 ([f17c22d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f17c22de080009a5bb7916f6cf992bc69ac38fd6))
+* Update google.golang.org/genproto/googleapis/rpc digest to 18b4a75 ([3642078](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3642078b7e82d621915e7114fee273fdfb15e44c))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1b09341 ([bb2209e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/bb2209ea52250882273120a2b5e9c58e1bee36f9))
+* Update google.golang.org/genproto/googleapis/rpc digest to ac3dfec ([db3d200](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/db3d200ea0b689559880ed843eaf9d6438ec8ae4))
+* Update google.golang.org/genproto/googleapis/rpc digest to d0f1323 ([73bedd3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/73bedd30471dfd44d7d50ce4d886dc5a52701f10))
+* Update google.golang.org/genproto/googleapis/rpc digest to da73d73 ([904d7d3](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/904d7d3abb7b873a1d22d3593507706ab855e1bb))
+* Update module github.com/bytedance/sonic to v1.15.3 ([b7a6023](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b7a6023144f1bc40ad4a3d96231fe1858ac8e4cc))
+* Update module github.com/d0ugal/promexporter to v1.14.69 ([1d63773](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/1d6377387847bf340081209e427e0e941b648493))
+* Update module github.com/gin-contrib/sse to v1.1.2 ([c292473](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c2924732e5e3aa391e7df28ab62a3be9b93dc32c))
+* Update module github.com/go-playground/validator/v10 to v10.30.4 ([fc82e0a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fc82e0aebd901971014c3baf32339a1a90f6a0c7))
+* Update module github.com/klauspost/compress to v1.20.0 ([5f4c000](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5f4c0006418162ffbf9283e6e54a82519da8292a))
+* Update module github.com/prometheus/client_model to v0.6.3 ([323c7f5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/323c7f5957c7eaf88be31f99c0987372b9ec2659))
+* Update module github.com/prometheus/common to v0.71.0 ([fbf87ec](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fbf87ec6d5531c8639572dc2070f5e5522dbb5d1))
+* Update module github.com/prometheus/procfs to v0.22.0 ([261bb58](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/261bb5817ff1a9f5572dd25eb0e418ad35515309))
+* Update module github.com/quic-go/quic-go to v0.62.0 ([4910304](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/491030429caaf3388c775ce8433c569beba9cd61))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.1 ([fc8d1c9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fc8d1c919b08ce2c070ab8a06e0c1cc10dd4a5a6))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.2 ([4bfa6be](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4bfa6be74ff6670e9e9589f2c4c9d601931856fc))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.0 ([18738e9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/18738e984bd7d5bc4abf9b0169a3ef6b420e5120))
+* Update module golang.org/x/crypto to v0.55.0 ([c8b32ee](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c8b32eeb307f0882da9a07db0795bb198d828372))
+* Update module golang.org/x/crypto to v0.56.0 ([c0213ac](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c0213ac9a437e23215f12a86d3f75e4573692438))
+* Update module golang.org/x/net to v0.58.0 ([945e743](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/945e743b009065ccee64e886145225e8e1b918d2))
+* Update module google.golang.org/grpc to v1.83.1 ([e8f3809](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e8f3809e4a479bed5109a700cab3bdd20881bebb))
+* Update module google.golang.org/grpc to v1.83.2 ([6084ed1](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/6084ed1d7a8e25873f0119ed72d999bffdb1d428))
+* Update opentelemetry-go monorepo to v1.46.0 ([160bab8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/160bab898f8ae94bbf17be4f5a77e0e646e7fcfc))
+* Update opentelemetry-go-contrib monorepo to v0.71.0 ([cf45220](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/cf45220e3c7892072ef0b89501bddc8c8179a4a7))
+
 ## [3.5.40](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.39...v3.5.40) (2026-08-12)
 
 
