@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.43](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.42...v3.5.43) (2026-09-22)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to b142276 ([d3d00ad](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d3d00ad99860683aa4370c3d51b0e0b9f3c85e63))
+* Update google.golang.org/genproto/googleapis/api digest to cecb647 ([f359e2e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f359e2eca23c4f1928adaf4a25f6b834761fcd08))
+* Update google.golang.org/genproto/googleapis/api digest to eeb232e ([0f755cf](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0f755cf56853303d749ddab74d0a2720590963e5))
+* Update google.golang.org/genproto/googleapis/rpc digest to cecb647 ([2d1c098](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2d1c09853ef0d5bddf2c96a5903a79d15867d71e))
+* Update module github.com/go-playground/universal-translator to v0.18.2 ([f4bcd6d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f4bcd6d1789d0f3b51a9aa9ccbba29b41072d6f6))
+* Update module github.com/go-playground/validator/v10 to v10.30.5 ([c29a98e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c29a98eed4a220f3ce4d9fff58ca99293e5ccfa3))
+
 ## [3.5.42](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.41...v3.5.42) (2026-09-12)
 
 
