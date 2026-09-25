@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.44](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.43...v3.5.44) (2026-09-25)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to b142276 ([192728e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/192728e8bed233af37f56f9031766df59f841021))
+* Update module github.com/klauspost/compress to v1.20.1 ([c4f1b89](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c4f1b89fb7713f971f08fe2f8c1fe36f5014e459))
+* Update module github.com/quic-go/quic-go to v0.63.0 ([a663625](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a6636250093685b6c8c2373bc4a414cce0293438))
+
 ## [3.5.43](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.42...v3.5.43) (2026-09-22)
 
 
