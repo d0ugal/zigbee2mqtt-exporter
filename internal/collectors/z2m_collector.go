@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"strings"
 	"time"
 
@@ -26,6 +27,60 @@ type Z2MCollector struct {
 	done    chan struct{}
 	// Device metadata cache - maps device name to device info
 	deviceInfo map[string]DeviceInfo
+}
+
+// safeWebSocketURL removes URL credentials and query parameters before a
+// configured endpoint is written to logs or traces. Query parameters can
+// contain Zigbee2MQTT's auth token (or other credentials).
+func safeWebSocketURL(rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return "<redacted websocket URL>"
+	}
+
+	parsed.User = nil
+	parsed.RawQuery = ""
+	parsed.ForceQuery = false
+	parsed.Fragment = ""
+
+	return parsed.String()
+}
+
+// safeWebSocketError keeps useful dial diagnostics while preventing the
+// configured URL, including its authentication query, from being emitted.
+func (c *Z2MCollector) safeWebSocketError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	message := err.Error()
+	rawURL := c.cfg.WebSocket.URL
+	message = strings.ReplaceAll(message, rawURL, safeWebSocketURL(rawURL))
+
+	// The HTTP client can rewrite ws:// and wss:// URLs to http:// and
+	// https:// in its errors, so redact each credential separately too.
+	if parsed, parseErr := url.Parse(rawURL); parseErr == nil {
+		if parsed.User != nil {
+			if username := parsed.User.Username(); username != "" {
+				message = strings.ReplaceAll(message, username, "<redacted>")
+			}
+
+			if password, ok := parsed.User.Password(); ok && password != "" {
+				message = strings.ReplaceAll(message, password, "<redacted>")
+			}
+		}
+
+		for _, values := range parsed.Query() {
+			for _, value := range values {
+				if value != "" {
+					message = strings.ReplaceAll(message, value, "<redacted>")
+					message = strings.ReplaceAll(message, url.QueryEscape(value), "<redacted>")
+				}
+			}
+		}
+	}
+
+	return fmt.Errorf("%s", message)
 }
 
 // DeviceInfo stores device metadata from bridge/devices message
@@ -101,7 +156,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 		if tracer != nil && tracer.IsEnabled() {
 			collectorSpan = tracer.NewCollectorSpan(ctx, "z2m-collector", "connection-attempt")
 			collectorSpan.SetAttributes(
-				attribute.String("websocket.url", c.cfg.WebSocket.URL),
+				attribute.String("websocket.url", safeWebSocketURL(c.cfg.WebSocket.URL)),
 			)
 		}
 
@@ -133,13 +188,13 @@ func (c *Z2MCollector) run(ctx context.Context) {
 
 		if err := c.connect(connectCtx); err != nil {
 			slog.Error("Failed to connect to Zigbee2MQTT",
-				"error", err,
-				"url", c.cfg.WebSocket.URL,
+				"error", c.safeWebSocketError(err),
+				"url", safeWebSocketURL(c.cfg.WebSocket.URL),
 				"reconnect_delay", reconnectDelay,
 			)
 
 			if collectorSpan != nil {
-				collectorSpan.RecordError(err, attribute.String("websocket.url", c.cfg.WebSocket.URL))
+				collectorSpan.RecordError(c.safeWebSocketError(err), attribute.String("websocket.url", safeWebSocketURL(c.cfg.WebSocket.URL)))
 				collectorSpan.End()
 			}
 
@@ -151,7 +206,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 				return
 			case <-time.After(reconnectDelay):
 				slog.Info("Attempting Zigbee2MQTT reconnection",
-					"url", c.cfg.WebSocket.URL,
+					"url", safeWebSocketURL(c.cfg.WebSocket.URL),
 					"delay", reconnectDelay,
 				)
 				reconnectDelay = minDuration(reconnectDelay*2, maxReconnectDelay)
@@ -168,7 +223,7 @@ func (c *Z2MCollector) run(ctx context.Context) {
 			collectorSpan.End()
 		}
 
-		slog.Info("Successfully connected to Zigbee2MQTT", "url", c.cfg.WebSocket.URL)
+		slog.Info("Successfully connected to Zigbee2MQTT", "url", safeWebSocketURL(c.cfg.WebSocket.URL))
 		c.metrics.WebSocketConnectionStatus.With(prometheus.Labels{}).Set(1)
 
 		// Start reading messages
@@ -200,7 +255,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "connect")
 
 		span.SetAttributes(
-			attribute.String("websocket.url", c.cfg.WebSocket.URL),
+			attribute.String("websocket.url", safeWebSocketURL(c.cfg.WebSocket.URL)),
 		)
 
 		spanCtx = span.Context()
@@ -209,7 +264,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 		spanCtx = ctx
 	}
 
-	slog.Info("Connecting to Zigbee2MQTT", "url", c.cfg.WebSocket.URL)
+	slog.Info("Connecting to Zigbee2MQTT", "url", safeWebSocketURL(c.cfg.WebSocket.URL))
 
 	dialStart := time.Now()
 
@@ -222,10 +277,10 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 				attribute.Float64("connect.duration_seconds", dialDuration.Seconds()),
 				attribute.Bool("connect.success", false),
 			)
-			span.RecordError(err, attribute.String("operation", "websocket_dial"))
+			span.RecordError(c.safeWebSocketError(err), attribute.String("operation", "websocket_dial"))
 		}
 
-		return fmt.Errorf("failed to dial WebSocket: %w", err)
+		return fmt.Errorf("failed to dial WebSocket: %s", c.safeWebSocketError(err))
 	}
 
 	dialDuration := time.Since(dialStart)
@@ -237,7 +292,7 @@ func (c *Z2MCollector) connect(ctx context.Context) error {
 			attribute.Bool("connect.success", true),
 		)
 		span.AddEvent("connection_established",
-			attribute.String("websocket.url", c.cfg.WebSocket.URL),
+			attribute.String("websocket.url", safeWebSocketURL(c.cfg.WebSocket.URL)),
 		)
 	}
 
@@ -259,7 +314,7 @@ func (c *Z2MCollector) readMessages(ctx context.Context) error {
 		span = tracer.NewCollectorSpan(ctx, "z2m-collector", "read-messages")
 
 		span.SetAttributes(
-			attribute.String("websocket.url", c.cfg.WebSocket.URL),
+			attribute.String("websocket.url", safeWebSocketURL(c.cfg.WebSocket.URL)),
 		)
 
 		spanCtx = span.Context()
