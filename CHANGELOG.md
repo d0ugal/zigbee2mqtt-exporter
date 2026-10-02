@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.45](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.44...v3.5.45) (2026-10-02)
+
+
+### Bug Fixes
+
+* redact websocket credentials from telemetry ([d7a7342](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d7a7342453f3a80d388e35e498a941e1ddc650e1))
+* Update google.golang.org/genproto/googleapis/api digest to 8a89bd6 ([0b5c12d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0b5c12d33b40e4fa1550aa5a11b9bc511dd1d560))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8a89bd6 ([d0a1b7a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d0a1b7a45e6bd0e78dda9e70ce67700ae7205121))
+* Update module github.com/d0ugal/promexporter to v1.14.70 ([15a703d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/15a703d9d2e499cdaf352eccd20786ac523846e6))
+* Update module github.com/d0ugal/promexporter to v1.14.71 ([626141d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/626141d861276df692a371c8597d166029fc7033))
+* Update module github.com/goccy/go-json to v0.11.2 ([a08dd20](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a08dd202e4cf599d34edff6d34407d5068500001))
+* Update module github.com/grafana/pyroscope-go to v1.4.3 ([84c9aef](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/84c9aefb1057526b9cb541865784489885a38054))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.1 ([f5c7241](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/f5c72411d9a13a4ad11b3a81371ab9954070320b))
+* Update opentelemetry-go monorepo to v1.47.0 ([62ebe89](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/62ebe89218fd4f7b0553994eae8158e9317de2ed))
+
 ## [3.5.44](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.43...v3.5.44) (2026-09-29)
 
 
