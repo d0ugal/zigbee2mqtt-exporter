@@ -7,7 +7,7 @@ toolchain go1.27.1
 require (
 	github.com/d0ugal/promexporter v1.14.71
 	github.com/gorilla/websocket v1.5.3
-	github.com/prometheus/client_golang v1.24.1
+	github.com/prometheus/client_golang v1.25.0
 	go.opentelemetry.io/otel v1.47.0
 )
 
