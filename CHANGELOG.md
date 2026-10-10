@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.48](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.47...v3.5.48) (2026-10-10)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.2 ([410b257](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/410b2574e0a4ce75734622c8a2c2888ae8520f83))
+* Update module github.com/prometheus/client_golang to v1.25.0 ([c33ec20](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c33ec20b8a2bc409b92e85b73b68d7ace773f2c0))
+* Update module golang.org/x/arch to v0.32.0 ([e1094c8](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e1094c841a34f67a611269eeb6e7435c91b5da1e))
+* Update module golang.org/x/crypto to v0.58.0 ([abc4d73](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/abc4d73ca6112a66f882e31a1daa79c129fee728))
+* Update module golang.org/x/net to v0.60.0 ([78d991e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/78d991e448277f77f815d9d9aacabe335c9eaa76))
+* Update module golang.org/x/net to v0.61.0 ([54c2c6c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/54c2c6c0f8c8f9541a13d294ecd07a373b65b6d7))
+
 ## [3.5.47](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.46...v3.5.47) (2026-10-07)
 
 
