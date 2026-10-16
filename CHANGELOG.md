@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.49](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.48...v3.5.49) (2026-10-16)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.72 ([154d59b](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/154d59b6176e55ee90d14b104cded03138b3e2d5))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.32.0 ([e15603a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e15603ab8a6a7ca1528bf246c444bd308bcf393a))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.1 ([894f070](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/894f07055dc807a8d4e53a6364c4b851f5d44db0))
+* Update module github.com/quic-go/quic-go to v0.64.0 ([663bc5d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/663bc5db6908b4d3338f7e9ebd4dd4476743458f))
+
 ## [3.5.48](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.47...v3.5.48) (2026-10-13)
 
 
