@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.50](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.49...v3.5.50) (2026-10-23)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.3 ([4891306](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/4891306360ebe92b2b6449ab35d32c92bf65448c))
+* Update google.golang.org/genproto/googleapis/api digest to ce908d2 ([a8916ca](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a8916cad39c0390d287f8e6b1ad8cc0b42310cd9))
+* Update google.golang.org/genproto/googleapis/rpc digest to ce908d2 ([d63ad1f](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d63ad1f0840b6028f52859f2e9a1ee1323d8f363))
+* Update module github.com/bytedance/sonic/loader to v0.5.3 ([7ebe460](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/7ebe460c6352d7006059c560ee12163e10f813c8))
+* Update module github.com/d0ugal/promexporter to v1.14.73 ([e9ece57](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e9ece57483821abfec0e0e45e8c0d12f8266f714))
+* Update module github.com/prometheus/procfs to v0.23.0 ([0477be6](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0477be6414351cce66805faaf4d9c59ec42f29be))
+* Update module github.com/quic-go/quic-go to v0.64.1 ([8329350](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/83293506b60070c4df5f443dba9ae641465bb21b))
+
 ## [3.5.49](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.48...v3.5.49) (2026-10-17)
 
 
