@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.53](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.52...v3.5.53) (2026-10-31)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic to v1.15.5 ([231c90e](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/231c90e52aa232071f34b8dc6407d18a63ff104e))
+* Update module github.com/gin-contrib/sse to v1.2.0 ([5f2d096](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5f2d096859201ff5836538447ff51ac0affa980d))
+* Update module github.com/goccy/go-json to v0.12.0 ([327d083](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/327d0835f4d5f12e0c67b111040ac25fd3932900))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.33.0 ([8a1c7c7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/8a1c7c7cb2eb0f269ecc189f11cbfc1861666ef0))
+* Update module github.com/hashicorp/go-uuid to v1.0.4 ([a5ef7da](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a5ef7dac527cb0e0e7fe61b6823c96e0bd3b4146))
+* Update module github.com/pandatix/go-abnf to v0.5.3 ([e02b8fc](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e02b8fcb72a3ab9a9d26f06939acfd80c80fa81f))
+* Update module github.com/pandatix/go-abnf to v0.5.4 ([e20fa1d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e20fa1d68d43621558da86c15334c2509790be10))
+* Update module github.com/prometheus/common to v0.73.0 ([fcd9803](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/fcd98031fabc3c2f1b3d2e2322e557408956fcab))
+* Update module github.com/prometheus/common to v0.73.1 ([2b30023](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2b30023b8db1a560f67e5ee6a111f274ff9bbf37))
+* Update module golang.org/x/net to v0.62.0 ([3d3d083](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3d3d083ac24e22b813d14fd5dbb06dc51d57e0a6))
+* Update module google.golang.org/grpc to v1.85.0 ([dd32866](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dd328665ce221276293b0feadb673720797fe8d9))
+
 ## [3.5.52](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.51...v3.5.52) (2026-10-27)
 
 
