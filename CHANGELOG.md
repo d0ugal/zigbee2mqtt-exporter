@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.56](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.55...v3.5.56) (2026-11-07)
+
+
+### Bug Fixes
+
+* Update module go.mongodb.org/mongo-driver/v2 to v2.10.0 ([ecfcc6a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ecfcc6a00a1c82157044c9192781b9d4e86e5cbb))
+
 ## [3.5.55](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.54...v3.5.55) (2026-11-06)
 
 
