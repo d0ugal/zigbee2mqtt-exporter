@@ -2,6 +2,7 @@ package collectors
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/d0ugal/promexporter/app"
@@ -109,5 +110,68 @@ func TestUpdateDeviceMetrics_OTAState(t *testing.T) {
 			check("scheduled", tt.wantSched)
 			check("updating", tt.wantUpd)
 		})
+	}
+}
+
+func TestUpdateDeviceMetrics_FirmwareVersions(t *testing.T) {
+	collector, registry := newTestCollector(t)
+	ctx := context.Background()
+
+	update := func(installed, latest float64) {
+		collector.updateDeviceMetrics(ctx, "test_device", map[string]interface{}{
+			"update": map[string]interface{}{
+				"state":             "idle",
+				"installed_version": installed,
+				"latest_version":    latest,
+			},
+		})
+	}
+
+	// Real OTA file versions are large integers; they must not be rendered
+	// in exponent form.
+	update(620834817, 620834818)
+
+	expected := `
+# HELP zigbee2mqtt_device_current_firmware_version Device current firmware version (always 1, used for joining with other metrics)
+# TYPE zigbee2mqtt_device_current_firmware_version gauge
+zigbee2mqtt_device_current_firmware_version{device="test_device",firmware_version="620834817"} 1
+`
+	if err := testutil.CollectAndCompare(registry.DeviceCurrentFirmware, strings.NewReader(expected)); err != nil {
+		t.Error(err)
+	}
+
+	if got := testutil.ToFloat64(registry.DeviceAvailableFirmware.With(prometheus.Labels{
+		"device": "test_device", "firmware_version": "620834818",
+	})); got != 1 {
+		t.Errorf("available firmware = %v, want 1", got)
+	}
+
+	// After the upgrade the old version series must be gone.
+	update(620834818, 620834818)
+
+	expected = `
+# HELP zigbee2mqtt_device_current_firmware_version Device current firmware version (always 1, used for joining with other metrics)
+# TYPE zigbee2mqtt_device_current_firmware_version gauge
+zigbee2mqtt_device_current_firmware_version{device="test_device",firmware_version="620834818"} 1
+`
+	if err := testutil.CollectAndCompare(registry.DeviceCurrentFirmware, strings.NewReader(expected)); err != nil {
+		t.Error(err)
+	}
+
+	if n := testutil.CollectAndCount(registry.DeviceAvailableFirmware); n != 1 {
+		t.Errorf("available firmware has %d series, want 1", n)
+	}
+}
+
+func TestUpdateDeviceMetrics_FirmwareVersionsMissing(t *testing.T) {
+	collector, registry := newTestCollector(t)
+
+	// A device that has never been checked for updates has no versions.
+	collector.updateDeviceMetrics(context.Background(), "test_device", map[string]interface{}{
+		"update": map[string]interface{}{"state": "idle", "installed_version": nil, "latest_version": nil},
+	})
+
+	if n := testutil.CollectAndCount(registry.DeviceCurrentFirmware); n != 0 {
+		t.Errorf("current firmware has %d series, want 0", n)
 	}
 }

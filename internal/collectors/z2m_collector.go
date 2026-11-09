@@ -121,9 +121,7 @@ type BridgeDevice struct {
 	InterviewState     string `json:"interview_state"`
 	Manufacturer       string `json:"manufacturer"`
 	// OTA-related fields (may be available depending on device)
-	AvailableFirmwareVersion string `json:"available_firmware_version,omitempty"`
-	CurrentFirmwareVersion   string `json:"current_firmware_version,omitempty"`
-	UpdateAvailable          bool   `json:"update_available,omitempty"`
+	UpdateAvailable bool `json:"update_available,omitempty"`
 }
 
 // NewZ2MCollector creates a new Z2M collector
@@ -614,21 +612,6 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 				"software_build_id": softwareBuildID,
 				"date_code":         dateCode,
 			}).Set(1)
-
-			// Update OTA metrics
-			if device.CurrentFirmwareVersion != "" {
-				c.metrics.DeviceCurrentFirmware.With(prometheus.Labels{
-					"device":           device.FriendlyName,
-					"firmware_version": device.CurrentFirmwareVersion,
-				}).Set(1)
-			}
-
-			if device.AvailableFirmwareVersion != "" {
-				c.metrics.DeviceAvailableFirmware.With(prometheus.Labels{
-					"device":           device.FriendlyName,
-					"firmware_version": device.AvailableFirmwareVersion,
-				}).Set(1)
-			}
 
 			// Update OTA metrics from bridge/devices boolean (no state granularity here)
 			idle, available := 1.0, 0.0
@@ -1124,7 +1107,38 @@ func (c *Z2MCollector) processDeviceMessage(ctx context.Context, msg Z2MMessage)
 	}
 }
 
-// updateDeviceMetrics updates Prometheus metrics for a device
+// setFirmwareVersions sets the current/available firmware version info metrics
+// from a device's "update" object. Zigbee2MQTT reports the OTA file versions
+// as integers in installed_version and latest_version. Any previous version
+// series for the device is removed first so an upgrade does not leave the old
+// version reporting 1. It reports whether anything was set.
+func (c *Z2MCollector) setFirmwareVersions(device string, update map[string]interface{}) bool {
+	set := false
+
+	for _, v := range []struct {
+		field  string
+		metric *prometheus.GaugeVec
+	}{
+		{"installed_version", c.metrics.DeviceCurrentFirmware},
+		{"latest_version", c.metrics.DeviceAvailableFirmware},
+	} {
+		version, ok := update[v.field].(float64)
+		if !ok {
+			continue
+		}
+
+		v.metric.DeletePartialMatch(prometheus.Labels{"device": device})
+		v.metric.With(prometheus.Labels{
+			"device":           device,
+			"firmware_version": fmt.Sprintf("%.0f", version),
+		}).Set(1)
+
+		set = true
+	}
+
+	return set
+}
+
 func (c *Z2MCollector) setOTAState(device string, idle, available, scheduled, updating float64) {
 	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "idle"}).Set(idle)
 	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "available"}).Set(available)
@@ -1301,6 +1315,10 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 					attribute.String("device.ota_state", otaState),
 				)
 			}
+		}
+
+		if c.setFirmwareVersions(deviceName, updateData) {
+			metricsUpdated += 2
 		}
 	}
 

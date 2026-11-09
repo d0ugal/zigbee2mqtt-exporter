@@ -18,8 +18,8 @@ A Prometheus exporter for Zigbee2MQTT that connects to the WebSocket API and exp
 
 ### OTA Update Metrics
 - `zigbee2mqtt_device_ota{device,state}` - Device OTA update state (state=idle|available|scheduled|updating, value is 1 when device is in that state)
-- `zigbee2mqtt_device_current_firmware_version{device,firmware_version}` - Device current firmware version (always 1, used for joining)
-- `zigbee2mqtt_device_available_firmware_version{device,firmware_version}` - Device available firmware version (always 1, used for joining)
+- `zigbee2mqtt_device_current_firmware_version{device,firmware_version}` - Installed OTA file version, from the device's `update.installed_version` (always 1, used for joining)
+- `zigbee2mqtt_device_available_firmware_version{device,firmware_version}` - Latest OTA file version, from the device's `update.latest_version` (always 1, used for joining)
 
 ### Bridge Metrics
 - `zigbee2mqtt_bridge_state` - Bridge state (1=online, 0=offline)
