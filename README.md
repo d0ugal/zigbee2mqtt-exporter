@@ -40,6 +40,14 @@ Zigbee2MQTT publishes `bridge/health` periodically (every 10 minutes by default)
 - `zigbee2mqtt_mqtt_received_messages` - MQTT messages received since Zigbee2MQTT started
 - `zigbee2mqtt_health_last_report_timestamp_seconds` - When the last `bridge/health` report was received
 
+### Bridge Info Metrics (from `bridge/info`)
+- `zigbee2mqtt_bridge_info{version,commit,zigbee_herdsman_version,zigbee_herdsman_converters_version}` - Zigbee2MQTT version information (always 1)
+- `zigbee2mqtt_coordinator_info{type,ieee_address,revision}` - Coordinator adapter type and firmware revision (always 1)
+- `zigbee2mqtt_network_channel` - Zigbee channel the network is running on
+- `zigbee2mqtt_network_pan_id` - Zigbee network PAN ID
+- `zigbee2mqtt_bridge_permit_join` - Whether new devices are allowed to join (1/0)
+- `zigbee2mqtt_bridge_restart_required` - Whether Zigbee2MQTT needs a restart to apply configuration changes (1/0)
+
 ### Connection Metrics
 - `zigbee2mqtt_websocket_connection_status` - WebSocket connection status (1=connected, 0=disconnected)
 - `zigbee2mqtt_websocket_messages_total{topic}` - Total number of WebSocket messages received

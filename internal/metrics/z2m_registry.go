@@ -39,6 +39,9 @@ type Z2MRegistry struct {
 
 	// Metrics from the bridge/health topic
 	Health *HealthMetrics
+
+	// Metrics from the bridge/info topic
+	BridgeInfo *BridgeInfoMetrics
 }
 
 // NewZ2MRegistry creates a new Z2M metrics registry
@@ -207,6 +210,8 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_available_firmware_version", "Device available firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
 
 	z2m.Health = newHealthMetrics(baseRegistry, factory)
+
+	z2m.BridgeInfo = newBridgeInfoMetrics(baseRegistry, factory)
 
 	return z2m
 }
