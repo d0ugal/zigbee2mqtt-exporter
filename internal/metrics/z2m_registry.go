@@ -215,3 +215,30 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 
 	return z2m
 }
+
+// DeleteDeviceSeries removes every series labelled with the given device, for
+// use when a device is removed from Zigbee2MQTT or renamed.
+func (z *Z2MRegistry) DeleteDeviceSeries(device string) {
+	labels := prometheus.Labels{"device": device}
+
+	for _, vec := range []interface {
+		DeletePartialMatch(labels prometheus.Labels) int
+	}{
+		z.DeviceLastSeen,
+		z.DeviceSeenCount,
+		z.DeviceLinkQuality,
+		z.DeviceState,
+		z.DeviceBattery,
+		z.DeviceInfo,
+		z.DeviceAvailability,
+		z.DeviceOTAState,
+		z.DeviceCurrentFirmware,
+		z.DeviceAvailableFirmware,
+		z.Health.DeviceMessages,
+		z.Health.DeviceMessagesPerSecond,
+		z.Health.DeviceLeaveCount,
+		z.Health.DeviceNetworkAddressChanges,
+	} {
+		vec.DeletePartialMatch(labels)
+	}
+}

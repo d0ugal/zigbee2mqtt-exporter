@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -122,8 +123,6 @@ type BridgeDevice struct {
 	InterviewCompleted bool   `json:"interview_completed"`
 	InterviewState     string `json:"interview_state"`
 	Manufacturer       string `json:"manufacturer"`
-	// OTA-related fields (may be available depending on device)
-	UpdateAvailable bool `json:"update_available,omitempty"`
 }
 
 // NewZ2MCollector creates a new Z2M collector
@@ -522,7 +521,9 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 	}
 }
 
-// processBridgeDevicesMessage processes bridge/devices messages to cache device types
+// processBridgeDevicesMessage processes bridge/devices messages. The payload is
+// the complete device list, so it replaces the device info cache and removes
+// the series of any device that has been removed or renamed.
 func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MMessage) {
 	tracer := c.app.GetTracer()
 
@@ -540,126 +541,41 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 
 	processStart := time.Now()
 
-	devicesData, ok := msg.Payload.([]interface{})
-	if !ok {
-		// Try parsing as array directly
-		var devices []BridgeDevice
-		if err := json.Unmarshal([]byte(fmt.Sprintf("%v", msg.Payload)), &devices); err != nil {
-			slog.Debug("Could not parse bridge/devices message", "error", err)
-
-			if span != nil {
-				span.RecordError(err, attribute.String("operation", "parse_devices_array"))
-			}
-
-			return
-		}
-
-		// Cache device info and update device info metric
-		for _, device := range devices {
-			powerSource := device.PowerSource
-			if powerSource == "" {
-				powerSource = "unknown"
-			}
-
-			// Convert boolean values to strings for labels
-			supported := "false"
-			if device.Supported {
-				supported = "true"
-			}
-
-			disabled := "false"
-			if device.Disabled {
-				disabled = "true"
-			}
-
-			// Map interview state to string
-			interviewState := "not_started"
-
-			switch device.InterviewState {
-			case "in_progress":
-				interviewState = "in_progress"
-			case "successful":
-				interviewState = "successful"
-			}
-
-			// Handle firmware information
-			softwareBuildID := device.SoftwareBuildID
-			if softwareBuildID == "" {
-				softwareBuildID = "unknown"
-			}
-
-			dateCode := device.DateCode
-			if dateCode == "" {
-				dateCode = "unknown"
-			}
-
-			c.rememberIEEE(device)
-
-			c.deviceInfo[device.FriendlyName] = DeviceInfo{
-				Type:            device.Type,
-				PowerSource:     powerSource,
-				Manufacturer:    device.Manufacturer,
-				ModelID:         device.ModelID,
-				Supported:       device.Supported,
-				Disabled:        device.Disabled,
-				InterviewState:  device.InterviewState,
-				NetworkAddress:  device.NetworkAddress,
-				SoftwareBuildID: softwareBuildID,
-				DateCode:        dateCode,
-			}
-
-			// Update device info metric (always set to 1)
-			c.metrics.DeviceInfo.With(prometheus.Labels{
-				"device":            device.FriendlyName,
-				"type":              device.Type,
-				"power_source":      powerSource,
-				"manufacturer":      device.Manufacturer,
-				"model_id":          device.ModelID,
-				"supported":         supported,
-				"disabled":          disabled,
-				"interview_state":   interviewState,
-				"software_build_id": softwareBuildID,
-				"date_code":         dateCode,
-			}).Set(1)
-
-			// Update OTA metrics from bridge/devices boolean (no state granularity here)
-			idle, available := 1.0, 0.0
-			if device.UpdateAvailable {
-				idle, available = 0.0, 1.0
-			}
-
-			c.setOTAState(device.FriendlyName, idle, available, 0, 0)
+	raw, err := json.Marshal(msg.Payload)
+	if err != nil {
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "marshal_payload"))
 		}
 
 		return
 	}
 
-	// Parse devices array
-	for _, deviceData := range devicesData {
-		deviceBytes, err := json.Marshal(deviceData)
-		if err != nil {
-			continue
+	var devices []BridgeDevice
+	if err := json.Unmarshal(raw, &devices); err != nil {
+		slog.Debug("Could not parse bridge/devices message", "error", err)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_devices_array"))
 		}
 
-		var device BridgeDevice
-		if err := json.Unmarshal(deviceBytes, &device); err != nil {
+		return
+	}
+
+	deviceInfo := make(map[string]DeviceInfo, len(devices))
+	ieeeToName := make(map[string]string, len(devices))
+
+	// Reset so a device whose labels changed (e.g. a new software_build_id)
+	// does not keep its old series reporting 1 alongside the new one.
+	c.metrics.DeviceInfo.Reset()
+
+	for _, device := range devices {
+		if device.FriendlyName == "" {
 			continue
 		}
 
 		powerSource := device.PowerSource
 		if powerSource == "" {
 			powerSource = "unknown"
-		}
-
-		// Convert boolean values to strings for labels
-		supported := "false"
-		if device.Supported {
-			supported = "true"
-		}
-
-		disabled := "false"
-		if device.Disabled {
-			disabled = "true"
 		}
 
 		// Map interview state to string
@@ -672,9 +588,11 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 			interviewState = "successful"
 		}
 
-		c.rememberIEEE(device)
+		if device.IEEEAddress != "" {
+			ieeeToName[device.IEEEAddress] = device.FriendlyName
+		}
 
-		c.deviceInfo[device.FriendlyName] = DeviceInfo{
+		deviceInfo[device.FriendlyName] = DeviceInfo{
 			Type:            device.Type,
 			PowerSource:     powerSource,
 			Manufacturer:    device.Manufacturer,
@@ -694,19 +612,36 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 			"power_source":      powerSource,
 			"manufacturer":      device.Manufacturer,
 			"model_id":          device.ModelID,
-			"supported":         supported,
-			"disabled":          disabled,
+			"supported":         strconv.FormatBool(device.Supported),
+			"disabled":          strconv.FormatBool(device.Disabled),
 			"interview_state":   interviewState,
 			"software_build_id": device.SoftwareBuildID,
 			"date_code":         device.DateCode,
 		}).Set(1)
 	}
 
+	// Drop every series for devices that are no longer in the list. Only
+	// names previously seen in bridge/devices are considered, so group
+	// series (which never appear here) are left alone.
+	removed := 0
+
+	for name := range c.deviceInfo {
+		if _, ok := deviceInfo[name]; !ok {
+			c.metrics.DeleteDeviceSeries(name)
+
+			removed++
+		}
+	}
+
+	c.deviceInfo = deviceInfo
+	c.ieeeToName = ieeeToName
+
 	processDuration := time.Since(processStart)
 
 	if span != nil {
 		span.SetAttributes(
 			attribute.Int("devices.processed", len(c.deviceInfo)),
+			attribute.Int("devices.removed", removed),
 			attribute.Float64("process.duration_seconds", processDuration.Seconds()),
 		)
 		span.AddEvent("devices_processed",
@@ -714,7 +649,7 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 		)
 	}
 
-	slog.Debug("Updated device info cache", "device_count", len(c.deviceInfo))
+	slog.Debug("Updated device info cache", "device_count", len(c.deviceInfo), "removed", removed)
 }
 
 // processBridgeStateMessage processes bridge/state messages
