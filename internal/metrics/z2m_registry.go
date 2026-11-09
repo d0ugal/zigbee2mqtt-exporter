@@ -36,6 +36,8 @@ type Z2MRegistry struct {
 	DeviceOTAState          *prometheus.GaugeVec
 	DeviceCurrentFirmware   *prometheus.GaugeVec
 	DeviceAvailableFirmware *prometheus.GaugeVec
+	DeviceOTAProgress       *prometheus.GaugeVec
+	DeviceOTARemaining      *prometheus.GaugeVec
 
 	// Metrics from the bridge/health topic
 	Health *HealthMetrics
@@ -209,6 +211,26 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_available_firmware_version", "Device available firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
 
+	z2m.DeviceOTAProgress = factory.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "zigbee2mqtt_device_ota_progress_percent",
+			Help: "Progress of an in-progress OTA update (0-100); only present while the device is updating",
+		},
+		[]string{"device"},
+	)
+
+	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_progress_percent", "Progress of an in-progress OTA update (0-100); only present while the device is updating", []string{"device"})
+
+	z2m.DeviceOTARemaining = factory.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "zigbee2mqtt_device_ota_remaining_seconds",
+			Help: "Estimated seconds left of an in-progress OTA update; only present while the device is updating",
+		},
+		[]string{"device"},
+	)
+
+	baseRegistry.AddMetricInfo("zigbee2mqtt_device_ota_remaining_seconds", "Estimated seconds left of an in-progress OTA update; only present while the device is updating", []string{"device"})
+
 	z2m.Health = newHealthMetrics(baseRegistry, factory)
 
 	z2m.BridgeInfo = newBridgeInfoMetrics(baseRegistry, factory)
@@ -234,6 +256,8 @@ func (z *Z2MRegistry) DeleteDeviceSeries(device string) {
 		z.DeviceOTAState,
 		z.DeviceCurrentFirmware,
 		z.DeviceAvailableFirmware,
+		z.DeviceOTAProgress,
+		z.DeviceOTARemaining,
 		z.Health.DeviceMessages,
 		z.Health.DeviceMessagesPerSecond,
 		z.Health.DeviceLeaveCount,

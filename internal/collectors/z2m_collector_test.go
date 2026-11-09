@@ -202,3 +202,34 @@ zigbee2mqtt_device_seen_total{device="Kitchen Air"} 1
 		t.Error(err)
 	}
 }
+
+func TestUpdateDeviceMetrics_OTAProgress(t *testing.T) {
+	collector, registry := newTestCollector(t)
+	ctx := context.Background()
+	labels := prometheus.Labels{"device": "test_device"}
+
+	collector.updateDeviceMetrics(ctx, "test_device", map[string]interface{}{
+		"update": map[string]interface{}{"state": "updating", "progress": 42.5, "remaining": float64(1800)},
+	})
+
+	if got := testutil.ToFloat64(registry.DeviceOTAProgress.With(labels)); got != 42.5 {
+		t.Errorf("progress = %v, want 42.5", got)
+	}
+
+	if got := testutil.ToFloat64(registry.DeviceOTARemaining.With(labels)); got != 1800 {
+		t.Errorf("remaining = %v, want 1800", got)
+	}
+
+	// Once the update finishes the series must disappear, not stick at 42.5.
+	collector.updateDeviceMetrics(ctx, "test_device", map[string]interface{}{
+		"update": map[string]interface{}{"state": "idle", "installed_version": float64(2), "latest_version": float64(2)},
+	})
+
+	if n := testutil.CollectAndCount(registry.DeviceOTAProgress); n != 0 {
+		t.Errorf("progress has %d series after update finished, want 0", n)
+	}
+
+	if n := testutil.CollectAndCount(registry.DeviceOTARemaining); n != 0 {
+		t.Errorf("remaining has %d series after update finished, want 0", n)
+	}
+}

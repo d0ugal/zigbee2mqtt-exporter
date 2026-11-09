@@ -1099,6 +1099,28 @@ func (c *Z2MCollector) setFirmwareVersions(device string, update map[string]inte
 	return set
 }
 
+// setOTAProgress exports progress and remaining time while a device is
+// updating, and removes them otherwise so a finished or aborted update does
+// not leave a stale value behind.
+func (c *Z2MCollector) setOTAProgress(device, otaState string, update map[string]interface{}) {
+	labels := prometheus.Labels{"device": device}
+
+	if otaState != "updating" {
+		c.metrics.DeviceOTAProgress.Delete(labels)
+		c.metrics.DeviceOTARemaining.Delete(labels)
+
+		return
+	}
+
+	if progress, ok := update["progress"].(float64); ok {
+		c.metrics.DeviceOTAProgress.With(labels).Set(progress)
+	}
+
+	if remaining, ok := update["remaining"].(float64); ok {
+		c.metrics.DeviceOTARemaining.With(labels).Set(remaining)
+	}
+}
+
 func (c *Z2MCollector) setOTAState(device string, idle, available, scheduled, updating float64) {
 	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "idle"}).Set(idle)
 	c.metrics.DeviceOTAState.With(prometheus.Labels{"device": device, "state": "available"}).Set(available)
@@ -1267,6 +1289,7 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			}
 
 			c.setOTAState(deviceName, idle, available, scheduled, updating)
+			c.setOTAProgress(deviceName, otaState, updateData)
 
 			metricsUpdated += 4
 
