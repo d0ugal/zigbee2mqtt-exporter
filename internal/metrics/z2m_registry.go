@@ -36,6 +36,9 @@ type Z2MRegistry struct {
 	DeviceOTAState          *prometheus.GaugeVec
 	DeviceCurrentFirmware   *prometheus.GaugeVec
 	DeviceAvailableFirmware *prometheus.GaugeVec
+
+	// Metrics from the bridge/health topic
+	Health *HealthMetrics
 }
 
 // NewZ2MRegistry creates a new Z2M metrics registry
@@ -202,6 +205,8 @@ func NewZ2MRegistry(baseRegistry *promexporter_metrics.Registry) *Z2MRegistry {
 	)
 
 	baseRegistry.AddMetricInfo("zigbee2mqtt_device_available_firmware_version", "Device available firmware version (always 1, used for joining with other metrics)", []string{"device", "firmware_version"})
+
+	z2m.Health = newHealthMetrics(baseRegistry, factory)
 
 	return z2m
 }

@@ -25,6 +25,21 @@ A Prometheus exporter for Zigbee2MQTT that connects to the WebSocket API and exp
 - `zigbee2mqtt_bridge_state` - Bridge state (1=online, 0=offline)
 - `zigbee2mqtt_bridge_events_total{event_type}` - Total number of bridge events
 
+### Health Metrics (from `bridge/health`)
+Zigbee2MQTT publishes `bridge/health` periodically (every 10 minutes by default). Its counters reset when Zigbee2MQTT restarts, so they are exported as gauges; `rate()` and `increase()` handle the resets.
+
+- `zigbee2mqtt_device_health_messages{device}` - Messages received from the device since Zigbee2MQTT started
+- `zigbee2mqtt_device_health_messages_per_second{device}` - Average messages per second since Zigbee2MQTT started
+- `zigbee2mqtt_device_health_leave_count{device}` - Times the device has left the network
+- `zigbee2mqtt_device_health_network_address_changes{device}` - Times the device's network address has changed
+- `zigbee2mqtt_process_uptime_seconds` - Zigbee2MQTT process uptime
+- `zigbee2mqtt_process_memory_used_bytes` - Zigbee2MQTT process memory usage
+- `zigbee2mqtt_mqtt_connected` - Whether Zigbee2MQTT is connected to the MQTT broker (1/0)
+- `zigbee2mqtt_mqtt_queued_messages` - MQTT messages waiting to be published
+- `zigbee2mqtt_mqtt_published_messages` - MQTT messages published since Zigbee2MQTT started
+- `zigbee2mqtt_mqtt_received_messages` - MQTT messages received since Zigbee2MQTT started
+- `zigbee2mqtt_health_last_report_timestamp_seconds` - When the last `bridge/health` report was received
+
 ### Connection Metrics
 - `zigbee2mqtt_websocket_connection_status` - WebSocket connection status (1=connected, 0=disconnected)
 - `zigbee2mqtt_websocket_messages_total{topic}` - Total number of WebSocket messages received
