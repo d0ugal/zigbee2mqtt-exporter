@@ -27,6 +27,8 @@ type Z2MCollector struct {
 	done    chan struct{}
 	// Device metadata cache - maps device name to device info
 	deviceInfo map[string]DeviceInfo
+	// Maps IEEE address to friendly name; bridge/health keys devices by IEEE address
+	ieeeToName map[string]string
 }
 
 // safeWebSocketURL removes URL credentials and query parameters before a
@@ -134,6 +136,7 @@ func NewZ2MCollector(cfg *config.Config, metrics *metrics.Z2MRegistry, app *app.
 		app:        app,
 		done:       make(chan struct{}),
 		deviceInfo: make(map[string]DeviceInfo),
+		ieeeToName: make(map[string]string),
 	}
 }
 
@@ -492,6 +495,8 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 		c.processBridgeStateMessage(spanCtx, z2mMsg)
 	case "bridge/event":
 		c.processBridgeEventMessage(spanCtx, z2mMsg)
+	case "bridge/health":
+		c.processBridgeHealthMessage(spanCtx, z2mMsg)
 	default:
 		// This is likely a device message
 		if z2mMsg.Topic != "" && !strings.HasPrefix(z2mMsg.Topic, "bridge/") {
@@ -588,6 +593,8 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 				dateCode = "unknown"
 			}
 
+			c.rememberIEEE(device)
+
 			c.deviceInfo[device.FriendlyName] = DeviceInfo{
 				Type:            device.Type,
 				PowerSource:     powerSource,
@@ -679,6 +686,8 @@ func (c *Z2MCollector) processBridgeDevicesMessage(ctx context.Context, msg Z2MM
 		case "successful":
 			interviewState = "successful"
 		}
+
+		c.rememberIEEE(device)
 
 		c.deviceInfo[device.FriendlyName] = DeviceInfo{
 			Type:            device.Type,
