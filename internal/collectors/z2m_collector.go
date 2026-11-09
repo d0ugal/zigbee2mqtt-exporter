@@ -495,6 +495,8 @@ func (c *Z2MCollector) processMessage(ctx context.Context, message []byte) {
 		c.processBridgeEventMessage(spanCtx, z2mMsg)
 	case "bridge/health":
 		c.processBridgeHealthMessage(spanCtx, z2mMsg)
+	case "bridge/info":
+		c.processBridgeInfoMessage(spanCtx, z2mMsg)
 	default:
 		// This is likely a device message
 		if z2mMsg.Topic != "" && !strings.HasPrefix(z2mMsg.Topic, "bridge/") {
