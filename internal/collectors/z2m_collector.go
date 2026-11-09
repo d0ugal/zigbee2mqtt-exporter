@@ -930,6 +930,20 @@ func (c *Z2MCollector) extractDeviceDataFromLogging(ctx context.Context, message
 	}
 
 	deviceTopic := message[topicStart : topicStart+topicEnd]
+
+	// Zigbee2MQTT also logs its bridge topics and Home Assistant discovery
+	// configs; only topics directly under the base topic are device state.
+	if !isDeviceStateTopic(deviceTopic) {
+		if span != nil {
+			span.SetAttributes(
+				attribute.Bool("extract.skipped", true),
+				attribute.String("extract.skip_reason", "not_device_topic"),
+			)
+		}
+
+		return
+	}
+
 	deviceName := strings.TrimPrefix(deviceTopic, "zigbee2mqtt/")
 
 	// Skip availability messages (they're handled separately)
@@ -1353,6 +1367,15 @@ func (c *Z2MCollector) updateDeviceMetrics(ctx context.Context, deviceName strin
 			attribute.Int("metrics_count", metricsUpdated),
 		)
 	}
+}
+
+// isDeviceStateTopic reports whether an MQTT topic logged by Zigbee2MQTT is a
+// device (or group) state topic, as opposed to a bridge topic or a Home
+// Assistant discovery config published under another prefix.
+func isDeviceStateTopic(topic string) bool {
+	name, ok := strings.CutPrefix(topic, "zigbee2mqtt/")
+
+	return ok && name != "" && !strings.HasPrefix(name, "bridge/")
 }
 
 // parseISOTimestamp parses an ISO timestamp to Unix timestamp

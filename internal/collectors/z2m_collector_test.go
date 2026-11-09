@@ -175,3 +175,30 @@ func TestUpdateDeviceMetrics_FirmwareVersionsMissing(t *testing.T) {
 		t.Errorf("current firmware has %d series, want 0", n)
 	}
 }
+
+func TestExtractDeviceDataFromLogging_IgnoresNonDeviceTopics(t *testing.T) {
+	collector, registry := newTestCollector(t)
+	ctx := context.Background()
+
+	logLine := func(topic string) string {
+		return "z2m:mqtt: MQTT publish: topic '" + topic + "', payload '{\"linkquality\":76}'"
+	}
+
+	for _, topic := range []string{
+		"zigbee2mqtt/bridge/state",
+		"zigbee2mqtt/bridge/health",
+		"homeassistant/sensor/0x0017880108172867/linkquality/config",
+		"zigbee2mqtt/Kitchen Air",
+	} {
+		collector.extractDeviceDataFromLogging(ctx, logLine(topic))
+	}
+
+	expected := `
+# HELP zigbee2mqtt_device_seen_total Number of times device has been seen
+# TYPE zigbee2mqtt_device_seen_total counter
+zigbee2mqtt_device_seen_total{device="Kitchen Air"} 1
+`
+	if err := testutil.CollectAndCompare(registry.DeviceSeenCount, strings.NewReader(expected)); err != nil {
+		t.Error(err)
+	}
+}
