@@ -32,13 +32,6 @@ type bridgeHealth struct {
 	} `json:"devices"`
 }
 
-// rememberIEEE records the IEEE address to friendly name mapping for a device.
-func (c *Z2MCollector) rememberIEEE(device BridgeDevice) {
-	if device.IEEEAddress != "" && device.FriendlyName != "" {
-		c.ieeeToName[device.IEEEAddress] = device.FriendlyName
-	}
-}
-
 // processBridgeHealthMessage processes bridge/health messages, which carry
 // per-device message counters plus Zigbee2MQTT process and MQTT statistics.
 func (c *Z2MCollector) processBridgeHealthMessage(ctx context.Context, msg Z2MMessage) {
