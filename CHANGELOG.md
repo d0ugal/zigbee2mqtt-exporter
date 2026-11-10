@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.55...v3.6.0) (2026-11-10)
+
+
+### Features
+
+* export metrics from the bridge/health topic ([c4fcbb9](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/c4fcbb91812daaa385e0f6c2d158c8846b8b1c4b))
+* export metrics from the bridge/info topic ([3251e15](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/3251e15345f3c41904b77d274969665d13a1e6d4))
+* export OTA update progress and remaining time ([2c5a175](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2c5a1754cd8af5a592ae5506e631992083c87f3c))
+
+
+### Bug Fixes
+
+* ignore bridge and discovery topics when parsing publish logs ([262d386](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/262d3862b93f0dc07f5a25a83f9d91a0796b41fc))
+* populate firmware version metrics from device update state ([2d6f608](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/2d6f60821760569739b1eb3fc7a9a9fbe19cfd2e))
+* remove stale series for removed, renamed and relabelled devices ([5c1dad0](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/5c1dad05af7bc5f6ab721f3bfd788d9f7a618e6a))
+* Update google.golang.org/genproto/googleapis/api digest to 09e21b2 ([dd2e384](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/dd2e3849dda1a0b69213888d16d814208faf7ff7))
+* Update module github.com/gin-contrib/sse to v1.2.1 ([a5cc03d](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/a5cc03d169e5768cf3874d3963c3479e844c4139))
+* Update module github.com/klauspost/compress to v1.20.4 ([da3cce5](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/da3cce5fec14572a0bb84568dea8aa8020bbe586))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.10.0 ([ecfcc6a](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/ecfcc6a00a1c82157044c9192781b9d4e86e5cbb))
+* Update module golang.org/x/arch to v0.33.0 ([83e1466](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/83e14660e20f27de0fdf82331a44ff3d3f2bdc13))
+* Update module golang.org/x/sys to v0.50.0 ([e493986](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/e4939868b9c20c9244b7376f210eb519053027df))
+
 ## [3.5.55](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.5.54...v3.5.55) (2026-11-06)
 
 
