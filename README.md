@@ -2,7 +2,7 @@
 
 A Prometheus exporter for Zigbee2MQTT that connects to the WebSocket API and exports device metrics with device type classification.
 
-**Image**: `ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.5.55`
+**Image**: `ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.6.0`
 
 ## Metrics
 
@@ -68,7 +68,7 @@ Zigbee2MQTT publishes `bridge/health` periodically (every 10 minutes by default)
 version: '3.8'
 services:
   zigbee2mqtt-exporter:
-    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.5.55
+    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.6.0
     ports:
       - "8087:8087"
     environment:
@@ -98,7 +98,7 @@ services:
 version: '3.8'
 services:
   zigbee2mqtt-exporter:
-    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.5.55
+    image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.6.0
     ports:
       - "8087:8087"
     environment:
@@ -126,7 +126,7 @@ spec:
     spec:
       containers:
       - name: zigbee2mqtt-exporter
-        image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.5.55
+        image: ghcr.io/d0ugal/zigbee2mqtt-exporter:v3.6.0
         ports:
         - containerPort: 8087
         env:
