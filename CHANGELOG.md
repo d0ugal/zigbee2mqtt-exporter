@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.4](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.6.3...v3.6.4) (2026-11-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 1e707ab ([49a2d24](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/49a2d2402e5603a86c2df40dbd40719bc3c399d5))
+* Update module github.com/d0ugal/promexporter to v1.14.78 ([0a09eb7](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/0a09eb7aa2e241f462808d0e3767d42b100284da))
+* Update module github.com/klauspost/compress to v1.20.5 ([d835be4](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/d835be48ff09db7ea3bf4ebad715c4b02470387c))
+* Update module go.opentelemetry.io/auto/sdk to v1.2.2 ([b57533c](https://github.com/d0ugal/zigbee2mqtt-exporter/commit/b57533c98805ad15973b0fed6a2c94986757f229))
+
 ## [3.6.3](https://github.com/d0ugal/zigbee2mqtt-exporter/compare/v3.6.2...v3.6.3) (2026-11-20)
 
 
